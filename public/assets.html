@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html ng-app="app">
+<head>
+    <title>Assets</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+<body>
+    <h1>Assets</h1>
+
+    <ng-view></ng-view>
+
+    <!-- Libraries -->
+    <script src="libs/angularjs/1.4.3/angular.min.js"></script>
+    <script src="libs/angularjs/1.4.3/angular-route.min.js"></script>
+    <script src="libs/angularjs/1.4.3/angular-resource.min.js"></script>
+
+    <!-- Template -->
+    <script type="text/ng-template" id="/assets.html">
+        Search:
+        <input type="text" ng-model="search.category">
+        <ul>
+            <li ng-repeat="asset in assets | filter: search">
+                <input type="checkbox" ng-model="asset.completed" ng-change="update($index)">
+                <a ng-show="!editing[$index]" href="#/{{asset._id}}">{{asset.name}}</a>
+                <label>{{asset.number}}</label>
+                <label>{{asset.category}}</label>
+                <label>{{asset.brand}}</label>
+                <label>{{asset.serial}}</label>
+                <label>{{asset.cpu}}</label>
+                <label>{{asset.memory}}</label>
+                <label>{{asset.harddisk}}</label>
+                <label>{{asset.working}}</label>
+                <label>{{asset.price}}</label>
+
+                <button ng-show="!editing[$index]" ng-click="edit($index)">edit</button>
+                <button ng-show="!editing[$index]" ng-click="remove($index)">remove</button>
+
+                <input ng-show="editing[$index]" type="text" ng-model="asset.name">
+                <button ng-show="editing[$index]" ng-click="update($index)">update</button>
+                <button ng-show="editing[$index]" ng-click="cancel($index)">cancel</button>
+            </li>
+        </ul>
+        增加
+        <ul>
+            <li>
+                类别
+                <input type="text" ng-model="newAsset.category">
+            </li>
+            <li>
+                品牌
+                <input type="text" ng-model="newAsset.brand">
+            </li>
+            <li>
+                型号
+                <input type="text" ng-model="newAsset.serial">
+            </li>
+            <li>
+                CPU
+                <input type="text" ng-model="newAsset.cpu">
+            </li>
+            <li>
+                内存
+                <input type="text" ng-model="newAsset.memory">
+            </li>
+            <li>
+                硬盘
+                <input type="text" ng-model="newAsset.harddisk">
+            </li>
+            <li>
+                配件
+                <input type="text" ng-model="newAsset.accessory">
+            </li>
+            <li>
+                <!-- TODO: Binding for radio button-->
+                状态
+                <input type="text" ng-model="newAsset.working">
+            </li>
+            <li>
+                照片
+            </li>
+            <li>
+                单价
+                <input type="text" ng-model="newAsset.price">
+            </li>
+        </ul>
+        <button ng-click="save()">添加</button>
+    </script>
+
+    <script type="text/ng-template" id="/courseDetails.html">
+        <h1>{{ asset.name }}</h1>
+        completed:
+        <input type="checkbox" ng-model="asset.completed">
+        <br>
+        note:
+        <textarea ng-model="asset.note"></textarea>
+        <br>
+        <br>
+
+        <button ng-click="update()">update</button>
+        <button ng-click="remove()">remove</button>
+        <a href="#">Cancel</a>
+    </script>
+
+    <script>
+        angular.module('app', ['ngRoute', 'ngResource'])
+
+          //---------------
+          // Services
+          //---------------
+
+          .factory('Assets', ['$resource', function ($resource) {
+              return $resource('/api/assets/:id', null, {
+                  'update': { method: 'PUT' }
+              });
+          }])
+
+          //---------------
+          // Controllers
+          //---------------
+
+          .controller('AssetController', ['$scope', 'Assets', function ($scope, Assets) {
+              $scope.editing = [];
+              $scope.assets = Assets.query();
+
+              $scope.newAsset = new Assets({});
+
+              $scope.save = function () {
+                  if (!$scope.newAsset || $scope.newAsset.length < 1) return;
+                  var asset = $scope.newAsset;
+                  //new Assets({
+                  //    name: $scope.newAsset.name,
+                  //    length: $scope.newAsset.length,
+                  //    price: $scope.newAsset.price,
+                  //    completed: false
+                  //});
+
+                  asset.$save(function () {
+                      $scope.assets.push(asset);
+                      $scope.newAsset = ''; // clear textbox
+                  });
+              }
+
+              $scope.update = function (index) {
+                  var asset = $scope.assets[index];
+                  Assets.update({ id: asset._id }, asset);
+                  $scope.editing[index] = false;
+              }
+
+              $scope.edit = function (index) {
+                  $scope.editing[index] = angular.copy($scope.assets[index]);
+              }
+
+              $scope.cancel = function (index) {
+                  $scope.assets[index] = angular.copy($scope.editing[index]);
+                  $scope.editing[index] = false;
+              }
+
+              $scope.remove = function (index) {
+                  var asset = $scope.assets[index];
+                  Assets.remove({ id: asset._id }, function () {
+                      $scope.assets.splice(index, 1);
+                  });
+              }
+          }])
+
+          .controller('AssetDetailCtrl', ['$scope', '$routeParams', 'Assets', '$location', function ($scope, $routeParams, Assets, $location) {
+              $scope.asset = Assets.get({ id: $routeParams.id });
+
+              $scope.update = function () {
+                  Assets.update({ id: $scope.asset._id }, $scope.asset, function () {
+                      $location.url('/');
+                  });
+              }
+
+              $scope.remove = function () {
+                  Assets.remove({ id: $scope.asset._id }, function () {
+                      $location.url('/');
+                  });
+              }
+          }])
+
+          //---------------
+          // Routes
+          //---------------
+
+          .config(['$routeProvider', function ($routeProvider) {
+              $routeProvider
+                .when('/', {
+                    templateUrl: '/assets.html',
+                    controller: 'AssetController'
+                })
+
+                .when('/:id', {
+                    templateUrl: '/courseDetails.html',
+                    controller: 'AssetDetailCtrl'
+                });
+          }]);
+    </script>
+</body>
+</html>

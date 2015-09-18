@@ -1,0 +1,9 @@
+﻿<div ng-show="hasAssetSheet" ng-init="init()">
+    <h4>我的资产清单</h4>
+    <div ag-grid="gridOptions" class="ag-fresh" style="height: 100%;"></div>
+    <a href="#sheetDetail" class="btn btn-primary">发布</a>
+</div>
+<div ng-show="!hasAssetSheet">
+    <div class="alert alert-info" role="alert">您没有发布资产信息。</div>
+    <a href="#sheetDetail" class="btn btn-primary">发布</a>
+</div>

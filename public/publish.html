@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html ng-app="fileUpload">
+<head>
+    <title>商品发布</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="libs/bootstrap-3.3.5/css/bootstrap.min.css">
+    <link href="stylesheets/style.css" rel="stylesheet" />
+    <script type="text/javascript" src="libs/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="libs/angularjs/1.4.3/angular.js"></script>
+    <script type="text/javascript" src="libs/angularjs/1.4.3/angular-route.js"></script>
+    <script type="text/javascript" src="libs/angularjs/1.4.3/angular-resource.js"></script>
+    <!--<script type="text/javascript" src="libs/angularjs/1.4.3/angular.min.js"></script>
+    <script type="text/javascript" src="libs/angularjs/1.4.3/angular-route.min.js"></script>
+    <script type="text/javascript" src="libs/angularjs/1.4.3/angular-resource.min.js"></script>-->
+    <script type="text/javascript" src="libs/angularjs/1.4.3/angular-cookies.js"></script>
+    <script type="text/javascript" src="libs/ng-file-upload/ng-file-upload-all.js"></script> <!-- for no html5 browsers support -->
+    <style type="text/css">
+        pictures {
+            width: 378px;
+            height: 500px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div id="pictures" class="pictures" style="float:left;">
+            <div id="zoom" style="width:380px;">
+                <img src="uploads/large1.jpg" style="width:350px;" />
+            </div>
+            <div id="list">
+                <img src="uploads/icon1.jpg" /> <img src="uploads/icon2.jpg" />
+            </div>
+            <div ng-controller="MyCtrl">
+                <!--
+                    http://stackoverflow.com/questions/2389341/jquery-change-event-to-input-file-on-ie
+                    http://jsfiddle.net/djibouti33/uP7A9/ -->
+                <form name="fileUploadForm" novalidate>
+                    <label for="file">上传图片...</label>
+                    <input type="file" ngf-select ng-model="picFile" name="file" id="file" ng-show="false"
+                           accept="image/*" ngf-max-size="1MB" required style="float:left">
+                    <!--<button ng-disabled="!fileUploadForm.$valid || completed"
+                            ng-click="uploadPic(picFile)">
+                        上传
+                    </button>-->
+                    <i ng-show="fileUploadForm.file.$error.maxSize">
+                        文件太大
+                        {{picFile.size / 1000000|number:1}}MB: 最大 {{picFile.$errorParam}}
+                    </i>
+                    <span class="progress" ng-show="picFile.progress >= 0">
+                        <div style="width:{{picFile.progress}}%"
+                             ng-bind="picFile.progress + '%'"></div>
+                    </span>
+                    <span ng-show="completed">上传成功</span>
+                    <span class="err" ng-show="errorMsg">{{errorMsg}}</span>
+                    <br />
+                    <!--<img ng-show="fileUploadForm.file.$valid && !completed" ngf-src="!picFile.$error && picFile" style="width:200px;"
+                         class="thumb">
+                    <br>-->
+                </form>
+            </div>
+        </div>
+        <div style="width:800px;float:left;">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <input name="mail" class="form-control input-lg" id="edit-mail" type="text" size="60" maxlength="128" placeholder="商品名称及简要说明" value="" ng-model="alias" required>
+                </div>
+                <div class="form-group">
+                    <input name="pass" class="form-control input-lg" id="edit-pass" type="text" size="60" maxlength="128" placeholder="商品特点" ng-model="password" required>
+                </div>
+                <div class="form-group" style="vertical-align:middle;">
+                    <label for="price" class="col-sm-2 control-label">价格:</label>
+                    <div class="col-sm-10">
+                        <input name="price" class="form-control" id="edit-pass" type="text" size="60" maxlength="128" placeholder="价格" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="promotion" class="col-sm-2 control-label">促销信息:</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="promotion"
+                               placeholder="输入促销信息">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="promotion" class="col-sm-2 control-label">起拍时间:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="promotion"
+                               placeholder="起拍时间">
+                    </div>
+                    <label for="promotion" class="col-sm-2 control-label">结束时间:</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="promotion"
+                               placeholder="结束时间">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input name="op" class="btn btn-default" type="submit" value="保存" ng-click="">
+                    <!--<input name="op" class="btn btn-default" type="button" value="取消" ng-click="show(false);">-->
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <script>
+        var app = angular.module('app', ['ngFileUpload']);
+
+
+        //inject angular file upload directives and services.
+        var a = angular.module('fileUpload', ['ngFileUpload']);
+
+        a.controller('MyCtrl', ['$scope', 'Upload', '$timeout', function ($scope, Upload, $timeout) {
+            function uploadPic(file) {
+                file.upload = Upload.upload({
+                    url: '/api/files/upload',
+                    method: 'POST',
+                    headers: {
+                        'my-header': 'my-header-value'
+                    },
+                    fields: { username: $scope.username },
+                    file: file,
+                    fileFormDataName: 'myFile'
+                });
+
+                file.upload.success(function (response) {
+                    fileUploadForm.reset();
+                    $scope.completed = true;
+                });
+
+                file.upload.then(function (response) {
+                    $timeout(function () {
+                        file.result = response.data;
+                    });
+                }, function (response) {
+                    if (response.status > 0)
+                        $scope.errorMsg = response.status + ': ' + response.data;
+                });
+
+                file.upload.progress(function (evt) {
+                    // Math.min is to fix IE which reports 200% sometimes
+                    file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                });
+
+            }
+
+            $('#file').change(function () {
+                if ($('#file').val()) {
+                    setTimeout(function () {
+                        uploadPic($scope.picFile);
+                    }, 100);
+                }
+            });
+        }]);
+    </script>
+</body>
+</html>

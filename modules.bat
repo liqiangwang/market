@@ -1,0 +1,1 @@
+npm install && npm install express && npm install busboy && npm install mongoose

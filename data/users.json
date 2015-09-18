@@ -1,0 +1,12 @@
+﻿[
+  {
+    "_id": "55f20fa438ecb0f417bbedb0",
+    "alias": "user1",
+    "password": "1"
+  },
+  {
+    "_id": "55f20fab38ecb0f417bbedb1",
+    "alias": "user2",
+    "password": "2"
+  }
+]

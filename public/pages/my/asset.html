@@ -1,0 +1,40 @@
+﻿<fieldset>
+    <label>我的清单</label>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>名称</td>
+                    <td>计划交割时间</td>
+                    <td>计划交割地点</td>
+                    <td>付款方式</td>
+                    <td>成交标准<!--价高先得--></td>
+                    <td>要求从业资格证书</td>
+                    <td>总价格</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="asset in assets">
+                    <td>{{asset.number}}</td>
+                    <td>{{asset.category}}</td>
+                    <td>{{asset.brand}}</td>
+                    <td>{{asset.serial}}</td>
+                    <td>{{asset.cpu}}</td>
+                    <td>{{asset.memory}}</td>
+                    <td>{{asset.harddisk}}</td>
+                    <td>
+                        <span class="glyphicon glyphicon-ok" ng-show="asset.working"></span>
+                    </td>
+                    <td>{{asset.price}}</td>
+                    <td>{{asset.followUps}}</td>
+                    <td>
+                        <button ng-show="!editing[$index]" ng-click="addToWishList($index)" class="btn btn-primary">加入心愿单</button>
+                    </td>
+                    <td>
+                        <button ng-show="!editing[$index]" ng-click="bid($index)" class="btn btn-primary">竞价</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</fieldset>
