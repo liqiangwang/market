@@ -4,6 +4,7 @@ public/libs
 public/angular-file-upload/
 tests/
 public/uploads/
+.vs/
 
 #################
 ## Eclipse
