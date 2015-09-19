@@ -10,6 +10,7 @@ var AssetSheetSchema = new mongoose.Schema({
     dealCriteriaId: Number, // 1- 价高先得
     requireCertificate: Boolean,
     calculatedTotalPrice: Number,
+    assets: Array,
     updatedAt: { type: Date, default: Date.now },
     followUps: Number,
     status: Number,  // 0 local, 1 published, 2 sold, -1 deleted.

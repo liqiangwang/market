@@ -33,171 +33,26 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Brand</a>
+                    <a href="index.html" class="navbar-brand">交易场</a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="index.html">交易场</a></li>
-                        <li><a href="#">{{user.alias}}</a></li>
+                        <li role="presentation"><a href="#sheets">我的发布</a></li>
+                        <li role="presentation"><a href="#offer">我的报价</a></li>
+                        <li role="presentation"><a href="#activeOrder">未处理订单</a></li>
+                        <li role="presentation"><a href="#completedOrder">已完成订单</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li role="presentation"><a href="#profile">个人信息</a></li>
+                        <li><a>{{user.alias}}</a></li>
                     </ul>
 
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-        <!-- http://getbootstrap.com/css/ Stacked-to-horizontal-->
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-xs-2 col-md-2">
-                    <ul class="nav nav-stacks">
-                        <li role="presentation"><a href="#sheet">我的发布</a></li>
-                        <li role="presentation"><a href="#wishlist">我的报价</a></li>
-                        <li role="presentation"><a href="#order">未处理订单</a></li>
-                        <li role="presentation"><a href="#orderHistory">已完成订单</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li role="presentation"><a href="#profile">个人信息</a></li>
-                    </ul>
-                </div>
-                <div class="col-xs-10 col-md-10">
-                    <div ng-view></div>
-                </div>
-            </div>
-        </div>
+        <div ng-view></div>
     </div>
-    <script>
-        var app = angular.module('app', ['ngRoute', 'ngResource', 'ngCookies', 'angularGrid']);
-
-        // routes
-        app.config(function ($routeProvider) {
-            $routeProvider
-                .when('/sheet', {
-                    templateUrl: 'pages/my/sheet.html',
-                    controller: 'sheetController'
-                })
-                .when('/sheetDetail', {
-                    templateUrl: 'pages/my/sheetDetail.html',
-                    controller: 'sheetDetailController'
-                })
-                .when('/order', {
-                    templateUrl: 'pages/my/order.html',
-                    controller: 'orderController'
-                })
-                .when('/orderHistory', {
-                    templateUrl: 'pages/my/orderHistory.html',
-                    controller: 'orderHistoryController'
-                })
-                .when('/profile', {
-                    templateUrl: 'pages/my/profile.html',
-                    controller: 'profileController'
-                })
-                .otherwise({
-                    // when all else fails
-                    templateUrl: 'pages/routeNotFound.html',
-                    controller: 'notFoundController'
-                });
-        });
-
-        // services
-        app.factory('Asset', ['$resource', function ($resource) {
-            return $resource('/api/assets/:id', null, {
-                'update': { method: 'PUT' }
-            });
-        }]);
-
-        app.factory('AssetSheet', ['$resource', function ($resource) {
-            return $resource('/api/assetSheets/:id', null, {
-                'update': { method: 'PUT' }
-            });
-        }]);
-
-        // controllers
-        app.controller('sheetController', ['$scope', '$rootScope', 'Asset', 'AssetSheet', function ($scope, $rootScope, Asset, AssetSheet) {
-            $scope.init = function () {
-                $scope.query();
-            }
-
-            $scope.query = function () {
-                var columnDefs = [
-                    { headerName: "名称", field: "name", width: 100 },
-                    { headerName: "计划交割时间", field: "planningDeliveryTime", width: 100 },
-                    { headerName: "计划交割地点", field: "planningDeliveryAddress", width: 100 },
-                    { headerName: "付款方式", field: "make", width: 100 },
-                    { headerName: "成交规则", field: "model", width: 100 },
-                    { headerName: "要求从业资格证书", field: "price", width: 100 },
-                    { headerName: "总价格", field: "price", width: 100 },
-                    { headerName: "", template: "<a href=''>修改</a>", width: 40 }
-                ];
-
-                $scope.gridOptions = {
-                    columnDefs: columnDefs,
-                    rowData: null,
-                    dontUseScrolls: true,
-                    enableColResize: true
-                };
-
-                AssetSheet.query(
-                    { createdbyid: $rootScope.user._id },
-                    function (data) {   // TODO error handling of query()
-                        $scope.hasAssetSheet = data.length > 0;
-                        if ($scope.hasAssetSheet) {
-                            $scope.gridOptions.rowData = data;
-                            $scope.gridOptions.api.onNewRows();
-                        }
-                    });
-            }
-        }]);
-
-        app.controller('sheetDetailController', ['$scope', '$rootScope', 'Asset', 'AssetSheet', function ($scope, $rootScope, Asset, AssetSheet) {
-            $scope.save = function () {
-                var assetSheet = new AssetSheet({
-                    name: $scope.name,
-                    planningDeliveryTime: $scope.planningDeliveryTime,
-                    planningDeliveryAddress: $scope.planningDeliveryAddress,
-                    createdById: $rootScope.user._id
-                });
-
-                assetSheet.$save(
-                      function () {
-                          $window.location.href = '#sheet.html'
-                      },
-                      function (response) { // error case
-                          alert(response.data.errors);
-                      });
-            }
-        }]);
-
-        app.controller('orderController', function ($scope) {
-            $scope.message = 'Welcome to my home page!';
-        });
-
-        app.controller('orderHistoryController', function ($scope) {
-            $scope.message = 'Welcome to my home page!';
-        });
-
-        app.controller('profileController', function ($scope) {
-            $scope.message = 'Welcome to my home page!';
-        });
-
-        app.controller('notFoundController', function ($scope, $location) {
-            $scope.message = 'There seems to be a problem finding the page you wanted';
-            $scope.attemptedPath = $location.path();
-        });
-
-        app.controller('UserController', function ($scope, $cookieStore, $window, $rootScope) {
-            $scope.init = function () {
-                var user = $cookieStore.get("user");
-                if (user) {
-                    $scope.user = user;
-                    $rootScope.user = user;
-                    $scope.isLogin = true;
-                }
-                else {
-                    // redirect to index.html
-                    //$window.location.href = "index.html";
-                }
-            }
-        })
-    </script>
+    <script src="javascripts/my.js"></script>
 </body>
 </html>

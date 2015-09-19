@@ -29,32 +29,33 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Brand</a>
+                <a class="navbar-brand">易处理</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <form class="navbar-form navbar-left" role="search">
+                <!--<form class="navbar-form navbar-left" role="search">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="商品名称">
                     </div>
                     <button type="submit" class="btn btn-default">查找</button>
-                </form>
+                </form>-->
                 <ul class="nav navbar-nav navbar-right" ng-controller="UserController" ng-init="init()">
-                    <li><a href="assets.html">发布信息</a></li>
+                    <!--
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的工作室<span class="caret"><!--竖排--></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的工作室<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li role="presentation"><a href="my.html#sheet">我的发布</a></li>
+                            <li role="presentation"><a href="my.html#sheets">我的发布</a></li>
                             <li role="presentation"><a href="my.html#wishlist">心愿单</a></li>
                             <li role="presentation"><a href="my.html#order">未处理订单</a></li>
                             <li role="presentation"><a href="my.html#orderHistory">已完成订单</a></li>
                             <li role="separator" class="divider"></li>
                             <li role="presentation"><a href="my.html#profile">个人信息</a></li>
                         </ul>
-
                     </li>
-                    <li><a href="#">{{user.alias}}</a></li>
+                    -->
+                    <li><a href="my.html#sheets">我的工作室</a></li>
+                    <li><a>{{user.alias}}</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">登录</a>
                         <ul class="dropdown-menu" ng-show="show">
@@ -118,157 +119,6 @@
         </div><!-- /.container-fluid -->
     </nav>
     <div ng-view></div>
-    <script>
-        var app = angular.module('app', ['ngRoute', 'ngResource', 'ngCookies', 'angularGrid'])
-
-        // routes
-        app.config(function ($routeProvider) {
-            $routeProvider
-                .when('/', {
-                    templateUrl: 'pages/index/sheet.html',
-                    controller: 'sheetController'
-                })
-                .when('/sheetDetail', {
-                    templateUrl: 'pages/index/sheetDetail.html',
-                    controller: 'sheetDetailController'
-                });
-        });
-
-        // Services
-        app.factory('Users', ['$resource', function ($resource) {
-            return $resource('/api/users/:id', null, {
-                'update': { method: 'PUT' }
-            });
-        }]);
-
-        app.factory("errors", function ($rootScope) {
-            return {
-                catch: function (message) {
-                    return function (reason) {
-                        $rootScope.addError({ message: message, reason: reason })
-                    };
-                }
-            };
-        });
-
-        app.factory('Asset', ['$resource', function ($resource) {
-            return $resource('/api/assets/:id', null, {
-                'update': { method: 'PUT' }
-            });
-        }]);
-
-        app.factory('AssetSheet', ['$resource', function ($resource) {
-            return $resource('/api/assetSheets/:id', null, {
-                'update': { method: 'PUT' }
-            });
-        }]);
-
-
-        // Controllers
-        app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope', function ($scope, Users, $cookieStore, $rootScope) {
-
-            $scope.init = function () {
-                var user = $cookieStore.get("user");
-                if (user) {
-                    $scope.user = user;
-                    $rootScope.user = user;
-                }
-            }
-
-            $scope.register = function () {
-                if (!$scope.alias || !$scope.password) return;
-                var user = new Users({ alias: $scope.alias, password: $scope.password });
-
-                user.$save(function () {
-                    $scope.user = user;
-                    $rootScope.user = user;
-                    $cookieStore.put("user", user);
-                },
-                function (error) {
-                    alert(error.statusText + '(' + error.status + ')\r\n\r\n' + error.data);
-                });
-            }
-
-            $scope.login = function () {
-                Users.query({ alias: $scope.alias, password: $scope.password }
-                     , function (users) {
-                         if (users.length == 0) {
-                             $scope.loginFailed = true;
-                         }
-                         else {
-                             $scope.loginFailed = false;
-                             $cookieStore.put("user", users[0]);
-                             $scope.user = users[0];
-                             $rootScope.user = $scope.user;
-                         }
-                     }
-                     , function (error) {
-                         alert(error.statusText + '(' + error.status + ')\r\n\r\n' + error.data);
-                     }
-                     );
-            }
-
-            $scope.show = function (show) {
-                $scope.show = show;
-            }
-        }]);
-
-        app.controller('sheetController', ['$scope', '$rootScope', 'Asset', 'AssetSheet', function ($scope, $rootScope, Asset, AssetSheet) {
-
-            $scope.init = function () {
-                $scope.query();
-            }
-
-            $scope.query = function () {
-                var columnDefs = [
-                    { headerName: "名称", field: "name", width: 100 },
-                    { headerName: "计划交割时间", field: "planningDeliveryTime", width: 100 },
-                    { headerName: "计划交割地点", field: "planningDeliveryAddress", width: 100 },
-                    { headerName: "付款方式", field: "make", width: 100 },
-                    { headerName: "成交规则", field: "model", width: 100 },
-                    { headerName: "要求从业资格证书", field: "price", width: 100 },
-                    { headerName: "总价格", field: "price", width: 100 },
-                    { headerName: "", template: "<a href=''>修改</a>", width: 40 }
-                ];
-
-                $scope.gridOptions = {
-                    columnDefs: columnDefs,
-                    rowData: null,
-                    dontUseScrolls: true,
-                    enableColResize: true
-                };
-
-                AssetSheet.query(
-                    {},
-                    function (data) {   // TODO error handling of query()
-                        $scope.hasAssetSheet = data.length > 0;
-                        if ($scope.hasAssetSheet) {
-                            $scope.gridOptions.rowData = data;
-                            $scope.gridOptions.api.onNewRows();
-                        }
-                    });
-            }
-        }]);
-
-        app.controller('sheetDetailController', ['$scope', '$rootScope', 'Asset', 'AssetSheet', function ($scope, $rootScope, Asset, AssetSheet) {
-            $scope.save = function () {
-                var assetSheet = new AssetSheet({
-                    name: $scope.name,
-                    planningDeliveryTime: $scope.planningDeliveryTime,
-                    planningDeliveryAddress: $scope.planningDeliveryAddress,
-                    createdById: $rootScope.user._id
-                });
-
-                assetSheet.$save(
-                      function () {
-                          $window.location.href = '#sheet.html'
-                      },
-                      function (response) { // error case
-                          alert(response.data.errors);
-                      });
-            }
-        }]);
-
-    </script>
+    <script src="javascripts/index.js"></script>
 </body>
 </html>
