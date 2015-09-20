@@ -17,6 +17,8 @@
     <script src="libs/angular-grid/dist/angular-grid.js"></script>
     <link rel="stylesheet" type="text/css" href="libs/angular-grid/dist/angular-grid.css">
     <link rel="stylesheet" type="text/css" href="libs/angular-grid/dist/theme-fresh.css">
+    <script src="javascripts/dicts.js"></script>
+    <script src="javascripts/index.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-default">
@@ -41,19 +43,6 @@
                     <button type="submit" class="btn btn-default">查找</button>
                 </form>-->
                 <ul class="nav navbar-nav navbar-right" ng-controller="UserController" ng-init="init()">
-                    <!--
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的工作室<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li role="presentation"><a href="my.html#sheets">我的发布</a></li>
-                            <li role="presentation"><a href="my.html#wishlist">心愿单</a></li>
-                            <li role="presentation"><a href="my.html#order">未处理订单</a></li>
-                            <li role="presentation"><a href="my.html#orderHistory">已完成订单</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li role="presentation"><a href="my.html#profile">个人信息</a></li>
-                        </ul>
-                    </li>
-                    -->
                     <li><a href="my.html#sheets">我的工作室</a></li>
                     <li><a>{{user.alias}}</a></li>
                     <li class="dropdown">
@@ -119,6 +108,5 @@
         </div><!-- /.container-fluid -->
     </nav>
     <div ng-view></div>
-    <script src="javascripts/index.js"></script>
 </body>
 </html>

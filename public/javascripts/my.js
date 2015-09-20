@@ -64,11 +64,11 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
     $scope.query = function () {
         var columnDefs = [
             { headerName: "名称", field: "name", width: 100 },
-            { headerName: "计划交割时间", field: "planningDeliveryTime", width: 100 },
+            { headerName: "计划交割时间", field: "planningDeliveryTime", width: 100, template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
             { headerName: "计划交割地点", field: "planningDeliveryAddress", width: 100 },
             { headerName: "付款方式", field: "make", width: 100 },
             { headerName: "成交规则", field: "model", width: 100 },
-            { headerName: "要求从业资格证书", field: "price", width: 100 },
+            { headerName: "要求从业资格证书", field: "price" },
             { headerName: "总价格", field: "price", width: 100 },
             { headerName: "", template: "<a href='#/sheet/{{data._id}}'>修改</a>", width: 40 }
         ];
@@ -96,10 +96,28 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
 app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeParams', 'Asset', 'AssetSheet', function ($scope, $rootScope, $location, $routeParams, Asset, AssetSheet) {
     $scope.sheet = { assets: [{}] };
     $scope.id = $routeParams.id;
+    $scope.payMethods = _dicts.payMethod;
+    $scope.assetCategory = _dicts.assetCategory
+
+    function cellValueChanged(cell) {
+        var row = $scope.gridOptions.rowData[cell.rowIndex];
+        row.subTotalprice = row.number * row.unitPrice;
+
+        $scope.gridOptions.api.softRefreshView();
+
+        var result = 0;
+        $scope.gridOptions.rowData.forEach(function (item) {
+            if (item) {
+                result += item['subTotalprice'] || 0;
+            }
+        });
+        document.getElementById('calculatedTotalPrice').innerText = result;
+        return $scope.sheet.calculatedTotalPrice = result;
+    }
 
     $scope.init = function () {
         var columnDefs = [
-            { headerName: "类别", field: "category", width: 100, editable: true },
+            { headerName: "类别", field: "category", width: 100, template: '<select ng-options="key as value for (key, value) in assetCategory" ng-model="data.category"></select>' },
             { headerName: "品牌", field: "brand", width: 100, editable: true },
             { headerName: "型号", field: "serial", width: 100, editable: true },
             { headerName: "CPU", field: "cpu", width: 80, editable: true },
@@ -107,9 +125,9 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
             { headerName: "硬盘", field: "harddisk", width: 80, editable: true },
             { headerName: "其他配件", field: "other", width: 100, editable: true },
             { headerName: "状态", field: "working", width: 100, editable: true },
-            { headerName: "数量", field: "number", width: 100, editable: true },
-            { headerName: "单价", field: "unitPrice", width: 100, editable: true },
-            { headerName: "小计", field: "subTotalprice", width: 100 }
+            { headerName: "数量", field: "number", width: 100, editable: true, cellValueChanged: cellValueChanged },
+            { headerName: "单价", field: "unitPrice", width: 100, editable: true, cellValueChanged: cellValueChanged },
+            { headerName: "小计", field: "subTotalprice", width: 100, volatile: true }
         ];
 
         $scope.gridOptions = {
@@ -117,12 +135,16 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
             rowData: $scope.id ? null : $scope.sheet.assets,
             dontUseScrolls: true,
             enableColResize: true,
+            angularCompileRows: true,
             cellFocused: function (params) {
                 //console.log('Callback cellFocused: ' + params.rowIndex + " - " + params.colIndex);
                 if (params.rowIndex == $scope.gridOptions.rowData.length - 1) {
                     $scope.gridOptions.rowData.push({});
                     $scope.gridOptions.api.onNewRows();
                 }
+            },
+            ready: function (event) {
+                event.api.sizeColumnsToFit();
             }
         };
 
@@ -131,6 +153,11 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
                 { id: $scope.id },
                 function (data) {
                     $scope.sheet = data;
+                    for (var i = 0; i < data.assets.length; i++) {
+                        if (!data.assets[i]) {
+                            data.assets[i] = {};
+                        }
+                    }
                     $scope.gridOptions.rowData = data.assets;
                     $scope.gridOptions.api.onNewRows();
                 },

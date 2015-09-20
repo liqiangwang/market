@@ -1,5 +1,5 @@
 ﻿<div ng-init="init()">
-    <form name="sheetDetailForm" class="form-horizontal" role="form" onsubmit="return false;">
+    <form name="sheetForm" class="form-horizontal" role="form" onsubmit="return false;">
         <div class="form-group" style="vertical-align:middle;">
             <label for="price" class="col-sm-2 control-label">名称</label>
             <div class="col-sm-10">
@@ -8,9 +8,18 @@
         </div>
         <div class="form-group" style="vertical-align:middle;">
             <label for="planningDeliveryTime" class="col-sm-2 control-label">计划交割时间</label>
-            <div class="col-sm-10">
-                <input name="planningDeliveryTime" ng-model="sheet.planningDeliveryTime" class="form-control" id="planningDeliveryTime" type="text" size="60" maxlength="100" placeholder="计划交割时间" required>
+            <div class="col-sm-4">
+                <input type="date" name="planningDeliveryTime" ng-model="sheet.planningDeliveryTime" class="form-control" id="planningDeliveryTime" placeholder="计划交割时间" required>
             </div>
+            <div role="alert">
+                <span class="error" ng-show="sheetForm.planningDeliveryTime.$error.required">
+                    必填
+                </span>
+                <span class="error" ng-show="sheetForm.planningDeliveryTime.$error.date">
+                    日期格式不对
+                </span>
+            </div>
+
         </div>
         <div class="form-group" style="vertical-align:middle;">
             <label for="planningDeliveryAddress" class="col-sm-2 control-label">计划交割地址</label>
@@ -19,12 +28,16 @@
             </div>
         </div>
         <div class="form-group" style="vertical-align:middle;">
-            <label for="payMethodId" class="col-sm-2 control-label">付款方式</label>
+            <label class="col-sm-2 control-label">付款方式</label>
             <div class="col-sm-10">
+                <label ng-repeat="(key, value) in payMethods">
+                    <input type="radio" name="payMethod" ng-model="sheet.payMethod" value="{{key}}">
+                    {{value}}
+                </label>
             </div>
         </div>
         <div class="form-group" style="vertical-align:middle;">
-            <label for="dealCriteriaId" class="col-sm-2 control-label">成交规则</label>
+            <label for="dealCriteria" class="col-sm-2 control-label">成交规则</label>
             <div class="col-sm-10">
             </div>
         </div>
@@ -36,13 +49,14 @@
         <div class="form-group" style="vertical-align:middle;">
             <label for="calculatedTotalPrice" class="col-sm-2 control-label">总价格(基于明细汇总)</label>
             <div class="col-sm-10">
+                <label id="calculatedTotalPrice"></label> 
             </div>
         </div>
         <div ag-grid="gridOptions" class="ag-fresh" style="height: 100%;"></div>
 
         <div class="form-group pull-right">
-            <button class="btn btn-primary" ng-disabled="sheetDetailForm.$invalid" ng-click="save(0)">保存为草稿</button>
-            <button class="btn btn-primary" ng-disabled="sheetDetailForm.$invalid" ng-click="save(1)">保存并提交</button>
+            <button class="btn btn-primary" ng-disabled="sheetForm.$invalid" ng-click="save(0)">保存为草稿</button>
+            <button class="btn btn-primary" ng-disabled="sheetForm.$invalid" ng-click="save(1)">保存并提交</button>
         </div>
     </form>
 

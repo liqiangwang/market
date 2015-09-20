@@ -107,7 +107,7 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
     $scope.query = function () {
         var columnDefs = [
             { headerName: "名称", field: "name", width: 100 },
-            { headerName: "计划交割时间", field: "planningDeliveryTime", width: 100 },
+            { headerName: "计划交割时间", field: "planningDeliveryTime", width: 100, template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
             { headerName: "计划交割地点", field: "planningDeliveryAddress", width: 100 },
             { headerName: "付款方式", field: "make", width: 100 },
             { headerName: "成交规则", field: "model", width: 100 },
@@ -144,7 +144,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$routeParams', 'Asse
 
     $scope.init = function () {
         var columnDefs = [
-            { headerName: "类别", field: "category", width: 100 },
+            { headerName: "类别", field: "categoryText", width: 100 },
             { headerName: "品牌", field: "brand", width: 100 },
             { headerName: "型号", field: "serial", width: 100},
             { headerName: "CPU", field: "cpu", width: 80 },
@@ -168,6 +168,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$routeParams', 'Asse
             AssetSheet.get(
                 { id: $scope.id },
                 function (data) {
+                    _dicts.translate(data.assets, 'category', 'assetCategory');
                     $scope.sheet = data;
                     $scope.gridOptions.rowData = data.assets;
                     $scope.gridOptions.api.onNewRows();

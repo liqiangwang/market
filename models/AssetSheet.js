@@ -6,8 +6,8 @@ var AssetSheetSchema = new mongoose.Schema({
     name: { type: String, maxlength: 200 },
     planningDeliveryTime: Date,
     planningDeliveryAddress: String,
-    payMethodId: Number,  // -- dict
-    dealCriteriaId: Number, // 1- 价高先得
+    payMethod: Number,  // -- dict
+    dealCriteria: Number, // 1- 价高先得
     requireCertificate: Boolean,
     calculatedTotalPrice: Number,
     assets: Array,
