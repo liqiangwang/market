@@ -106,23 +106,27 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
 
     $scope.query = function () {
         var columnDefs = [
-            { headerName: "名称", field: "name", width: 100 },
-            { headerName: "计划交割时间", field: "planningDeliveryTime", width: 100, template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
-            { headerName: "计划交割地点", field: "planningDeliveryAddress", width: 100 },
-            { headerName: "付款方式", field: "make", width: 100 },
-            { headerName: "成交规则", field: "model", width: 100 },
-            { headerName: "要求从业资格证书", field: "price", width: 100 },
-            { headerName: "总价格", field: "price", width: 100 },
-            { headerName: "", template: "<a href='#/{{data._id}}'>详细信息</a>", width: 80 },
-            { headerName: "", template: "<a href=''>竞价</a>", width: 80 }
+            { headerName: "名称", field: "name" },
+            { headerName: "计划交割时间", field: "planningDeliveryTime", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
+            { headerName: "计划交割地点", field: "planningDeliveryAddress" },
+            { headerName: "付款方式", field: "make" },
+            { headerName: "成交规则", field: "model" },
+            { headerName: "要求从业资格证书", field: "price" },
+            { headerName: "总价格", field: "price" },
+            { headerName: "", template: "<a href='#/{{data._id}}'>详细信息</a>" },
+            { headerName: "", template: "<a href=''>竞价</a>" }
         ];
 
         $scope.gridOptions = {
             angularCompileRows: true,
             columnDefs: columnDefs,
             rowData: null,
-            dontUseScrolls: true,
-            enableColResize: true
+            dontUseScrolls: false,
+            //suppressHorizontalScroll: true,
+            enableColResize: true,
+            ready: function (event) {
+                event.api.sizeColumnsToFit();
+            }
             //rowClicked: function (params) {
             //}
         };
@@ -144,24 +148,28 @@ app.controller('sheetController', ['$scope', '$rootScope', '$routeParams', 'Asse
 
     $scope.init = function () {
         var columnDefs = [
-            { headerName: "类别", field: "categoryText", width: 100 },
-            { headerName: "品牌", field: "brand", width: 100 },
-            { headerName: "型号", field: "serial", width: 100},
-            { headerName: "CPU", field: "cpu", width: 80 },
-            { headerName: "内存", field: "memory", width: 80},
-            { headerName: "硬盘", field: "harddisk", width: 80 },
-            { headerName: "其他配件", field: "other", width: 100},
-            { headerName: "状态", field: "working", width: 100 },
-            { headerName: "数量", field: "number", width: 100 },
-            { headerName: "单价", field: "unitPrice", width: 100},
-            { headerName: "小计", field: "subTotalprice", width: 100 }
+            { headerName: "类别", field: "categoryText" },
+            { headerName: "品牌", field: "brand"},
+            { headerName: "型号", field: "serial" },
+            { headerName: "CPU", field: "cpu" },
+            { headerName: "内存", field: "memory" },
+            { headerName: "硬盘", field: "harddisk" },
+            { headerName: "其他配件", field: "other" },
+            { headerName: "状态", field: "working"},
+            { headerName: "数量", field: "number"},
+            { headerName: "单价", field: "unitPrice" },
+            { headerName: "小计", field: "subTotalprice"},
+            { headerName: "报价", field: "offer", template:"<input type='text'>" }
         ];
 
         $scope.gridOptions = {
             columnDefs: columnDefs,
             rowData: null,
-            dontUseScrolls: true,
-            enableColResize: true
+            dontUseScrolls: false,
+            enableColResize: true,
+            ready: function (event) {
+                event.api.sizeColumnsToFit();
+            }
         };
 
         if ($scope.id) {

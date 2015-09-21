@@ -63,13 +63,13 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
 
     $scope.query = function () {
         var columnDefs = [
-            { headerName: "名称", field: "name", width: 100 },
-            { headerName: "计划交割时间", field: "planningDeliveryTime", width: 100, template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
-            { headerName: "计划交割地点", field: "planningDeliveryAddress", width: 100 },
-            { headerName: "付款方式", field: "make", width: 100 },
-            { headerName: "成交规则", field: "model", width: 100 },
+            { headerName: "名称", field: "name" },
+            { headerName: "计划交割时间", field: "planningDeliveryTime", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
+            { headerName: "计划交割地点", field: "planningDeliveryAddress"},
+            { headerName: "付款方式", field: "make" },
+            { headerName: "成交规则", field: "model" },
             { headerName: "要求从业资格证书", field: "price" },
-            { headerName: "总价格", field: "price", width: 100 },
+            { headerName: "总价格", field: "price"},
             { headerName: "", template: "<a href='#/sheet/{{data._id}}'>修改</a>", width: 40 }
         ];
 
@@ -77,8 +77,11 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
             angularCompileRows: true,
             columnDefs: columnDefs,
             rowData: null,
-            dontUseScrolls: true,
-            enableColResize: true
+            dontUseScrolls: false,
+            enableColResize: true,
+            ready: function (event) {
+                event.api.sizeColumnsToFit();
+            }
         };
 
         AssetSheet.query(
@@ -133,7 +136,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
         $scope.gridOptions = {
             columnDefs: columnDefs,
             rowData: $scope.id ? null : $scope.sheet.assets,
-            dontUseScrolls: true,
+            dontUseScrolls: false,
             enableColResize: true,
             angularCompileRows: true,
             cellFocused: function (params) {
