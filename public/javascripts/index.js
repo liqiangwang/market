@@ -109,10 +109,11 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
             { headerName: "名称", field: "name" },
             { headerName: "计划交割时间", field: "planningDeliveryTime", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
             { headerName: "计划交割地点", field: "planningDeliveryAddress" },
-            { headerName: "付款方式", field: "make" },
-            { headerName: "成交规则", field: "model" },
-            { headerName: "要求从业资格证书", field: "price" },
-            { headerName: "总价格", field: "price" },
+            { headerName: "付款方式", field: "payMethodText" },
+            { headerName: "成交规则", field: "dealRuleText" },
+            { headerName: "要求从业资格证书", field: "requireCertificate", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: {"text-align": "center"} },
+            { headerName: "总价格", field: "totalPrice", cellStyle: {"text-align": "right"} },
+            { headerName: "状态", field: "statusText" },
             { headerName: "", template: "<a href='#/{{data._id}}'>详细信息</a>" },
             { headerName: "", template: "<a href=''>竞价</a>" }
         ];
@@ -136,6 +137,7 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
             function (data) {   // TODO error handling of query()
                 $scope.hasAssetSheet = data.length > 0;
                 if ($scope.hasAssetSheet) {
+                    _dicts.translate(data, ['payMethod', 'dealRule', 'status'], ['payMethod', 'dealRule', 'sheetStatus']);
                     $scope.gridOptions.rowData = data;
                     $scope.gridOptions.api.onNewRows();
                 }

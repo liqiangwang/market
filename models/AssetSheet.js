@@ -6,18 +6,15 @@ var AssetSheetSchema = new mongoose.Schema({
     name: { type: String, maxlength: 200 },
     planningDeliveryTime: Date,
     planningDeliveryAddress: String,
-    payMethod: Number,  // -- dict
-    dealCriteria: Number, // 1- 价高先得
+    payMethod: Number,  // dict
+    dealRule: Number, // dict
     requireCertificate: Boolean,
-    calculatedTotalPrice: Number,
+    totalPrice: Number,
     assets: Array,
     updatedAt: { type: Date, default: Date.now },
     followUps: Number,
-    status: Number,  // 0 local, 1 published, 2 sold, -1 deleted.
-    reviewed: Number,   // 0 pending, 1 approved, 2-rejected
+    status: Number,  // _dict.sheetStatus
     createdById: mongoose.Schema.Types.ObjectId   // User
 });
-
-
 
 module.exports = mongoose.model('AssetSheet', AssetSheetSchema);

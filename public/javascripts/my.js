@@ -65,12 +65,13 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
         var columnDefs = [
             { headerName: "名称", field: "name" },
             { headerName: "计划交割时间", field: "planningDeliveryTime", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
-            { headerName: "计划交割地点", field: "planningDeliveryAddress"},
-            { headerName: "付款方式", field: "make" },
-            { headerName: "成交规则", field: "model" },
-            { headerName: "要求从业资格证书", field: "price" },
-            { headerName: "总价格", field: "price"},
-            { headerName: "", template: "<a href='#/sheet/{{data._id}}'>修改</a>", width: 40 }
+            { headerName: "计划交割地点", field: "planningDeliveryAddress" },
+            { headerName: "付款方式", field: "payMethodText" },
+            { headerName: "成交规则", field: "dealRuleText" },
+            { headerName: "要求从业资格证书", field: "requireCertificate", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: {"text-align": "center"} },
+            { headerName: "总价格", field: "totalPrice", cellStyle: {"text-align": "right"} },
+            { headerName: "状态", field: "statusText" },
+            { headerName: "", template: "<a href='#/sheet/{{data._id}}'>修改</a>", width:50, cellStyle: {"text-align": "center"}, suppressSizeToFit: true }
         ];
 
         $scope.gridOptions = {
@@ -87,11 +88,16 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
         AssetSheet.query(
             { createdbyid: $rootScope.user._id },
             function (data) {   // TODO error handling of query()
+
                 $scope.hasAssetSheet = data.length > 0;
                 if ($scope.hasAssetSheet) {
+                    _dicts.translate(data, ['payMethod', 'dealRule', 'status'], ['payMethod', 'dealRule', 'sheetStatus']);
                     $scope.gridOptions.rowData = data;
                     $scope.gridOptions.api.onNewRows();
                 }
+            },
+            function (response) { // error case
+                alert(response.data.errors);
             });
     }
 }]);
@@ -100,6 +106,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
     $scope.sheet = { assets: [{}] };
     $scope.id = $routeParams.id;
     $scope.payMethods = _dicts.payMethod;
+    $scope.dealRules = _dicts.dealRule;
     $scope.assetCategory = _dicts.assetCategory
 
     function cellValueChanged(cell) {
@@ -108,14 +115,21 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
 
         $scope.gridOptions.api.softRefreshView();
 
+        total();
+    }
+
+    function total() {
         var result = 0;
         $scope.gridOptions.rowData.forEach(function (item) {
             if (item) {
                 result += item['subTotalprice'] || 0;
             }
         });
-        document.getElementById('calculatedTotalPrice').innerText = result;
-        return $scope.sheet.calculatedTotalPrice = result;
+        $scope.sheet.totalPrice = result;
+
+        if (!$scope.$$phase) {
+            $scope.$apply();    // http://www.jeffryhouser.com/index.cfm/2014/6/2/How-do-I-run-code-when-a-variable-changes-with-AngularJS
+        }
     }
 
     $scope.init = function () {
@@ -156,6 +170,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
                 { id: $scope.id },
                 function (data) {
                     $scope.sheet = data;
+                    $scope.sheet.planningDeliveryTime && ($scope.sheet.planningDeliveryTime = new Date($scope.sheet.planningDeliveryTime));
                     for (var i = 0; i < data.assets.length; i++) {
                         if (!data.assets[i]) {
                             data.assets[i] = {};
@@ -163,6 +178,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
                     }
                     $scope.gridOptions.rowData = data.assets;
                     $scope.gridOptions.api.onNewRows();
+                    total();
                 },
                 function (response) { // error case
                     alert(response.data.errors);
@@ -170,7 +186,8 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
         }
     }
 
-    $scope.save = function () {
+    $scope.save = function (status) {
+        $scope.sheet.status = status;
         if ($scope.id) {
             AssetSheet.update(
                 { id: $scope.id },
