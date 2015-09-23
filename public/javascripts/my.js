@@ -64,14 +64,14 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
     $scope.query = function () {
         var columnDefs = [
             { headerName: "名称", field: "name" },
-            { headerName: "计划交割时间", field: "planningDeliveryTime", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
+            { headerName: "计划交割时间", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
             { headerName: "计划交割地点", field: "planningDeliveryAddress" },
             { headerName: "付款方式", field: "payMethodText" },
             { headerName: "成交规则", field: "dealRuleText" },
             { headerName: "要求从业资格证书", field: "requireCertificate", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: {"text-align": "center"} },
-            { headerName: "总价格", field: "totalPrice", cellStyle: {"text-align": "right"} },
+            { headerName: "总价格", field: "totalPrice", template:"{{data.totalPrice|currency:'￥'}}", cellStyle: {"text-align": "right"} },
             { headerName: "状态", field: "statusText" },
-            { headerName: "", template: "<a href='#/sheet/{{data._id}}'>修改</a>", width:50, cellStyle: {"text-align": "center"}, suppressSizeToFit: true }
+            { headerName: "", template: "<a href='#/sheet/{{data._id}}' ng-show='!data.status || (data.status == 1) || (data.status == 4)'>修改</a>", cellStyle: { "text-align": "center" }, width: 50, suppressSizeToFit: true }
         ];
 
         $scope.gridOptions = {
@@ -80,13 +80,14 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
             rowData: null,
             dontUseScrolls: false,
             enableColResize: true,
+            //enableFilter: true,
             ready: function (event) {
                 event.api.sizeColumnsToFit();
             }
         };
 
         AssetSheet.query(
-            { createdbyid: $rootScope.user._id },
+            { createdById: $rootScope.user._id },
             function (data) {   // TODO error handling of query()
 
                 $scope.hasAssetSheet = data.length > 0;
@@ -111,7 +112,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
 
     function cellValueChanged(cell) {
         var row = $scope.gridOptions.rowData[cell.rowIndex];
-        row.subTotalprice = row.number * row.unitPrice;
+        row.subTotalprice = row.number * row.unitPrice || 0;
 
         $scope.gridOptions.api.softRefreshView();
 
@@ -188,6 +189,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
 
     $scope.save = function (status) {
         $scope.sheet.status = status;
+        $scope.sheet.createdById = $rootScope.user._id;
         if ($scope.id) {
             AssetSheet.update(
                 { id: $scope.id },
