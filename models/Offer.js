@@ -4,9 +4,9 @@
 // All assets of the system.
 var OfferSchema = new mongoose.Schema({
     sheetId: ObjectId,
-    price: Number,
+    assets: Array,  // [{assetId:, price:}]
     updatedAt: { type: Date, default: Date.now },
-    createdById: [mongoose.Schema.Types.ObjectId]   // User
+    createdById: mongoose.Schema.Types.ObjectId   // User
 });
 
 // TODO: define when to create the index

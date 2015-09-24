@@ -50,7 +50,7 @@ app.factory('AssetSheet', ['$resource', function ($resource) {
 
 
 // Controllers
-app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope', '$route', function ($scope, Users, $cookieStore, $rootScope, $route) {
+app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope', '$route', '$window', function ($scope, Users, $cookieStore, $rootScope, $route, $window) {
 
     $scope.init = function () {
         var user = $cookieStore.get("user");
@@ -68,6 +68,7 @@ app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope
             $scope.user = user;
             $rootScope.user = user;
             $cookieStore.put("user", user);
+            $window.location.reload();
         },
         function (error) {
             alert(error.statusText + '(' + error.status + ')\r\n\r\n' + error.data);
@@ -84,8 +85,9 @@ app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope
                      $scope.loginFailed = false;
                      $cookieStore.put("user", users[0]);
                      $scope.user = users[0];
-                     $rootScope.user = $scope.user;
-                     $route.reload();
+                     //$rootScope.user = $scope.user;
+                     //$route.reload(); //load content in ng-view page
+                     $window.location.reload();
                  }
              }
              , function (error) {
