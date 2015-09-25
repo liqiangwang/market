@@ -2,48 +2,45 @@ var express = require('express');
 var router = express.Router();
 
 var mongoose = require('mongoose');
-var AssetSheet = require('../models/AssetSheet.js');
+var Offer = require('../models/Offer.js');
 
-/*
-GET assetSheet list ordered by updatedAt descending.
-If createdById passed, return only the ones created by the specified user.
-*/
+// TODO: read cookie and filter by createdBy.
+/* GET /offers listing. */
 router.get('/', function (req, res, next) {
-    console.log(req.query);
-    AssetSheet.find(req.query, null, { sort: { updatedAt: -1 } }, function (err, assets) {
+    Offer.find(req.query, null, { sort: { updatedAt: -1 } }, function (err, offers) {
         if (err) return next(err);
-        res.json(assets);
+        res.json(offers);
     });
 });
 
-/* POST /assets */
+/* POST /offers */
 router.post('/', function (req, res, next) {
-    AssetSheet.create(req.body, function (err, post) {
+    Offer.create(req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
 });
 
-/* GET /assets/id */
+/* GET /offers/id */
 router.get('/:id', function (req, res, next) {
-    AssetSheet.findById(req.params.id, function (err, post) {
+    Offer.findById(req.params.id, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
 });
 
 
-/* PUT /assets/:id */
+/* PUT /offers/:id */
 router.put('/:id', function (req, res, next) {
-    AssetSheet.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
+    Offer.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });
 });
 
-/* DELETE /assets/:id */
+/* DELETE /offers/:id */
 router.delete('/:id', function (req, res, next) {
-    AssetSheet.findByIdAndRemove(req.params.id, req.body, function (err, post) {
+    Offer.findByIdAndRemove(req.params.id, req.body, function (err, post) {
         if (err) return next(err);
         res.json(post);
     });

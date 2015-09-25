@@ -43,12 +43,6 @@ app.config(function ($routeProvider) {
 });
 
 // services
-app.factory('Asset', ['$resource', function ($resource) {
-    return $resource('/api/assets/:id', null, {
-        'update': { method: 'PUT' }
-    });
-}]);
-
 app.factory('AssetSheet', ['$resource', function ($resource) {
     return $resource('/api/assetSheets/:id', null, {
         'update': { method: 'PUT' }
@@ -56,7 +50,7 @@ app.factory('AssetSheet', ['$resource', function ($resource) {
 }]);
 
 // controllers
-app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet', function ($scope, $rootScope, Asset, AssetSheet) {
+app.controller('sheetsController', ['$scope', '$rootScope', 'AssetSheet', function ($scope, $rootScope, AssetSheet) {
     $scope.init = function () {
         $scope.query();
     }
@@ -103,7 +97,7 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'Asset', 'AssetSheet
     }
 }]);
 
-app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeParams', 'Asset', 'AssetSheet', function ($scope, $rootScope, $location, $routeParams, Asset, AssetSheet) {
+app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeParams', 'AssetSheet', function ($scope, $rootScope, $location, $routeParams, AssetSheet) {
     $scope.sheet = { assets: [{}] };
     $scope.id = $routeParams.id;
     $scope.payMethods = _dicts.payMethod;
@@ -172,11 +166,19 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
                 function (data) {
                     $scope.sheet = data;
                     $scope.sheet.planningDeliveryTime && ($scope.sheet.planningDeliveryTime = new Date($scope.sheet.planningDeliveryTime));
-                    for (var i = 0; i < data.assets.length; i++) {
-                        if (!data.assets[i]) {
-                            data.assets[i] = {};
+
+                    for (var i = data.assets.length - 1; i >= 0; i--) {
+                        if (data.assets[i] == null) {
+                            data.assets.splice(i, 1);
                         }
                     }
+
+                    data.assets.push({});
+                    //for (var i = 0; i < data.assets.length; i++) {
+                    //    if (!data.assets[i]) {
+                    //        data.assets[i] = {};
+                    //    }
+                    //}
                     $scope.gridOptions.rowData = data.assets;
                     $scope.gridOptions.api.onNewRows();
                     total();

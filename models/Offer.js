@@ -3,7 +3,7 @@
 // Support types: http://mongoosejs.com/docs/schematypes.html
 // All assets of the system.
 var OfferSchema = new mongoose.Schema({
-    sheetId: ObjectId,
+    sheetId: mongoose.Schema.Types.ObjectId,
     assets: Array,  // [{assetId:, price:}]
     updatedAt: { type: Date, default: Date.now },
     createdById: mongoose.Schema.Types.ObjectId   // User

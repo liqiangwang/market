@@ -9,8 +9,8 @@ var bodyParser = require('body-parser');
 var users = require('./routes/users');
 var todos = require('./routes/todos');
 var files = require('./routes/files');
-var assets = require('./routes/assets');
 var assetSheets = require('./routes/assetSheets');
+var offers = require('./routes/offers');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://127.0.0.1/market', function (err) {
@@ -51,7 +51,7 @@ app.use(function (req, res, next) {
 app.use('/api/users', users);
 app.use('/api/todos', todos);
 app.use('/api/files', files);
-app.use('/api/assets', assets);
+app.use('/api/offer', offers);
 app.use('/api/assetSheets', assetSheets);
 
 
