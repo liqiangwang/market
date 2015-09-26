@@ -4,9 +4,9 @@
 // All assets of the system.
 var OfferSchema = new mongoose.Schema({
     sheetId: mongoose.Schema.Types.ObjectId,
+    price: Number,  // redudant value to speed up query.
     assets: Array,  // [{assetId:, price:}]
     updatedAt: { type: Date, default: Date.now },
-    status: { type: Number, default: 0 },  // 0 fail, 1 succeed
     createdById: mongoose.Schema.Types.ObjectId   // User
 });
 

@@ -17,13 +17,7 @@
                 <tr ng-repeat="offer in offers">
                     <!--<td>{{offer._id}}</td>-->
                     <td><a href="#/offers/{{offer.sheetId}}" ng-click="GetAssetOffers(offer.sheetId)">{{offer.sheetId}}</a></td>
-                    <td>
-                        <table>
-                            <tr ng-repeat="asset in offer.assets">
-                                <td>{{asset.price}}</td>
-                            </tr>
-                        </table>
-                    </td>
+                    <td>{{offer.price}}</td>
                     <td>{{offer.createdById}}</td>
                     <td>{{offer.updatedAt}}</td>
                     <td>{{offer.status}}</td>

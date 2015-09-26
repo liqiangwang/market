@@ -247,7 +247,6 @@ app.controller('offersController', ['$scope', '$rootScope', '$routeParams', '$lo
     function getAssetSheets(sheedIds) {
         AssetSheet.query(
             {
-                createdById: $rootScope.user._id,
                 _id: { $in: sheedIds }
                 // Add suport for nested params https://github.com/angular/angular.js/pull/1640
                 // http://stackoverflow.com/questions/18588604/nested-parameters-in-angular-query
