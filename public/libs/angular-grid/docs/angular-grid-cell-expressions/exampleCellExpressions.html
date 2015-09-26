@@ -1,0 +1,29 @@
+<html>
+<head>
+    <script src="/libs/angularjs/1.4.3/angular.min.js"></script>
+    <link rel="stylesheet" href="/libs/bootstrap-3.3.5/css/bootstrap.min.css">
+
+    <!-- you don't need ignore=notused in your code, this is just here to trick the cache -->
+    <script src="../dist/angular-grid.js?ignore=notused8"></script>
+    <link rel="stylesheet" type="text/css" href="../dist/angular-grid.css?ignore=notused8">
+    <link rel="stylesheet" type="text/css" href="../dist/theme-fresh.css?ignore=notused8">
+    <script src="exampleCellExpressions.js"></script>
+</head>
+<body>
+    <div ng-app="example" ng-controller="exampleCtrl">
+        <div style="float: left; width: 50%;">
+            <div style="height: 10%; box-sizing: border-box; padding: 8px;">
+                Enter a number to analyse:
+                <input type="text" ng-model="gridOptionsLeft.context.theNumber" ng-change="onNewNumber()" />
+            </div>
+            <div style="height: 90%; padding: 10px; box-sizing: border-box;" ag-grid="gridOptionsLeft" class="ag-fresh"></div>
+        </div>
+        <div style="float: left; width: 50%;">
+            <div style="height: 10%; box-sizing: border-box; padding: 8px;">
+                Edit data on RHS, table updates on LHS
+            </div>
+            <div style="height: 50%; padding: 10px; box-sizing: border-box;" ag-grid="gridOptionsRight" class="ag-fresh"></div>
+        </div>
+    </div>
+</body>
+</html>

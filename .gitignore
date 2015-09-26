@@ -1,9 +1,9 @@
-node_modules/
-docs/
-public/libs
-public/angular-file-upload/
-tests/
-public/uploads/
+##node_modules/
+##docs/
+##public/libs
+##public/angular-file-upload/
+##tests/
+#3public/uploads/
 .vs/
 
 #################

@@ -1,0 +1,9 @@
+Fixed Width and Height
+Set the width and height of the table by applying CSS to the containing div. Eg: 
+
+style="width: 100px; height: 100px;"
+
+Percent Width and Height
+The width and / or height can also be set to a percentage. Eg: style="width: 100%; height: 100%;"
+
+<!DOCTYPE html> prevent the height percentage from working.
