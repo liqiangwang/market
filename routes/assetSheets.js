@@ -23,7 +23,7 @@ router.get('/', function (req, res, next) {
         condition = { createdById: createdById };
     }
     console.log(condition);
-    Asset.find(condition, null, { sort: { updatedAt: -1 } }, function (err, assets) {
+    AssetSheet.find(condition, null, { sort: { updatedAt: -1 } }, function (err, assets) {
         if (err) return next(err);
         res.json(assets);
     });
