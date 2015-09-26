@@ -50,7 +50,7 @@ app.factory('AssetSheet', ['$resource', function ($resource) {
 }]);
 
 app.factory('Offer', ['$resource', function ($resource) {
-    return $resource('/api/Offer/:id', null, {
+    return $resource('/api/Offers/:id', null, {
         'update': { method: 'PUT' }
     });
 }]);

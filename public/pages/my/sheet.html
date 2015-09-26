@@ -48,17 +48,24 @@
         <div class="form-group" style="vertical-align:middle;">
             <label for="requireCertificate" class="col-sm-2 control-label">要求从业资格证书</label>
             <div class="col-sm-10">
-                <input type="checkbox" ng-model="sheet.requireCertificate"/>
+                <input type="checkbox" id="requireCertificate" ng-model="sheet.requireCertificate" />
             </div>
         </div>
         <div class="form-group" style="vertical-align:middle;">
+            <label for="needDataCleanup" class="col-sm-2 control-label">需要数据销毁服务</label>
+            <div class="col-sm-10">
+                <input type="checkbox" id="needDataCleanup" ng-model="sheet.needDataCleanup" />
+                说明：数据销毁服务由平台提供，收费标准说明
+            </div>
+        </div>
+        <!--<div class="form-group" style="vertical-align:middle;">
             <label for="calculatedTotalPrice" class="col-sm-2 control-label">总价格(基于明细汇总)</label>
             <div class="col-sm-10">
                 {{sheet.totalPrice}}
             </div>
-        </div>
+        </div>-->
         <div ag-grid="gridOptions" class="ag-fresh" style="height: 50%;"></div>
-        <br/>
+        <br />
         <div class="form-group pull-right" style="padding-right:15px;">
             <button class="btn btn-primary" ng-disabled="sheetForm.$invalid" ng-click="save(1)">保存为草稿</button>
             <button class="btn btn-primary" ng-disabled="sheetForm.$invalid" ng-click="save(2)">保存并提交审核</button>

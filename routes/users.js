@@ -10,28 +10,37 @@ var helper = require('../utilities/helper.js');
 // http://jilles.me/express-routing-the-beginners-guide/
 // Query
 // Other option: /:alias/:password
-//router.get('/*', function (req, res) {
-//    var alias = req.query.alias;
-//    var password = helper.sha256(req.query.password);
-//    console.log(alias, password);
-//    User.find({ alias: alias, password: password }, function (err, users) {
+router.get('/*', function (req, res) {
+    if (!req.query || !req.query.alias) {
+        User.find(null, function (err, users) {
+            if (err) return next(err);
+            console.log(users);
+            res.json(users);
+        });
+    }
+    else {
+        var alias = req.query.alias;
+        var password = helper.sha256(req.query.password);
+        console.log(alias, password);
+        User.find({ alias: alias, password: password }, function (err, users) {
+            if (err) return next(err);
+            console.log(users);
+            res.json(users);
+        });
+    }
+});
+
+/* GET /users listing. */
+//router.get('/', function (req, res, next) {
+//    var condition = null;
+//    if (req.query.status) {
+//        condition = { status: req.query.status };
+//    }
+//    User.find(condition, function (err, users) {
 //        if (err) return next(err);
-//        console.log(users);
 //        res.json(users);
 //    });
 //});
-
-/* GET /users listing. */
-router.get('/', function (req, res, next) {
-    var condition = null;
-    if (req.query.status) {
-        condition = { status: req.query.status };
-    }
-    User.find(condition, function (err, users) {
-        if (err) return next(err);
-        res.json(users);
-    });
-});
 
 /* POST /users */
 router.post('/', function (req, res, next) {

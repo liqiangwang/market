@@ -46,7 +46,7 @@ app.factory('AssetSheet', ['$resource', function ($resource) {
 }]);
 
 app.factory('Offer', ['$resource', function ($resource) {
-    return $resource('/api/Offer/:id', null, {
+    return $resource('/api/offers/:id', null, {
         'update': { method: 'PUT' }
     });
 }]);
@@ -154,9 +154,9 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'AssetSheet', functi
         };
 
         var condition = { status: 3 };
-        if ($scope.isLogin) {
-            condition.createdById = { $ne: $rootScope.user._id }
-        }
+        //if ($scope.isLogin) {
+        //    condition.createdById = { $ne: $rootScope.user._id }
+        //}
         AssetSheet.query(
             condition,
             function (data) {
