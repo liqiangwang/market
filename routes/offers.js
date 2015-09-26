@@ -6,8 +6,24 @@ var Offer = require('../models/Offer.js');
 
 // TODO: read cookie and filter by createdBy.
 /* GET /offers listing. */
+//router.get('/', function (req, res, next) {
+//    Offer.find(req.query, null, { sort: { updatedAt: -1 } }, function (err, offers) {
+//        if (err) return next(err);
+//        res.json(offers);
+//    });
+//});
+
 router.get('/', function (req, res, next) {
-    Offer.find(req.query, null, { sort: { updatedAt: -1 } }, function (err, offers) {
+    var condition = null;
+    if (req.query.assetId) {
+        condition = { assetId: req.query.assetId };
+    }
+
+    if (req.query._id) {
+        condition = { _id: req.query._id };
+    }
+
+    Offer.find(condition, null, { sort: { price: -1 } }, function (err, offers) {
         if (err) return next(err);
         res.json(offers);
     });

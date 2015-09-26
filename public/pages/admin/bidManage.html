@@ -1,0 +1,33 @@
+﻿<fieldset>
+    <label>竞价列表</label>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <!--<td>ID</td>-->
+                    <td>竞价资产</td>
+                    <td>价钱</td>
+                    <td>发布人</td>
+                    <td>发布时间</td>
+                    <td>状态</td>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="bid in bids">
+                    <!--<td>{{bid._id}}</td>-->
+                    <td><a href="#/bids/{{bid.assetId}}" ng-click="GetAssetBids(bid.assetId)">{{bid.assetId}}</a></td>
+                    <td>{{bid.price}}</td>
+                    <td>{{bid.createdById}}</td>
+                    <td>{{bid.updatedAt}}</td>
+                    <td>{{bid.status}}</td>
+                    <td>
+                        <button ng-show="{{bid.status}}==0" ng-click="EnableBid(bid._id)" class="btn btn-primary">通过</button>
+                        <button ng-show="{{bid.status}}!=0" ng-click="DisableBid(bid._id)" class="btn btn-primary">拒绝</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>

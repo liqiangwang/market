@@ -1,0 +1,33 @@
+﻿<fieldset>
+    <label>竞价列表</label>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <!--<td>ID</td>-->
+                    <td>竞价资产</td>
+                    <td>价钱</td>
+                    <td>发布人</td>
+                    <td>发布时间</td>
+                    <td>状态</td>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="offer in offers">
+                    <!--<td>{{offer._id}}</td>-->
+                    <td><a href="#/offers/{{offer.sheetId}}" ng-click="GetAssetOffers(offer.sheetId)">{{offer.sheetId}}</a></td>
+                    <td>{{offer.price}}</td>
+                    <td>{{offer.createdById}}</td>
+                    <td>{{offer.updatedAt}}</td>
+                    <td>{{offer.status}}</td>
+                    <td>
+                        <button ng-show="{{offer.status}}==0" ng-click="EnableOffer(offer._id)" class="btn btn-primary">通过</button>
+                        <button ng-show="{{offer.status}}!=0" ng-click="DisableOffer(offer._id)" class="btn btn-primary">拒绝</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>

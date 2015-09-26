@@ -6,6 +6,7 @@ var OfferSchema = new mongoose.Schema({
     sheetId: mongoose.Schema.Types.ObjectId,
     assets: Array,  // [{assetId:, price:}]
     updatedAt: { type: Date, default: Date.now },
+    status: { type: Number, default: 0 },  // 0 fail, 1 succeed
     createdById: mongoose.Schema.Types.ObjectId   // User
 });
 

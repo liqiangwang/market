@@ -1,0 +1,61 @@
+﻿<fieldset>
+    <label>已完成订单</label>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>资产ID</td>
+                    <td>竞价ID</td>
+                    <td>发布时间</td>
+                    <td>状态</td>
+                    <td>操作</td>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ticket in closeTickets">
+                    <td><a href="#/assets/{{ticket.assetId}}">{{ticket.assetId}}</a></td>
+                    <td><a href="#/bidItem/{{ticket.bidId}}">{{ticket.bidId}}</a></td>
+                    <td>{{ticket.updatedAt}}</td>
+                    <td>{{ticket.status}}</td>
+                    <td>
+                        <button ng-show="{{ticket.status}}==2" ng-click="EnableTicket(ticket._id)" class="btn btn-primary">激活</button>
+                        <button ng-show="{{ticket.status}}!=2" ng-click="DisableTicket(ticket._id)" class="btn btn-primary">关闭</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>
+
+<fieldset>
+    <label>待交割订单</label>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <td>资产ID</td>
+                    <td>竞价ID</td>
+                    <td>发布时间</td>
+                    <td>状态</td>
+                    <td>操作</td>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="ticket in pendingTickets">
+                    <td><a href="#/assets/{{ticket.assetId}}">{{ticket.assetId}}</a></td>
+                    <td><a href="#/bidItem/{{ticket.bidId}}">{{ticket.bidId}}</a></td>
+                    <td>{{ticket.updatedAt}}</td>
+                    <td>{{ticket.status}}</td>
+                    <td>
+                        <button ng-show="{{ticket.status}}==2" ng-click="EnableTicket(ticket._id)" class="btn btn-primary">激活</button>
+                        <button ng-show="{{ticket.status}}!=2" ng-click="DisableTicket(ticket._id)" class="btn btn-primary">关闭</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>

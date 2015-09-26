@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html ng-app="app">
 <head>
-    <title>二手货交易市场</title>
+    <title>后台管理</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="libs/bootstrap-3.3.5/css/bootstrap.min.css">
     <link href="stylesheets/style.css" rel="stylesheet" />
@@ -15,292 +15,220 @@
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular-resource.min.js"></script>-->
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular-cookies.js"></script>
 </head>
-<body>
-    <nav class="navbar navbar-default">
+<body ng-controller="UserController" ng-init="init()">
+    <div ng-show="!isLogin">
+        请先登录，然后进入个人空间。<a href="index.html">登录</a>
+    </div>
+    <div ng-show="isLogin">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Brand</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="index.html">交易场</a></li>
+                        <li><a href="#">{{user.alias}}</a></li>
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+        <!-- http://getbootstrap.com/css/ Stacked-to-horizontal-->
         <div class="container-fluid">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="#">Brand</a>
-            </div>
+            <div class="row">
+                <div class="col-xs-2 col-md-2">
+                    <ul class="nav nav-stacks">
+                        <li role="presentation"><a href="#userManage">管理用户</a></li>
+                        <li role="presentation"><a href="#assetManage">管理发布资产</a></li>
+                        <li role="presentation"><a href="#offerManage">管理资产竞价</a></li>
+                        <li role="presentation"><a href="#ticketManage">管理订单</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-10 col-md-10">
+                    <div ng-view>
 
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <!--<ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-                    <li><a href="#">Link</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">One more separated link</a></li>
-                        </ul>
-                    </li>
-                </ul>-->
-                <form class="navbar-form navbar-left" role="search">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="商品名称">
                     </div>
-                    <button type="submit" class="btn btn-default">查找</button>
-                </form>
-                <ul class="nav navbar-nav navbar-right" ng-controller="UserController" ng-init="init()">
-                    <li><a href="assets.html">发布信息</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">我的工作室<span class="caret"><!--竖排--></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="my.html?m=1">心愿单</a></li>
-                            <li><a href="my.html?m=2">未处理订单</a></li>
-                            <li><a href="my.html?m=3">完成的订单</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="my.html?m=4">个人信息</a></li>
-                        </ul>
-
-                    </li>
-                    <li><a href="#">{{user.alias}}</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">登录</a>
-                        <ul class="dropdown-menu" ng-show="show">
-                            <div class="container" style="display: block;max-width:500px;">
-                                <!--<span class="caret x-large up"></span>-->
-                                <form name="loginForm" novalidate>
-                                    <div class="form-group">
-                                        <span class="h3">登录</span>
-                                    </div>
-                                    <div class="error-container">
-                                        <small class="error"
-                                               ng-show="loginFailed">
-                                            用户名或密码不对。
-                                        </small>
-                                    </div>
-                                    <div class="form-group">
-                                        <input name="mail" class="form-control input-lg" id="edit-mail" type="text" size="60" maxlength="128" placeholder="手机号码、邮箱或用户名" value="" ng-model="alias" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input name="pass" class="form-control input-lg" id="edit-pass" type="password" size="60" maxlength="128" placeholder="密码" ng-model="password" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input name="op" class="btn btn-default" type="submit" value="登录" ng-click="login();">
-                                        <!--<input name="op" class="btn btn-default" type="button" value="取消" ng-click="show(false)">-->
-                                        <span class="pull-right"><a href="#">忘记密码?</a></span>
-                                    </div>
-                                </form>
-                            </div>
-                        </ul>
-
-                    </li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">注册</a>
-                        <ul class="dropdown-menu" ng-show="show">
-                            <div class="container" style="display: block;max-width:500px;" id="divRegister">
-                                <!--<span class="caret x-large up"></span>-->
-                                <form novalidate>
-                                    <div class="form-group">
-                                        <span class="h3">注册</span>
-                                    </div>
-                                    <div class="form-group">
-                                        <input name="mail" class="form-control input-lg" id="edit-mail" type="text" size="60" maxlength="128" placeholder="手机号码、邮箱或用户名" value="" ng-model="alias" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input name="pass" class="form-control input-lg" id="edit-pass" type="password" size="60" maxlength="128" placeholder="密码" ng-model="password" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input name="pass" class="form-control input-lg" id="edit-pass" type="password" size="60" maxlength="128" placeholder="确认密码" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input name="op" class="btn btn-default" type="submit" value="注册" ng-click="register();">
-                                        <!--<input name="op" class="btn btn-default" type="button" value="取消" ng-click="show(false);">-->
-                                    </div>
-                                </form>
-                            </div>
-                        </ul>
-                    </li>
-                </ul>
-
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
-    <div ng-controller="AssetController">
-        <fieldset>
-            <label>IT 资产</label>
-            <div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <td></td>
-                            <td>#</td>
-                            <td>类别</td>
-                            <td>品牌</td>
-                            <td>型号</td>
-                            <td>CPU</td>
-                            <td>内存</td>
-                            <td>硬盘</td>
-                            <td>能用</td>
-                            <td>价格</td>
-                            <td>出价数</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="asset in assets">
-                            <td>
-                                <input type="checkbox" />
-                            </td>
-                            <td>{{asset.number}}</td>
-                            <td>{{asset.category}}</td>
-                            <td>{{asset.brand}}</td>
-                            <td>{{asset.serial}}</td>
-                            <td>{{asset.cpu}}</td>
-                            <td>{{asset.memory}}</td>
-                            <td>{{asset.harddisk}}</td>
-                            <td>
-                                <span class="glyphicon glyphicon-ok" ng-show="asset.working"></span>
-                            </td>
-                            <td>{{asset.price}}</td>
-                            <td>{{asset.followUps}}</td>
-
-
-                        </tr>
-                    </tbody>
-                </table>
+                </div>
             </div>
-        </fieldset>
+        </div>
     </div>
     <script>
-        angular.module('app', ['ngRoute', 'ngResource', 'ngCookies'])
+        var app = angular.module('app', ['ngRoute', 'ngResource', 'ngCookies']);
 
-          //---------------
-          // Services
-          //---------------
+        app.config(function ($routeProvider) {
+            $routeProvider
+                .when('/userManage', {
+                    templateUrl: 'pages/admin/userManage.html',
+                    controller: 'userManageController'
+                })
+                .when('/assetManage', {
+                    templateUrl: 'pages/admin/assetManage.html',
+                    controller: 'assetManageController'
+                })
+                .when('/offerManage', {
+                    templateUrl: 'pages/admin/offerManage.html',
+                    controller: 'offerManageController'
+                })
+                .when('/ticketManage', {
+                    templateUrl: 'pages/admin/ticketManage.html',
+                    controller: 'ticketManageController'
+                })
+                .when('/assetSheets/:id', {
+                    templateUrl: 'pages/admin/asset.html',
+                    controller: 'assetDetailController'
+                })
+                .when('/offers/:id', {
+                     templateUrl: 'pages/admin/offerDetail.html',
+                     controller: 'offerDetailController'
+                })
+                 .when('/offerItem/:id', {
+                     templateUrl: 'pages/admin/offerManage.html',
+                     controller: 'offerItemDetailController'
+                 })
+                .otherwise({
+                    // when all else fails
+                    templateUrl: 'pages/routeNotFound.html',
+                    controller: 'notFoundController'
+                });;
+        });
 
-          .factory('Users', ['$resource', function ($resource) {
-              return $resource('/api/users/:id', null, {
-                  'update': { method: 'PUT' }
-              });
-          }])
-        .factory("errors", function ($rootScope) {
-            return {
-                catch: function (message) {
-                    return function (reason) {
-                        $rootScope.addError({ message: message, reason: reason })
-                    };
+        app.controller('UserController', function ($scope, $cookieStore, $window, $rootScope) {
+            $scope.init = function () {
+                var user = $cookieStore.get("user");
+                if (user) {
+                    $scope.user = user;
+                    $rootScope.user = user;
+                    $scope.isLogin = true;
                 }
-            };
+                else {
+                    // redirect to index.html
+                    //$window.location.href = "index.html";
+                }
+            }
         })
-          //---------------
-          // Controllers
-          //---------------
 
-          .controller('UserController', ['$scope', 'Users', '$cookieStore', function ($scope, Users, $cookieStore) {
+             .factory('Users', ['$resource', function ($resource) {
+                 return $resource('/api/users/:id', null, {
+                     'update': { method: 'PUT' }
+                 });
+             }])
 
-              $scope.init = function () {
-                  var user = $cookieStore.get("user");
-                  if (user) {
-                      $scope.user = user;
-                  }
-              }
+            .controller('userManageController', ['$scope', 'Users', function ($scope, Users) {
+                $scope.users = Users.query();
 
-              $scope.register = function () {
-                  if (!$scope.alias || !$scope.password) return;
-                  var user = new Users({ alias: $scope.alias, password: $scope.password });
+                $scope.DisableUser = function ($uid, $index) {
+                    var user = new Users({ status: 0 });
+                    Users.update({ id: $uid }, user);
+                    $scope.users = Users.query();
+                }
 
-                  user.$save(function () {
-                      $scope.user = user;
-                      $cookieStore.put("user", user);
-                  },
-                  function (error) {
-                      alert(error.statusText + '(' + error.status + ')\r\n\r\n' + error.data);
-                  });
-              }
+                $scope.EnableUser = function ($uid, $index) {
+                    var user =  new Users({ status: 1 });
+                    Users.update({ id: $uid }, user);
+                    $scope.users = Users.query();
+                    //$scope.users[$index].status = 1;
+                }
 
-              $scope.login = function () {
-                  //var user = $scope.todos[index];
-                  //Users.update({ id: user._id }, user);
-                  //$scope.editing[index] = false;
-                  Users.query({ alias: $scope.alias, password: $scope.password }
-                      , function (users) {
-                          if (users.length == 0) {
-                              $scope.loginFailed = true;
-                          }
-                          else {
-                              $scope.loginFailed = false;
-                              $cookieStore.put("user", users[0]);
-                          }
-                      }
-                      , function (error) {
-                          alert(error.statusText + '(' + error.status + ')\r\n\r\n' + error.data);
-                      }
-                      );
-                  //Users.get({ alias: $scope.alias, password: $scope.password }, function () {
-                  //    console.write("data");
-                  //})
-                  // loginFailed
-              }
+                $scope.LockUser = function ($uid, $index) {
+                    var user = new Users({ status: 2 });
+                    Users.update({ id: $uid }, user);
+                    $scope.users = Users.query();
+                    //$scope.users[$index].status = 2;
+                }
+            }])
 
-              $scope.show = function (show) {
-                  $scope.show = show;
-              }
+        .factory('Assets', ['$resource', function ($resource) {
+            return $resource('/api/assetSheets/:id', null, {
+                'update': { method: 'PUT' }
+            });
+        }])
+
+         .controller('assetManageController', ['$scope', 'Assets', function ($scope, Assets) {
+             $scope.assets = Assets.query();
+
+             $scope.DisableAsset = function ($aid) {
+                 var asset = new Assets({ status: 0 });
+                 Assets.update({ id: $aid }, asset);
+                 $scope.assets = Assets.query();
+             }
+
+             $scope.EnableAsset = function ($aid) {
+                 var asset =  new Assets({ status: 1 });
+                 Assets.update({ id: $aid }, asset);
+                 $scope.assets = Assets.query();
+             }
+         }])
+
+         .controller('assetDetailController', ['$scope', '$routeParams', 'Assets', '$location', function ($scope, $routeParams, Assets, $location) {
+             $scope.asset = Assets.get({ id: $routeParams.id });
           }])
-        //---------------
-        // Services
-        //---------------
 
-          .factory('Assets', ['$resource', function ($resource) {
-              return $resource('/api/assets/:id', null, {
+          .factory('Offers', ['$resource', function ($resource) {
+              return $resource('/api/offers/:id', null, {
                   'update': { method: 'PUT' }
               });
           }])
 
-            .controller('AssetController', ['$scope', 'Assets', function ($scope, Assets) {
-                $scope.editing = [];
-                $scope.assets = Assets.query();
+         .controller('offerManageController', ['$scope', 'Offers', function ($scope, Offers) {
+             $scope.offers = Offers.query();
 
-                $scope.newAsset = new Assets({});
+             $scope.DisableBid = function ($offer) {
+                 var offer = new Offers({ status: 0 });
+                 Offers.update({ id: $offer }, offer);
+                 $scope.offers = Offers.query();
+             }
 
-                $scope.save = function () {
-                    if (!$scope.newAsset || $scope.newAsset.length < 1) return;
-                    var asset = $scope.newAsset;
-                    //new Assets({
-                    //    name: $scope.newAsset.name,
-                    //    length: $scope.newAsset.length,
-                    //    price: $scope.newAsset.price,
-                    //    completed: false
-                    //});
+             $scope.EnableBid = function ($offer) {
+                 var offer = new Offers({ status: 1 });
+                 Offers.update({ id: $offer }, offer);
+                 $scope.offers = Offers.query();
+             }
 
-                    asset.$save(function () {
-                        $scope.assets.push(asset);
-                        $scope.newAsset = ''; // clear textbox
-                    });
-                }
+         }])
 
-                $scope.update = function (index) {
-                    var asset = $scope.assets[index];
-                    Assets.update({ id: asset._id }, asset);
-                    $scope.editing[index] = false;
-                }
+        .controller('offerDetailController', ['$scope', '$routeParams', 'Offers', '$location', function ($scope, $routeParams, Offers, $location) {
+            $scope.offerss = Offers.query({ sheetId: $routeParams.id });
+        }])
 
-                $scope.addToWishList = function (index) {
-                    alert("未实现");
-                }
+     .controller('offerItemDetailController', ['$scope', '$routeParams', 'Offers', '$location', function ($scope, $routeParams, Offers, $location) {
+         $scope.offers = Offers.query({ _id: $routeParams.id });
+     }])
 
-                $scope.cancel = function (index) {
-                    $scope.assets[index] = angular.copy($scope.editing[index]);
-                    $scope.editing[index] = false;
-                }
+         .factory('Tickets', ['$resource', function ($resource) {
+               return $resource('/api/tickets/:id', null, {
+                          'update': { method: 'PUT' }
+                      });
+          }])
 
-                $scope.bid = function (index) {
-                    alert("未实现");
-                }
-            }]);
+         .controller('ticketManageController', ['$scope', 'Tickets', function ($scope, Tickets) {
+             $scope.closeTickets = Tickets.query({status  :2});
+             $scope.pendingTickets = Tickets.query({ status: 1 });
 
+             $scope.DisableTicket = function ($tid) {
+                 var ticket = new Tickets({ status: 2 });
+                 Tickets.update({ id: $tid }, ticket);
+                 $scope.closeTickets = Tickets.query({ status: 2 });
+                 $scope.pendingTickets = Tickets.query({ status: 1 });
+             }
+
+             $scope.EnableTicket = function ($tid) {
+                 var ticket = new Tickets({ status: 1 });
+                 Tickets.update({ id: $tid }, ticket);
+                 $scope.closeTickets = Tickets.query({ status: 2 });
+                 $scope.pendingTickets = Tickets.query({ status: 1 });
+             }
+
+         }])
 
     </script>
 </body>
