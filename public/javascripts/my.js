@@ -15,9 +15,9 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/my/sheet.html',
             controller: 'sheetController'
         })
-        .when('/offer', {
-            templateUrl: 'pages/my/offer.html',
-            controller: 'offerController'
+        .when('/offers', {
+            templateUrl: 'pages/my/offers.html',
+            controller: 'offersController'
         })
         .when('/activeOrder', {
             templateUrl: 'pages/my/activeOrder.html',
@@ -49,6 +49,13 @@ app.factory('AssetSheet', ['$resource', function ($resource) {
     });
 }]);
 
+app.factory('Offer', ['$resource', function ($resource) {
+    return $resource('/api/Offer/:id', null, {
+        'update': { method: 'PUT' }
+    });
+}]);
+
+
 // controllers
 app.controller('sheetsController', ['$scope', '$rootScope', 'AssetSheet', function ($scope, $rootScope, AssetSheet) {
     $scope.init = function () {
@@ -62,8 +69,9 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'AssetSheet', functi
             { headerName: "计划交割地点", field: "planningDeliveryAddress" },
             { headerName: "付款方式", field: "payMethodText" },
             { headerName: "成交规则", field: "dealRuleText" },
-            { headerName: "要求从业资格证书", field: "requireCertificate", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: {"text-align": "center"} },
-            { headerName: "总价格", field: "totalPrice", template:"{{data.totalPrice|currency:'￥'}}", cellStyle: {"text-align": "right"} },
+            { headerName: "要求从业资格证书", field: "requireCertificate", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: { "text-align": "center" } },
+            //{ headerName: "总价格", field: "totalPrice", template: "{{data.totalPrice|currency:'￥'}}", cellStyle: { "text-align": "right" } },
+            { headerName: "需要数据销毁服务", field: "needDataCleanup", template: '<span ng-show="data.needDataCleanup" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: { "text-align": "center" } },
             { headerName: "状态", field: "statusText" },
             { headerName: "", template: "<a href='#/sheet/{{data._id}}' ng-show='!data.status || (data.status == 1) || (data.status == 4)'>修改</a>", cellStyle: { "text-align": "center" }, width: 50, suppressSizeToFit: true }
         ];
@@ -92,17 +100,24 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'AssetSheet', functi
                 }
             },
             function (response) { // error case
-                alert(response.data.errors);
+                _helper.showHttpError(response);
             });
     }
 }]);
 
 app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeParams', 'AssetSheet', function ($scope, $rootScope, $location, $routeParams, AssetSheet) {
-    $scope.sheet = { assets: [{}] };
     $scope.id = $routeParams.id;
     $scope.payMethods = _dicts.payMethod;
     $scope.dealRules = _dicts.dealRule;
     $scope.assetCategory = _dicts.assetCategory
+    $scope.sheet = { assets: [] };
+
+    // Add 10 empty rows
+    if (!$scope.id) {
+        for (var i = 0; i < 10; i++) {
+            $scope.sheet.assets.push({});
+        }
+    }
 
     function cellValueChanged(cell) {
         var row = $scope.gridOptions.rowData[cell.rowIndex];
@@ -137,9 +152,9 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
             { headerName: "硬盘", field: "harddisk", width: 80, editable: true },
             { headerName: "其他配件", field: "other", width: 100, editable: true },
             { headerName: "状态", field: "working", width: 100, editable: true },
-            { headerName: "数量", field: "number", width: 100, editable: true, cellValueChanged: cellValueChanged },
-            { headerName: "单价", field: "unitPrice", width: 100, editable: true, cellValueChanged: cellValueChanged },
-            { headerName: "小计", field: "subTotalprice", width: 100, volatile: true }
+            { headerName: "数量", field: "number", width: 100, editable: true }  // , cellValueChanged: cellValueChanged
+            //{ headerName: "单价", field: "unitPrice", width: 100, editable: true, cellValueChanged: cellValueChanged },
+            //{ headerName: "小计", field: "subTotalprice", width: 100, volatile: true }
         ];
 
         $scope.gridOptions = {
@@ -184,41 +199,123 @@ app.controller('sheetController', ['$scope', '$rootScope', '$location', '$routeP
                     total();
                 },
                 function (response) { // error case
-                    alert(response.data.errors);
+                    _helper.showHttpError(response);
                 });
         }
     }
 
     $scope.save = function (status) {
-        $scope.sheet.status = status;
-        $scope.sheet.createdById = $rootScope.user._id;
+        var sheet = angular.copy($scope.sheet);
+        sheet.status = status;
+        sheet.createdById = $rootScope.user._id;
+        sheet.assets = [];
+        $scope.sheet.assets.forEach(
+            function (value, index) {
+                if (value) { sheet.assets.push(value); }
+            })
+
         if ($scope.id) {
             AssetSheet.update(
                 { id: $scope.id },
-                $scope.sheet,
+                sheet,
                 function () {
                     $location.url('/saved');
                 },
                 function (response) { // error case
-                    alert(response.data.errors);
+                    _helper.showHttpError(response);
                 });
         }
         else {
-            var assetSheet = new AssetSheet($scope.sheet);
+            var assetSheet = new AssetSheet(sheet);
             assetSheet.$save(
                   function () {
                       $location.url('/saved');
                   },
                   function (response) { // error case
-                      alert(response.data.errors);
+                      _helper.showHttpError(response);
                   });
         }
     }
+
 }]);
 
-app.controller('offerController', function ($scope) {
+app.controller('offersController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer) {
+    $scope.init = function () {
+        $scope.query();
+    }
 
-});
+    function getAssetSheets(sheedIds) {
+        AssetSheet.query(
+            {
+                createdById: $rootScope.user._id,
+                _id: { $in: sheedIds }
+                // Add suport for nested params https://github.com/angular/angular.js/pull/1640
+                // http://stackoverflow.com/questions/18588604/nested-parameters-in-angular-query
+            },
+            function (data) {
+                _dicts.translate(data, ['payMethod', 'dealRule', 'status'], ['payMethod', 'dealRule', 'sheetStatus']);
+                $scope.offers.forEach(
+                    function (value, index) {
+                        var matched = $.grep(data, function (value2, index2) { return value2._id == value.sheetId; })[0];
+                        if (matched) {
+                            value.sheet = matched;
+                        }
+                    });
+                $scope.gridOptions.rowData = $scope.offers;
+                $scope.gridOptions.api.onNewRows();
+            },
+            function (response) { // error case
+                _helper.showHttpError(response);
+            });
+    }
+
+    $scope.query = function () {
+        var columnDefs = [
+            { headerName: "名称", template: "{{data.sheet.name}}" },
+            { headerName: "计划交割时间", template: "{{data.sheet.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
+            { headerName: "计划交割地点", template: "{{data.sheet.planningDeliveryAddress}}" },
+            { headerName: "付款方式", template: "{{data.sheet.payMethodText}}" },
+            { headerName: "成交规则", template: "{{sheet.dealRuleText}}" },
+            { headerName: "要求从业资格证书", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: { "text-align": "center" } },
+            { headerName: "总价格", template: "{{data.price|currency:'￥'}}", cellStyle: { "text-align": "right" } },
+            { headerName: "状态", template: "{{data.sheet.statusText}}" },
+            { headerName: "报价时间", field: "updatedAt" }
+        ];
+
+        $scope.gridOptions = {
+            angularCompileRows: true,
+            columnDefs: columnDefs,
+            rowData: null,
+            dontUseScrolls: false,
+            enableColResize: true,
+            //enableFilter: true,
+            ready: function (event) {
+                event.api.sizeColumnsToFit();
+            }
+        };
+
+        Offer.query(
+            { createdById: $rootScope.user._id },
+            function (data) {
+                $scope.hasOffer = data.length > 0;
+                if ($scope.hasOffer) {
+                    $scope.offers = data;
+                    var sheedIds = [];
+                    data.forEach(function (value, index) {
+                        if (value && value.sheetId && sheedIds.indexOf(value.sheetId) < 0) {
+                            sheedIds.push(value.sheetId);
+                        }
+                    });
+                    getAssetSheets(sheedIds)
+                }
+            },
+            function (response) { // error case
+                _helper.showHttpError(response);
+            });
+
+
+    }
+}]);
 
 app.controller('activeOrderController', function ($scope) {
 

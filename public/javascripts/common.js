@@ -43,6 +43,8 @@ var _dicts = {
     }
 }
 
-//var _helper = {
-//    formatDate()
-//};
+var _helper = {
+    showHttpError: function (response) {
+        alert(response.status + ':' + response.statusText + '\n' + response.data);
+    }
+};

@@ -46,7 +46,7 @@ app.factory('AssetSheet', ['$resource', function ($resource) {
 }]);
 
 app.factory('Offer', ['$resource', function ($resource) {
-    return $resource('/api/Offers/:id', null, {
+    return $resource('/api/Offer/:id', null, {
         'update': { method: 'PUT' }
     });
 }]);
@@ -153,8 +153,12 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'AssetSheet', functi
             //}
         };
 
+        var condition = { status: 3 };
+        if ($scope.isLogin) {
+            condition.createdById = { $ne: $rootScope.user._id }
+        }
         AssetSheet.query(
-            { status: 3 },
+            condition,
             function (data) {
                 $scope.hasAssetSheet = data.length > 0;
                 if ($scope.hasAssetSheet) {
@@ -164,13 +168,14 @@ app.controller('sheetsController', ['$scope', '$rootScope', 'AssetSheet', functi
                 }
             },
             function (response) { // error case
-                alert(response.data.errors);
+                _helper.showHttpError(response);
             });
     }
 }]);
 
 app.controller('sheetController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer) {
     $scope.id = $routeParams.id;
+    $scope.isLogin = $rootScope.user != null;
 
     function cellValueChanged(cell) {
         var row = $scope.gridOptions.rowData[cell.rowIndex];
@@ -208,8 +213,8 @@ app.controller('sheetController', ['$scope', '$rootScope', '$routeParams', '$loc
             { headerName: "数量", field: "number" },
             { headerName: "单价", field: "unitPrice", hide: true },
             { headerName: "小计", field: "subTotalprice", hide: true },
-            { headerName: "报价", field: "offerUnitPrice", editable: true, cellStyle: { "background-color": "yellow" }, cellValueChanged: cellValueChanged },
-            { headerName: "小计", field: "offerSubTotalprice", volatile: true }
+            { headerName: "报价", field: "offerUnitPrice", editable: true, cellStyle: { "background-color": "yellow" }, cellValueChanged: cellValueChanged, hide: !$scope.isLogin },
+            { headerName: "小计", field: "offerSubTotalprice", volatile: true, hide: !$scope.isLogin }
         ];
 
         function cellValueChangedFunction() {
@@ -244,31 +249,36 @@ app.controller('sheetController', ['$scope', '$rootScope', '$routeParams', '$loc
                     $scope.sheet = data;
                     $scope.gridOptions.rowData = data.assets;
 
-                    Offer.query(
-                        { sheetId: $scope.sheet._id, createdById: $rootScope.user._id },
-                        function (data) {
-                            if (data.length > 0) {   
-                                var offer = data[0];    // show latest
-                                for (var i = 0; i < $scope.sheet.assets.length && i < offer.assets.length; i++) {
-                                    $scope.sheet.assets[i].offerUnitPrice = offer.assets[i].price;
-                                    $scope.sheet.assets[i].offerSubTotalprice = $scope.sheet.assets[i].number * $scope.sheet.assets[i].offerUnitPrice || 0;
+                    if ($scope.isLogin) {
+                        Offer.query(
+                            { sheetId: $scope.sheet._id, createdById: $rootScope.user._id },
+                            function (data) {
+                                if (data.length > 0) {
+                                    var offer = data[0];    // show latest
+                                    for (var i = 0; i < $scope.sheet.assets.length && i < offer.assets.length; i++) {
+                                        $scope.sheet.assets[i].offerUnitPrice = offer.assets[i].price;
+                                        $scope.sheet.assets[i].offerSubTotalprice = $scope.sheet.assets[i].number * $scope.sheet.assets[i].offerUnitPrice || 0;
+                                    }
                                 }
-                            }
-                            $scope.gridOptions.api.onNewRows();
-                            total();
-                        },
-                        function (response) { // error case
-                            alert(response.data.errors);
-                        });
+                                $scope.gridOptions.api.onNewRows();
+                                total();
+                            },
+                            function (response) { // error case
+                                _helper.showHttpError(response);
+                            });
+                    }
+                    else {
+                        $scope.gridOptions.api.onNewRows();
+                    }
                 },
                 function (response) { // error case
-                    alert(response.data.errors);
+                    _helper.showHttpError(response);
                 });
         }
     };
 
     $scope.save = function () {
-        var offer = new Offer({ sheetId: $scope.sheet._id, assets: [], createdById: $rootScope.user._id });
+        var offer = new Offer({ sheetId: $scope.sheet._id, price: $scope.sheet.offerTotalPrice, assets: [], createdById: $rootScope.user._id });
         $scope.sheet.assets.forEach(function (value, index) {
             if (value) {
                 offer.assets.push({ _id: value._id, price: value.offerUnitPrice });
@@ -283,7 +293,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$routeParams', '$loc
                     $location.url('/saved');
                 },
                 function (response) { // error case
-                    alert(response.data.errors);
+                    _helper.showHttpError(response);
                 });
         }
         else {
@@ -292,7 +302,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$routeParams', '$loc
                       $location.url('/saved');
                   },
                   function (response) { // error case
-                      alert(response.data.errors);
+                      _helper.showHttpError(response);
                   });
         }
     };
