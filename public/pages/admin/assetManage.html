@@ -4,9 +4,10 @@
         <table class="table">
             <thead>
                 <tr>
-                    <td>ID</td>
-                    <td>资产类别</td>
+                    <td>资产名称</td>
                     <td>发布人</td>
+                    <td>交易时间</td>
+                    <td>交易地点</td>
                     <td>发布时间</td>
                     <td>状态</td>
                     <td>操作</td>
@@ -14,14 +15,15 @@
             </thead>
             <tbody>
                 <tr ng-repeat="asset in assets">
-                    <td><a href="#/assetSheets/{{asset._id}}">{{asset._id}}</a></td>
-                    <td>{{asset.category}}</td>
+                    <td><a href="#/assetSheets/{{asset._id}}">{{asset.name}}</a></td>
                     <td>{{asset.createdById}}</td>
+                    <td>{{asset.planningDeliveryTime}}</td>
+                    <td>{{asset.planningDeliveryAddress}}</td>
                     <td>{{asset.updatedAt}}</td>
                     <td>{{asset.status}}</td>
                     <td>
                         <button ng-show="{{asset.status}}==2" ng-click="EnableAsset(asset._id)" class="btn btn-primary">通过</button>
-                        <button ng-show="{{asset.status}}==1"  ng-click="DisableAsset(asset._id)" class="btn btn-primary">拒绝</button>
+                        <button ng-show="{{asset.status}}==2" ng-click="DisableAsset(asset._id)" class="btn btn-primary">拒绝</button>
                     </td>
                 </tr>
             </tbody>

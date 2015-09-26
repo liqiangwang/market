@@ -12,7 +12,7 @@ var UserSchema = new mongoose.Schema({
     socialIdType: Number,   // Identity card type
     license: String,    // path to license.
     note: String,
-    status: Number, // 1:active, 2 locked, 3 marked as deleted
+    status: { type: Number, default: 1 }, // 1:active, 2 locked, 3 marked as deleted
     updatedAt: { type: Date, default: Date.now },
 });
 

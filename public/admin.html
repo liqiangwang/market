@@ -127,7 +127,7 @@
                 $scope.users = Users.query();
 
                 $scope.DisableUser = function ($uid, $index) {
-                    var user = new Users({ status: 0 });
+                    var user = new Users({ status: 3 });
                     Users.update({ id: $uid }, user);
                     $scope.users = Users.query();
                 }
@@ -157,13 +157,13 @@
              $scope.assets = Assets.query();
 
              $scope.DisableAsset = function ($aid) {
-                 var asset = new Assets({ status: 0 });
+                 var asset = new Assets({ status: 4 });
                  Assets.update({ id: $aid }, asset);
                  $scope.assets = Assets.query();
              }
 
              $scope.EnableAsset = function ($aid) {
-                 var asset =  new Assets({ status: 1 });
+                 var asset =  new Assets({ status: 3 });
                  Assets.update({ id: $aid }, asset);
                  $scope.assets = Assets.query();
              }

@@ -10,24 +10,26 @@
                     <td>CPU</td>
                     <td>内存</td>
                     <td>硬盘</td>
-                    <td>能用</td>
+                    <td>其他配件</td>
+                    <td>状态</td>
                     <td>价格</td>
-                    <td>数量</td>
+                    <td>单价</td>
+                    <td>总价</td>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="item in asset.assets">
-                    <td>{{item.type}}</td>
+                    <td>{{item.category}}</td>
                     <td>{{item.brand}}</td>
                     <td>{{item.serial}}</td>
                     <td>{{item.cpu}}</td>
                     <td>{{item.memory}}</td>
                     <td>{{item.harddisk}}</td>
-                    <td>
-                        <span class="glyphicon glyphicon-ok" ng-show="asset.working"></span>
-                    </td>
-                    <td>{{item.price}}</td>
+                    <td>{{item.other}}</td>
+                    <td>{{item.working}}</td>
+                    <td>{{item.unitPrice}}</td>
                     <td>{{item.number}}</td>
+                    <td>{{item.subTotalprice}}</td>
                 </tr>
             </tbody>
         </table>

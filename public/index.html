@@ -45,7 +45,7 @@
                 <ul class="nav navbar-nav navbar-right" ng-controller="UserController" ng-init="init()">
                     <li><a href="my.html#sheets">我的工作室</a></li>
                     <li><a>{{user.alias}}</a></li>
-                    <li class="dropdown">
+                    <li class="dropdown" ng-show="!isLogin">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">登录</a>
                         <ul class="dropdown-menu" ng-show="show">
                             <div class="container" style="display: block;max-width:500px;">
@@ -76,7 +76,7 @@
                         </ul>
 
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown" ng-show="!isLogin">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">注册</a>
                         <ul class="dropdown-menu" ng-show="show">
                             <div class="container" style="display: block;max-width:500px;" id="divRegister">

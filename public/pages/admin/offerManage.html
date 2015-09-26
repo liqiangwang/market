@@ -17,14 +17,20 @@
                 <tr ng-repeat="offer in offers">
                     <!--<td>{{offer._id}}</td>-->
                     <td><a href="#/offers/{{offer.sheetId}}" ng-click="GetAssetOffers(offer.sheetId)">{{offer.sheetId}}</a></td>
-                    <td>{{offer.price}}</td>
+                    <td>
+                        <table>
+                            <tr ng-repeat="asset in offer.assets">
+                                <td>{{asset.price}}</td>
+                            </tr>
+                        </table>
+                    </td>
                     <td>{{offer.createdById}}</td>
                     <td>{{offer.updatedAt}}</td>
                     <td>{{offer.status}}</td>
-                    <td>
-                        <button ng-show="{{offer.status}}==0" ng-click="EnableOffer(offer._id)" class="btn btn-primary">通过</button>
-                        <button ng-show="{{offer.status}}!=0" ng-click="DisableOffer(offer._id)" class="btn btn-primary">拒绝</button>
-                    </td>
+                    <!--<td>
+            <button ng-show="{{offer.status}}==0" ng-click="EnableOffer(offer._id)" class="btn btn-primary">通过</button>
+            <button ng-show="{{offer.status}}!=0" ng-click="DisableOffer(offer._id)" class="btn btn-primary">拒绝</button>
+        </td>-->
                 </tr>
             </tbody>
         </table>

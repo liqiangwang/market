@@ -46,7 +46,7 @@ app.factory('AssetSheet', ['$resource', function ($resource) {
 }]);
 
 app.factory('Offer', ['$resource', function ($resource) {
-    return $resource('/api/Offer/:id', null, {
+    return $resource('/api/Offers/:id', null, {
         'update': { method: 'PUT' }
     });
 }]);
@@ -60,6 +60,7 @@ app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope
         if (user) {
             $scope.user = user;
             $rootScope.user = user;
+            $scope.isLogin = true;
         }
     }
 
