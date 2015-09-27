@@ -3,6 +3,8 @@ var _dicts = {
     'payMethod': { 1: '现金', 2: '转账', 3: '其他方式' },
     'dealRule': { 1: '价高者得', 2: '综合评分', 3: '全资质者优先' },
     'sheetStatus': { 1: '草稿', 2: '提交审核', 3: '审核通过', 4: '审核不通过', 5: '成交', 6: '结单' },
+    'offerStatus': { 1: '等待', 2: '成交', 3: '失败' },
+
     'translate': function (records, fields, keys) {
         // records: a record array or a single record.
         // fields: field array or a field.

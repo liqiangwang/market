@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var helper = require('./utilities/helper.js');
+
 //var routes = require('./routes/index');
 var users = require('./routes/users');
 var todos = require('./routes/todos');
@@ -40,8 +42,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //app.use('/', routes);
+// http://stackoverflow.com/questions/11038830/how-to-intercept-node-js-express-request
 app.use(function (req, res, next) {
     if (req.url.match(/^\/api\/.+/)) {
+        helper.convertNestedStringToObject(req.query);
+
         res.setHeader('Pragma', 'No-cache');
         res.setHeader('Cache-Control', 'no-cache'); //HTTP 1.0 
         res.setHeader('expires', '-1');

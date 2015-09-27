@@ -11,6 +11,7 @@ var helper = require('../utilities/helper.js');
 // Query
 // Other option: /:alias/:password
 router.get('/*', function (req, res) {
+    console.log(req.query)
     if (!req.query || !req.query.alias) {
         User.find(null, function (err, users) {
             if (err) return next(err);
@@ -21,7 +22,6 @@ router.get('/*', function (req, res) {
     else {
         var alias = req.query.alias;
         var password = helper.sha256(req.query.password);
-        console.log(alias, password);
         User.find({ alias: alias, password: password }, function (err, users) {
             if (err) return next(err);
             console.log(users);

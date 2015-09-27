@@ -1,0 +1,38 @@
+﻿<div ng-init="init()">
+
+    <dl class="dl-horizontal">
+        <dt>名称</dt>
+        <dd>{{sheet.name}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>计划交割时间</dt>
+        <dd>{{sheet.planningDeliveryTime | date: 'yyyy-MM-dd'}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>计划交割地址</dt>
+        <dd>{{sheet.planningDeliveryAddress}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>付款方式</dt>
+        <dd>{{sheet.payMethodText}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>成交规则</dt>
+        <dd>{{sheet.dealRuleText}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>要求从业资格证书</dt>
+        <dd>{{sheet.requireCertificate}}</dd>
+    </dl>
+    <dl class="dl-horizontal">
+        <dt>需要数据销毁服务</dt>
+        <dd>{{sheet.needDataCleanup}}</dd>
+    </dl>
+    <div style="height:60%;" ag-grid="gridOptions" class="ag-fresh"></div>
+    <br />
+
+    <div class="form-group pull-right">
+        <a onclick="window.history.back(); return false;" class="btn btn-primary">查看清单</a>
+    </div>
+
+</div>

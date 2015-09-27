@@ -239,6 +239,7 @@ app.controller('sheetController', ['$scope', '$rootScope', '$routeParams', '$loc
                 { id: $scope.id },
                 function (data) {
                     _dicts.translate(data.assets, 'category', 'assetCategory');
+                    _dicts.translate(data, ['payMethod', 'dealRule', 'status'], ['payMethod', 'dealRule', 'sheetStatus']);
 
                     for (var i = data.assets.length - 1; i >= 0; i--) {
                         if (data.assets[i] == null) {
@@ -256,8 +257,10 @@ app.controller('sheetController', ['$scope', '$rootScope', '$routeParams', '$loc
                                 if (data.length > 0) {
                                     var offer = data[0];    // show latest
                                     for (var i = 0; i < $scope.sheet.assets.length && i < offer.assets.length; i++) {
-                                        $scope.sheet.assets[i].offerUnitPrice = offer.assets[i].price;
-                                        $scope.sheet.assets[i].offerSubTotalprice = $scope.sheet.assets[i].number * $scope.sheet.assets[i].offerUnitPrice || 0;
+                                        if ($scope.sheet.assets[i] && offer.assets[i]) {
+                                            $scope.sheet.assets[i].offerUnitPrice = offer.assets[i].price;
+                                            $scope.sheet.assets[i].offerSubTotalprice = $scope.sheet.assets[i].number * $scope.sheet.assets[i].offerUnitPrice || 0;
+                                        }
                                     }
                                 }
                                 $scope.gridOptions.api.onNewRows();

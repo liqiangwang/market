@@ -19,6 +19,14 @@
     <link rel="stylesheet" type="text/css" href="libs/angular-grid/dist/theme-fresh.css">
     <script src="javascripts/common.js"></script>
     <script src="javascripts/my.js"></script>
+    <script src="javascripts/my/sheetController.js"></script>
+    <script src="javascripts/my/sheetViewController.js"></script>
+    <script src="javascripts/my/sheetsController.js"></script>
+    <script src="javascripts/my/publishedController.js"></script>
+    <script src="javascripts/my/auctionsController.js"></script>
+    <script src="javascripts/my/dealsController.js"></script>
+    <script src="javascripts/my/offersController.js"></script>
+    <script src="javascripts/my/profileController.js"></script>
 
 </head>
 <body ng-controller="UserController" ng-init="init()">
@@ -42,10 +50,11 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
-                        <li role="presentation"><a href="#sheets">我的资产清单</a></li>
+                        <li role="presentation" title="草稿、审核未通过的资产清单"><a href="#sheets">草稿箱</a></li>
+                        <li role="presentation" title="待审核的资产清单"><a href="#published">待审核</a></li>
+                        <li role="presentation"><a href="#auctions">拍卖中</a></li>
+                        <li role="presentation"><a href="#deals">成交</a></li>
                         <li role="presentation"><a href="#offers">我的报价</a></li>
-                        <li role="presentation"><a href="#activeOrder">未处理订单</a></li>
-                        <li role="presentation"><a href="#completedOrder">已完成订单</a></li>
                         <li role="separator" class="divider"></li>
                         <li role="presentation"><a href="#profile">个人信息</a></li>
                         <li><a>{{user.alias}}</a></li>

@@ -1,0 +1,22 @@
+﻿<div ng-show="hasAssetSheet" ng-init="init()">
+    <h4>待审核的资产清单</h4>
+    <div ag-grid="gridOptions" class="ag-fresh" style="width: 100%; height: 100%;"></div>
+    <br />
+    <a href="#sheet" class="btn btn-primary pull-right">发布资产清单</a>
+</div>
+<div ng-show="!hasAssetSheet">
+    <div class="alert alert-info" role="alert">您没有待审核的资产清单。您可以：
+        <ol>
+            <li>
+                新建资产清单
+            </li>
+            <li>
+                或者进入草稿箱选择清单进行发布
+            </li>
+        </ol>
+    </div>
+    <div class="pull-right">
+        <a href="#sheet" class="btn btn-primary">新建资产清单</a>
+        <a href="#sheets" class="btn btn-primary">进入草稿箱</a>
+    </div>
+</div>
