@@ -14,16 +14,7 @@ var Offer = require('../models/Offer.js');
 //});
 
 router.get('/', function (req, res, next) {
-    var condition = null;
-    if (req.query.assetId) {
-        condition = { assetId: req.query.assetId };
-    }
-
-    if (req.query._id) {
-        condition = { _id: req.query._id };
-    }
-
-    Offer.find(condition, null, { sort: { price: -1 } }, function (err, offers) {
+    Offer.find(req.query, null, { sort: { price: -1 } }, function (err, offers) {
         if (err) return next(err);
         res.json(offers);
     });
