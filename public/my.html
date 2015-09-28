@@ -3,10 +3,11 @@
 <head>
     <title>个人空间</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="libs/bootstrap-3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="libs/bootstrap-3.3.5/css/bootstrap.css">
+    <link href="libs/bootstrap-3.3.5/css/bootstrap-theme.css" rel="stylesheet" />
     <link href="stylesheets/style.css" rel="stylesheet" />
     <script type="text/javascript" src="libs/jquery-2.1.4.js"></script>
-    <script type="text/javascript" src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="libs/bootstrap-3.3.5/js/bootstrap.js"></script>
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular.js"></script>
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular-route.js"></script>
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular-resource.js"></script>
@@ -34,7 +35,7 @@
     <script src="javascripts/my/profileController.js"></script>
 
 </head>
-<body ng-controller="UserController" ng-init="init()">
+<body ng-controller="UserController" ng-init="init($event.target)">
     <div ng-show="!isLogin">
         请先登录，然后进入个人空间。<a href="index.html">登录</a>
     </div>
@@ -53,7 +54,7 @@
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <div class="collapse navbar-collapse nav-pills" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
                         <li role="presentation" title="草稿、审核未通过的资产清单"><a href="#sheets">草稿箱</a></li>
                         <li role="presentation" title="待审核的资产清单"><a href="#published">待审核</a></li>
@@ -61,8 +62,7 @@
                         <li role="presentation"><a href="#deals">已成交</a></li>
                         <li role="presentation"><a href="#offers">我的报价</a></li>
                         <li role="separator" class="divider"></li>
-                        <li role="presentation"><a href="#profile">个人信息</a></li>
-                        <li><a>{{user.alias}}</a></li>
+                        <li role="presentation"><a href="#profile">个人信息 ({{user.alias}})</a></li>
                     </ul>
 
                 </div><!-- /.navbar-collapse -->

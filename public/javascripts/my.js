@@ -94,8 +94,8 @@ app.controller('NotFoundController', function ($scope, $location) {
     $scope.attemptedPath = $location.path();
 });
 
-app.controller('UserController', function ($scope, $cookieStore, $window, $rootScope) {
-    $scope.init = function () {
+app.controller('UserController', function ($scope, $cookieStore, $window, $rootScope, $location) {
+    $scope.init = function (target) {
         var user = $cookieStore.get("user");
         if (user) {
             $scope.user = user;
@@ -106,5 +106,12 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
             // redirect to index.html
             //$window.location.href = "index.html";
         }
+
+        $('.nav li a[href="#' + $location.url().substr(1) + '"]').parent().addClass('active');
+        $('.nav li a').on('click', function () {
+            $(this).parent().parent().find('.active').removeClass('active');
+            $(this).parent().addClass('active');
+        });
     }
 })
+
