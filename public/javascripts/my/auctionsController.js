@@ -1,10 +1,12 @@
-﻿app.controller('AuctionsController', ['$scope', '$rootScope', 'AssetSheet', 'Offer', function ($scope, $rootScope, AssetSheet, Offer) {
+﻿/// <reference path="../../pages/my/auctionsConfirm.html" />
+app.controller('AuctionsController', ['$scope', '$rootScope', 'AssetSheet', 'Offer', 'ngDialog', '$location', function ($scope, $rootScope, AssetSheet, Offer, ngDialog, $location) {
     $scope.init = function () {
         $scope.query();
     }
 
     $scope.query = function () {
         showAssetSheets();
+        createAssetTable();
         createOfferTable();
     }
 
@@ -30,6 +32,8 @@
             enableColResize: true,
             rowSelection: 'single',
             rowSelected: function rowSelectedFunc(row) {
+                $scope.hasAsset = row.node.data && row.node.data.assets && row.node.data.assets.length > 0;
+                $scope.assertGridOptions.api.setRows(row.node.data.assets);
                 showOffers(row.node.data._id);
                 $scope.assetSelected = true;
             },
@@ -57,9 +61,56 @@
                 _helper.showHttpError(response);
             });
     }
-    
+
+    function createAssetTable() {
+        var columnDefs = [
+            { headerName: "类别", field: "categoryText" },
+            { headerName: "品牌", field: "brand" },
+            { headerName: "型号", field: "serial" },
+            { headerName: "CPU", field: "cpu" },
+            { headerName: "内存", field: "memory" },
+            { headerName: "硬盘", field: "harddisk" },
+            { headerName: "其他配件", field: "other" },
+            { headerName: "状态", field: "working" },
+            { headerName: "数量", field: "number" }
+        ];
+
+        $scope.assertGridOptions = {
+            columnDefs: columnDefs,
+            rowData: null,
+            dontUseScrolls: false,
+            enableColResize: true,
+            angularCompileRows: true,
+            ready: function (event) {
+                event.api.sizeColumnsToFit();
+            }
+        };
+    }
+
     $scope.accept = function (id) {
-        alert(id);
+        ngDialog.openConfirm({
+            template: 'pages/my/auctionsConfirm.html',
+            className: 'ngdialog-theme-default',
+            scope: $scope
+        }).then(function (value) {//确认
+            acceptConfirmed();
+        }, function (reason) {// 取消
+
+        });
+    }
+
+    function acceptConfirmed() {
+        var offer = $scope.offerGridOptions.api.getSelectedNodes()[0].data;
+        offer.status = 2;   // 成交
+        Offer.update(
+            { id: offer._id },
+            offer,
+            function () {
+                $location.url('/auctionsSaved');
+            },
+            function (response) { // error case
+                _helper.showHttpError(response);
+            });
     }
 
     function createOfferTable() {
@@ -67,6 +118,7 @@
             { headerName: "报价编号", field: "_id" },
             { headerName: "总价格", template: "{{data.price|currency:'￥'}}", cellStyle: { "text-align": "right" } },
             { headerName: "报价时间", field: "updatedAt" },
+            { headerName: "状态", field: "statusText" }
             //{ headerName: "", template: "<a data=\"{{data._id}}\" ng-click=\"var id='{{data._id}}';accept(id);\" >接受报价</a>", cellStyle: { "text-align": "center" }, width: 100, suppressSizeToFit: true }
         ];
 
@@ -78,6 +130,7 @@
             enableColResize: true,
             rowSelection: 'single',
             rowSelected: function rowSelectedFunc(row) {
+                $scope.offerId = row.node.data._id
                 $scope.offerSelected = true;
             },
             //enableFilter: true,
@@ -88,7 +141,7 @@
     }
 
     function showOffers(sheetId) {
-        $scope.offerSelected = true;
+        $scope.offerSelected = false;
         Offer.query(
             { sheetId: sheetId },
             function (data) {

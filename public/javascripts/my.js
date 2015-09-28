@@ -1,4 +1,4 @@
-﻿var app = angular.module('app', ['ngRoute', 'ngResource', 'ngCookies', 'angularGrid']);
+﻿var app = angular.module('app', ['ngRoute', 'ngResource', 'ngCookies', 'angularGrid', 'ngDialog']);
 
 // routes
 app.config(function ($routeProvider) {
@@ -10,6 +10,10 @@ app.config(function ($routeProvider) {
         .when('/sheet', {
             templateUrl: 'pages/my/sheet.html',
             controller: 'SheetController'
+        })
+        .when('/saved', {
+            templateUrl: 'pages/my/saved.html',
+            controller: 'SavedController'
         })
         .when('/sheet/:id', {
             templateUrl: 'pages/my/sheet.html',
@@ -27,6 +31,10 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/my/auctions.html',
             controller: 'AuctionsController'
         })
+        .when('/auctionsSaved', {
+            templateUrl: 'pages/my/auctionsSaved.html',
+            controller: 'SavedController'
+        })
         .when('/deals', {
             templateUrl: 'pages/my/deals.html',
             controller: 'DealsController'
@@ -39,16 +47,27 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/my/profile.html',
             controller: 'ProfileController'
         })
-        .when('/saved', {
-            templateUrl: 'pages/my/saved.html',
-            controller: 'savedController'
-        })
         .otherwise({
             // when all else fails
             templateUrl: 'pages/routeNotFound.html',
-            controller: 'notFoundController'
+            controller: 'NotFoundController'
         });
 });
+
+// Set default values for all dialogs
+//app.config(['ngDialogProvider', function (ngDialogProvider) {
+//    ngDialogProvider.setDefaults({
+//        className: 'ngdialog-theme-default',
+//        plain: false,
+//        showClose: true,
+//        closeByDocument: true,
+//        closeByEscape: true,
+//        appendTo: false,
+//        preCloseCallback: function () {
+//            console.log('default pre-close callback');
+//        }
+//    });
+//}]);
 
 // services
 app.factory('AssetSheet', ['$resource', function ($resource) {
@@ -58,19 +77,19 @@ app.factory('AssetSheet', ['$resource', function ($resource) {
 }]);
 
 app.factory('Offer', ['$resource', function ($resource) {
-    return $resource('/api/Offers/:id', null, {
+    return $resource('/api/offers/:id', null, {
         'update': { method: 'PUT' }
     });
 }]);
 
 
 
-app.controller('savedController', function ($scope) {
+app.controller('SavedController', function ($scope) {
 
 });
 
 
-app.controller('notFoundController', function ($scope, $location) {
+app.controller('NotFoundController', function ($scope, $location) {
     $scope.message = 'There seems to be a problem finding the page you wanted';
     $scope.attemptedPath = $location.path();
 });

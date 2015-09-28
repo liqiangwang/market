@@ -22,11 +22,17 @@
     </dl>
     <dl class="dl-horizontal">
         <dt>要求从业资格证书</dt>
-        <dd>{{sheet.requireCertificate}}</dd>
+        <dd>
+            <span ng-show="sheet.requireCertificate" class="glyphicon glyphicon-ok" />
+            <span ng-show="!sheet.requireCertificate" class="glyphicon glyphicon-remove" />
+        </dd>
     </dl>
     <dl class="dl-horizontal">
         <dt>需要数据销毁服务</dt>
-        <dd>{{sheet.needDataCleanup}}</dd>
+        <dd>
+            <span ng-show="sheet.needDataCleanup" class="glyphicon glyphicon-ok" />
+            <span ng-show="!sheet.needDataCleanup" class="glyphicon glyphicon-remove" />
+        </dd>
     </dl>
     <div style="height:60%;" ag-grid="gridOptions" class="ag-fresh"></div>
     <br />

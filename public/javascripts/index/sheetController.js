@@ -1,4 +1,4 @@
-﻿app.controller('SheetViewController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer) {
+﻿app.controller('SheetController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer) {
     $scope.id = $routeParams.id;
     $scope.isLogin = $rootScope.user != null;
 
@@ -37,8 +37,15 @@
             { headerName: "状态", field: "working" },
             { headerName: "数量", field: "number" },
             { headerName: "单价", field: "unitPrice", hide: true },
-            { headerName: "小计", field: "subTotalprice", hide: true }
+            { headerName: "小计", field: "subTotalprice", hide: true },
+            { headerName: "报价", field: "offerUnitPrice", editable: true, cellStyle: { "background-color": "yellow" }, cellValueChanged: cellValueChanged, hide: !$scope.isLogin },
+            { headerName: "小计", field: "offerSubTotalprice", volatile: true, hide: !$scope.isLogin }
         ];
+
+        function cellValueChangedFunction() {
+            // after a value changes, get the volatile cells to update
+            $scope.gridOptions.api.softRefreshView();
+        }
 
         $scope.gridOptions = {
             columnDefs: columnDefs,
@@ -46,6 +53,7 @@
             dontUseScrolls: false,
             enableColResize: true,
             angularCompileRows: true,
+            //cellValueChanged: cellValueChangedFunction,
             ready: function (event) {
                 event.api.sizeColumnsToFit();
             }
@@ -74,8 +82,10 @@
                                 if (data.length > 0) {
                                     var offer = data[0];    // show latest
                                     for (var i = 0; i < $scope.sheet.assets.length && i < offer.assets.length; i++) {
-                                        $scope.sheet.assets[i].offerUnitPrice = offer.assets[i].price;
-                                        $scope.sheet.assets[i].offerSubTotalprice = $scope.sheet.assets[i].number * $scope.sheet.assets[i].offerUnitPrice || 0;
+                                        if ($scope.sheet.assets[i] && offer.assets[i]) {
+                                            $scope.sheet.assets[i].offerUnitPrice = offer.assets[i].price;
+                                            $scope.sheet.assets[i].offerSubTotalprice = $scope.sheet.assets[i].number * $scope.sheet.assets[i].offerUnitPrice || 0;
+                                        }
                                     }
                                 }
                                 $scope.gridOptions.api.onNewRows();
