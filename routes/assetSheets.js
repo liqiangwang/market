@@ -9,7 +9,7 @@ GET assetSheet list ordered by updatedAt descending.
 If createdById passed, return only the ones created by the specified user.
 */
 router.get('/', function (req, res, next) {
-    //console.log(req.query);
+    console.log(req.query);
     if (req.query._id && req.query._id.length > 24) {
         req.query._id = JSON.parse(req.query._id);
     }

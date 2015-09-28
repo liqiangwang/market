@@ -16,6 +16,7 @@
             <tbody>
                 <tr ng-repeat="asset in assets">
                     <td><a href="#/assetSheets/{{asset._id}}">{{asset.name}}</a></td>
+                    <td>{{asset.uname}}</td>
                     <td>{{asset.createdById}}</td>
                     <td>{{asset.planningDeliveryTime}}</td>
                     <td>{{asset.planningDeliveryAddress}}</td>

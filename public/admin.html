@@ -49,7 +49,7 @@
                 <div class="col-xs-2 col-md-2">
                     <ul class="nav nav-stacks">
                         <li role="presentation"><a href="#userManage">管理用户</a></li>
-                        <li role="presentation"><a href="#assetManage">管理发布资产</a></li>
+                        <li role="presentation"><a href="#assetSheetManage">管理发布资产</a></li>
                         <li role="presentation"><a href="#offerManage">管理资产竞价</a></li>
                         <li role="presentation"><a href="#ticketManage">管理订单</a></li>
                     </ul>
@@ -71,9 +71,9 @@
                     templateUrl: 'pages/admin/userManage.html',
                     controller: 'userManageController'
                 })
-                .when('/assetManage', {
+                .when('/assetSheetManage', {
                     templateUrl: 'pages/admin/assetManage.html',
-                    controller: 'assetManageController'
+                    controller: 'assetSheetManageController'
                 })
                 .when('/offerManage', {
                     templateUrl: 'pages/admin/offerManage.html',
@@ -147,14 +147,21 @@
                 }
             }])
 
-        .factory('Assets', ['$resource', function ($resource) {
+        .factory('AssetSheets', ['$resource', function ($resource) {
             return $resource('/api/assetSheets/:id', null, {
                 'update': { method: 'PUT' }
             });
         }])
 
-         .controller('assetManageController', ['$scope', 'Assets', function ($scope, Assets) {
-             $scope.assets = Assets.query();
+         .controller('assetSheetManageController', ['$scope', 'AssetSheets', function ($scope, AssetSheets) {
+             $scope.assets = AssetSheets.query();
+             console.log('-----------------' + $scope.assets.length);
+             //for (i = 0; i < $scope.assets.length; ++i)
+             //{
+             //    var uid = $scope.assets[i].createdId;
+             //    console.log(uid);
+             //    $scope.assets[i].uname = Users.query({createdId: uid});
+             //}
 
              $scope.DisableAsset = function ($aid) {
                  var asset = new Assets({ status: 4 });
