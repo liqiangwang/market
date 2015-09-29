@@ -14,9 +14,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="asset in assets">
+                <tr ng-repeat="asset in assetSheets">
                     <td><a href="#/assetSheets/{{asset._id}}">{{asset.name}}</a></td>
-                    <td>{{asset.uname}}</td>
+                    <td>{{asset.user[0].alias}}</td>
                     <td>{{asset.createdById}}</td>
                     <td>{{asset.planningDeliveryTime}}</td>
                     <td>{{asset.planningDeliveryAddress}}</td>

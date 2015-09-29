@@ -39,6 +39,7 @@ router.post('/', function (req, res, next) {
 
 /* GET /assets/id */
 router.get('/:id', function (req, res, next) {
+    console.log(req.params.id);
     AssetSheet.findById(req.params.id, function (err, post) {
         if (err) return next(err);
         res.json(post);
