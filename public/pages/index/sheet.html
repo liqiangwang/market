@@ -1,4 +1,4 @@
-﻿<div ng-init="init()">
+﻿<div ng-init="init()" style="height:100%;">
 
     <dl class="dl-horizontal">
         <dt>名称</dt>
@@ -32,7 +32,7 @@
         <dt>总报价</dt>
         <dd>{{sheet.offerTotalPrice}}</dd>
     </dl>
-    <div style="height:60%;" ag-grid="gridOptions" class="ag-fresh"></div>
+    <div class="ag-fresh" style="height:60%;" ag-grid="gridOptions"></div>
     <br />
     <div class="alert alert-info" role="alert" ng-show="isLogin">报价发布后，不能修改。发布报价后，可以再发布新报价。</div>
 

@@ -1,4 +1,4 @@
-﻿<!--<!DOCTYPE html>-->
+﻿<!DOCTYPE html>
 <html ng-app="app">
 <head>
     <title>个人空间</title>
@@ -39,7 +39,7 @@
     <div ng-show="!isLogin">
         请先登录，然后进入个人空间。<a href="index.html">登录</a>
     </div>
-    <div ng-show="isLogin">
+    <div ng-show="isLogin" style="height:100%">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -68,7 +68,7 @@
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-        <div style="height:80%;width:100%;" ng-view></div>
+        <div style="height:90%;width:100%;" ng-view></div>
     </div>
 </body>
 </html>

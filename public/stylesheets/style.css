@@ -1,6 +1,11 @@
+html {
+    height: 100%;
+}
+
 body {
     padding: 20px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    height: 100%;
 }
 
 a {

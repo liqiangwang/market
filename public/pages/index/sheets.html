@@ -1,6 +1,8 @@
-﻿<div ng-show="hasAssetSheet" ng-init="init()" style="height:90%">
-    <h4>IT资产交易请求</h4>
-    <div ag-grid="gridOptions" class="ag-fresh"></div>
+﻿<div ng-show="hasAssetSheet" ng-init="init()" style="height:100%">
+    <div style="height:6%;">
+        <h4>IT资产交易请求</h4>
+    </div>
+    <div ag-grid="gridOptions" class="ag-fresh" style="height:94%"></div>
 </div>
 <div ng-show="!hasAssetSheet">
     <div class="alert alert-info" role="alert">没有资产信息。</div>
