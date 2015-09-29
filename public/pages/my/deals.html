@@ -1,0 +1,28 @@
+﻿<div ng-show="hasAssetSheet" ng-init="init()">
+    <h4>已成交的资产清单</h4>
+    <div ag-grid="gridOptions" class="ag-fresh" style="width: 100%; height: 30%;"></div>
+
+    <br/>
+    <div ng-show="assetSelected">
+        <div ng-show="hasAsset">
+            <h4>资产明细</h4>
+            <div ag-grid="assertGridOptions" class="ag-fresh" style="width: 100%; height: 30%;"></div>
+        </div>
+        <div class="alert alert-info" role="alert" ng-show="!hasAsset">没有资产明细信息。</div>
+    </div>
+
+    <br />
+    <div ng-show="assetSelected">
+        <div ng-show="hasOffer">
+            <h4>竞拍信息</h4>
+            <div ag-grid="offerGridOptions" class="ag-fresh" style="width: 100%; height: 30%;"></div>
+        </div>
+        <div class="alert alert-info" role="alert" ng-show="!hasOffer">没有竞拍信息。</div>
+    </div>
+    <div ng-show="!assetSelected">
+        <div class="alert alert-info" role="alert">请在上面列表中选择一行，可以查看报价信息。</div>
+    </div>
+</div>
+<div ng-show="!hasAssetSheet">
+    <div class="alert alert-info" role="alert">您没有成交的资产清单。<br />从正在拍卖的资产中，接受报价，可以成交。</div>
+</div>

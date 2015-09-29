@@ -16,14 +16,14 @@ angular
     * @author: nerv
     * @version: 0.1.2, 2014-01-09
     */
-    .directive('ngThumb', ['$window', function($window) {
+    .directive('ngThumb', ['$window', function ($window) {
         var helper = {
             support: !!($window.FileReader && $window.CanvasRenderingContext2D),
-            isFile: function(item) {
+            isFile: function (item) {
                 return angular.isObject(item) && item instanceof $window.File;
             },
-            isImage: function(file) {
-                var type =  '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
+            isImage: function (file) {
+                var type = '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
                 return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
             }
         };
@@ -31,7 +31,7 @@ angular
         return {
             restrict: 'A',
             template: '<canvas/>',
-            link: function(scope, element, attributes) {
+            link: function (scope, element, attributes) {
                 if (!helper.support) return;
 
                 var params = scope.$eval(attributes.ngThumb);

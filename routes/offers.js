@@ -3,6 +3,7 @@ var router = express.Router();
 
 var mongoose = require('mongoose');
 var Offer = require('../models/Offer.js');
+var AssetSheet = require('../models/AssetSheet.js');
 
 // TODO: read cookie and filter by createdBy.
 /* GET /offers listing. */
@@ -40,8 +41,20 @@ router.get('/:id', function (req, res, next) {
 /* PUT /offers/:id */
 router.put('/:id', function (req, res, next) {
     Offer.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-        if (err) return next(err);
-        res.json(post);
+        if (req.body.status == 2) {
+            AssetSheet.findById(req.body.sheetId, function (err2, found) {
+                if (err2) return next(err2);
+                found.status = 5;
+                AssetSheet.findByIdAndUpdate(req.body.sheetId, found, function (err3, post3) {
+                    if (err3) return next(err3);
+                    res.json(post);
+                });
+            });
+        }
+        else {
+            if (err) return next(err);
+            res.json(post);
+        }
     });
 });
 

@@ -40,18 +40,12 @@
             { headerName: "小计", field: "subTotalprice", hide: true }
         ];
 
-        function cellValueChangedFunction() {
-            // after a value changes, get the volatile cells to update
-            $scope.gridOptions.api.softRefreshView();
-        }
-
         $scope.gridOptions = {
             columnDefs: columnDefs,
             rowData: null,
             dontUseScrolls: false,
             enableColResize: true,
             angularCompileRows: true,
-            //cellValueChanged: cellValueChangedFunction,
             ready: function (event) {
                 event.api.sizeColumnsToFit();
             }

@@ -37,7 +37,7 @@
 
     $scope.init = function () {
         var columnDefs = [
-            { headerName: "类别", field: "category", width: 100, template: '<select ng-options="key as value for (key, value) in assetCategory" ng-model="data.category"></select>' },
+            { headerName: "类别", field: "category", width: 100, template: '<select ng-options="key as value for (key, value) in assetCategory" ng-model="data.category" style="width:100%;"></select>' },
             { headerName: "品牌", field: "brand", width: 100, editable: true },
             { headerName: "型号", field: "serial", width: 100, editable: true },
             { headerName: "CPU", field: "cpu", width: 80, editable: true },
@@ -59,7 +59,9 @@
             cellFocused: function (params) {
                 //console.log('Callback cellFocused: ' + params.rowIndex + " - " + params.colIndex);
                 if (params.rowIndex == $scope.gridOptions.rowData.length - 1) {
-                    $scope.gridOptions.rowData.push({});
+                    for (var i = 0; i < 10; i++) {
+                        $scope.sheet.assets.push({});
+                    }
                     $scope.gridOptions.api.onNewRows();
                 }
             },
@@ -81,12 +83,10 @@
                         }
                     }
 
-                    data.assets.push({});
-                    //for (var i = 0; i < data.assets.length; i++) {
-                    //    if (!data.assets[i]) {
-                    //        data.assets[i] = {};
-                    //    }
-                    //}
+                    for (var i = data.assets.length; i < 10; i++) {
+                        data.assets.push({});
+                    }
+
                     $scope.gridOptions.rowData = data.assets;
                     $scope.gridOptions.api.onNewRows();
                     total();
