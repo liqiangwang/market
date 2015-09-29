@@ -17,14 +17,14 @@
             </thead>
             <tbody>
                 <tr ng-repeat="asset in offer[0].assets">
-                    <td>{{offer[0].assetss[0].assets[$index].category}}</td>
-                    <td>{{asset.brand}}</td>
-                    <td>{{asset.serial}}</td>
-                    <td>{{asset.cpu}}</td>
-                    <td>{{asset.memory}}</td>
-                    <td>{{asset.harddisk}}</td>
-                    <td>{{asset.other}}</td>
-                    <td>{{asset.working}}</td>
+                    <td>{{offer.assetss[0].assets[$index].category}}</td>
+                    <td>{{offer.assetss[0].assets[$index].brand}}</td>
+                    <td>{{offer.assetss[0].assets[$index].serial}}</td>
+                    <td>{{offer.assetss[0].assets[$index].cpu}}</td>
+                    <td>{{offer.assetss[0].assets[$index].memory}}</td>
+                    <td>{{offer.assetss[0].assets[$index].harddisk}}</td>
+                    <td>{{offer.assetss[0].assets[$index].other}}</td>
+                    <td>{{offer.assetss[0].assets[$index].working}}</td>
                     <td>{{asset.price}}</td>
                 </tr>
             </tbody>

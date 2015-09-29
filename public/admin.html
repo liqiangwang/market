@@ -190,6 +190,7 @@
                      var sid = $scope.offers[i].sheetId;
                      console.log(sid);
                      $scope.offers[i].assetSheet = AssetSheets.query({ _id: sid });
+                     console.log($scope.offers[i].assetSheet);
                  }
              });
 
@@ -210,8 +211,7 @@
         .controller('offerDetailController', ['$scope', 'AssetSheets', '$routeParams', 'Offers', '$location', function ($scope, AssetSheets, $routeParams, Offers, $location) {
             $scope.offer = Offers.query({ _id: $routeParams.id }, function (data) {
                 var sid = data[0].sheetId;
-                var sheet = AssetSheets.query({ _id: sid });
-                $scope.offer.assetss = sheet;
+                $scope.offer.assetss = AssetSheets.query({ _id: sid });
                 console.log($scope.offer.assetss);
 
                 //for (i = 0; i < data.assets.length; ++i) {
