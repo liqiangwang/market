@@ -17,14 +17,13 @@
                 <tr ng-repeat="asset in assetSheets">
                     <td><a href="#/assetSheets/{{asset._id}}">{{asset.name}}</a></td>
                     <td>{{asset.user[0].alias}}</td>
-                    <td>{{asset.createdById}}</td>
                     <td>{{asset.planningDeliveryTime}}</td>
                     <td>{{asset.planningDeliveryAddress}}</td>
                     <td>{{asset.updatedAt}}</td>
                     <td>{{asset.status}}</td>
                     <td>
-                        <button ng-show="{{asset.status}}==2" ng-click="EnableAsset(asset._id)" class="btn btn-primary">通过</button>
-                        <button ng-show="{{asset.status}}==2" ng-click="DisableAsset(asset._id)" class="btn btn-primary">拒绝</button>
+                        <button ng-show="{{asset.statusCode}}==1" ng-click="EnableAsset(asset._id)" class="btn btn-primary">通过</button>
+                        <button ng-show="{{asset.statusCode}}==1" ng-click="DisableAsset(asset._id)" class="btn btn-primary">拒绝</button>
                     </td>
                 </tr>
             </tbody>

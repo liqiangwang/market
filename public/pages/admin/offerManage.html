@@ -6,19 +6,19 @@
                 <tr>
                     <!--<td>ID</td>-->
                     <td>竞价资产</td>
-                    <td>价钱</td>
-                    <td>发布人</td>
-                    <td>发布时间</td>
+                    <td>报价总价</td>
+                    <td>报价人</td>
+                    <td>报价时间</td>
                     <td>状态</td>
                     
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="offer in offers">
-                    <!--<td>{{offer._id}}</td>-->
+                    <!--<td>{{offer}}</td>-->
                     <td><a href="#/assetSheets/{{offer.sheetId}}">{{offer.assetSheet[0].name}}</a></td>
                     <td>{{offer.price}}</td>
-                    <td>{{offer.createdById}}</td>
+                    <td>{{offer.user[0].alias}}</td>
                     <td>{{offer.updatedAt}}</td>
                     <td>{{offer.status}}</td>
                     <td><a href="#/offers/{{offer._id}}">详情</a></td>

@@ -5,6 +5,14 @@ var _dicts = {
     'sheetStatus': { 1: '草稿', 2: '提交审核', 3: '审核通过', 4: '审核不通过', 5: '成交', 6: '结单' },
     'offerStatus': { 1: '等待', 2: '成交', 3: '失败' },
     'bool': { 0: '否', 1: '是', 'false': '否', 'true': '是' },
+    'userStatus': {1: '活动', 2: '锁定', 3: '删除'},
+
+    'translateOne': function (record, field, key) {
+        var value = record[field];
+        if (value) {
+            record[field] = _dicts[key][value] || '';
+        }
+    },
 
     'translate': function (records, fields, keys) {
         // records: a record array or a single record.
