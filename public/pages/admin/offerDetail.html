@@ -4,23 +4,28 @@
         <table class="table">
             <thead>
                 <tr>
-                    <!--<td>ID</td>-->
-                    <td>竞价资产</td>
-                    <td>价钱</td>
-                    <td>发布人</td>
-                    <td>发布时间</td>
+                    <td>类别</td>
+                    <td>品牌</td>
+                    <td>型号</td>
+                    <td>CPU</td>
+                    <td>内存</td>
+                    <td>硬盘</td>
+                    <td>其他配件</td>
                     <td>状态</td>
-
+                    <td>报价</td>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="offer in offerss">
-                    <!--<td>{{offer._id}}</td>-->
-                    <td><a href="#/assetSheets/{{offer.sheetId}}">{{offer.sheetId}}</a></td>
-                    <td>{{offer.price}}</td>
-                    <td>{{offer.createdById}}</td>
-                    <td>{{offer.updatedAt}}</td>
-                    <td>{{offer.status}}</td>
+                <tr ng-repeat="asset in offer[0].assets">
+                    <td>{{offer[0].assetss[0].assets[$index].category}}</td>
+                    <td>{{asset.brand}}</td>
+                    <td>{{asset.serial}}</td>
+                    <td>{{asset.cpu}}</td>
+                    <td>{{asset.memory}}</td>
+                    <td>{{asset.harddisk}}</td>
+                    <td>{{asset.other}}</td>
+                    <td>{{asset.working}}</td>
+                    <td>{{asset.price}}</td>
                 </tr>
             </tbody>
         </table>
