@@ -1,8 +1,8 @@
 ﻿<fieldset>
-    <label>竞价列表</label>
+    <div class="alert alert-info" role="alert">竞价列表</div>
     <div>
-        <table class="table">
-            <thead>
+        <table class="table  table-hover table-striped">
+            <thead style="font-weight:bold;">
                 <tr>
                     <!--<td>ID</td>-->
                     <td>竞价资产</td>
@@ -10,7 +10,7 @@
                     <td>报价人</td>
                     <td>报价时间</td>
                     <td>状态</td>
-                    
+
                 </tr>
             </thead>
             <tbody>
@@ -23,9 +23,9 @@
                     <td>{{offer.status}}</td>
                     <td><a href="#/offers/{{offer._id}}">详情</a></td>
                     <!--<td>
-            <button ng-show="{{offer.status}}==0" ng-click="EnableOffer(offer._id)" class="btn btn-primary">通过</button>
-            <button ng-show="{{offer.status}}!=0" ng-click="DisableOffer(offer._id)" class="btn btn-primary">拒绝</button>
-        </td>-->
+                    <button ng-show="{{offer.status}}==0" ng-click="EnableOffer(offer._id)" class="btn btn-primary">通过</button>
+                    <button ng-show="{{offer.status}}!=0" ng-click="DisableOffer(offer._id)" class="btn btn-primary">拒绝</button>
+                </td>-->
                 </tr>
             </tbody>
         </table>

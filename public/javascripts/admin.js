@@ -7,7 +7,7 @@ app.config(function ($routeProvider) {
             controller: 'userManageController'
         })
         .when('/assetSheetManage', {
-            templateUrl: 'pages/admin/assetManage.html',
+            templateUrl: 'pages/admin/assetSheetManage.html',
             controller: 'assetSheetManageController'
         })
         .when('/offerManage', {
@@ -66,25 +66,27 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
             });
         });
 
-        $scope.DisableUser = function ($uid, $index) {
-            var user = new Users({ status: 3 });
-            Users.update({ id: $uid }, user);
-            $scope.users = Users.query();
-        }
-
         $scope.EnableUser = function ($uid, $index) {
             var user = new Users({ status: 1 });
             Users.update({ id: $uid }, user);
-            $scope.users = Users.query();
-            //$scope.users[$index].status = 1;
-        }
+            $scope.users = Users.query(function (data) {
+                $scope.users.forEach(function (value, index) {
+                    $scope.users[index].statusCode = $scope.users[index].status;
+                    _dicts.translateOne($scope.users[index], 'status', 'userStatus');
+                });
+            });
+            };
 
         $scope.LockUser = function ($uid, $index) {
             var user = new Users({ status: 2 });
             Users.update({ id: $uid }, user);
-            $scope.users = Users.query();
-            //$scope.users[$index].status = 2;
-        }
+            $scope.users = Users.query(function (data) {
+                $scope.users.forEach(function (value, index) {
+                    $scope.users[index].statusCode = $scope.users[index].status;
+                    _dicts.translateOne($scope.users[index], 'status', 'userStatus');
+                });
+            });
+            }
     }])
 
 .factory('AssetSheets', ['$resource', function ($resource) {
@@ -103,16 +105,30 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
          }
      });
 
-     $scope.DisableAsset = function ($aid) {
-         var asset = new Assets({ status: 4 });
-         Assets.update({ id: $aid }, asset);
-         $scope.assets = Assets.query();
+     $scope.RejectAssetSheet = function ($aid) {
+         var assetSheet = new AssetSheets({ status: 4 });
+         AssetSheets.update({ id: $aid }, assetSheet);
+         $scope.assetSheets = AssetSheets.query(null, function (data) {
+             for (i = 0; i < $scope.assetSheets.length; ++i) {
+                 var uid = $scope.assetSheets[i].createdById;
+                 $scope.assetSheets[i].user = Users.query({ _id: uid });
+                 $scope.assetSheets[i].statusCode = $scope.assetSheets[i].status;
+                 _dicts.translateOne($scope.assetSheets[i], 'status', 'sheetStatus');
+             }
+         });
      }
 
-     $scope.EnableAsset = function ($aid) {
-         var asset = new Assets({ status: 3 });
-         Assets.update({ id: $aid }, asset);
-         $scope.assets = Assets.query();
+     $scope.AcceptAssetSheet = function ($aid) {
+         var assetSheet = new AssetSheets({ status: 3 });
+         AssetSheets.update({ id: $aid }, assetSheet);
+         $scope.assetSheets = AssetSheets.query(null, function (data) {
+             for (i = 0; i < $scope.assetSheets.length; ++i) {
+                 var uid = $scope.assetSheets[i].createdById;
+                 $scope.assetSheets[i].user = Users.query({ _id: uid });
+                 $scope.assetSheets[i].statusCode = $scope.assetSheets[i].status;
+                 _dicts.translateOne($scope.assetSheets[i], 'status', 'sheetStatus');
+             }
+         });
      }
  }])
 

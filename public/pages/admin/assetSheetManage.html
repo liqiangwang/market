@@ -1,0 +1,41 @@
+﻿<fieldset>
+    <div class="alert alert-info" role="alert">资产列表</div>
+    <div>
+        <table class="table table-hover table-striped">
+            <thead style="font-weight:bold;">
+                <tr>
+                    <td>资产名称</td>
+                    <td>发布人</td>
+                    <td>交易时间</td>
+                    <td>交易地点</td>
+                    <td>交易规则</td>
+                    <td>付款方式</td>
+                    <td>是否清理数据</td>
+                    <td>是否需要营业执照</td>
+                    <td>发布时间</td>
+                    <td>状态</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="assetSheet in assetSheets">
+                    <td><a href="#/assetSheets/{{assetSheet._id}}">{{assetSheet.name}}</a></td>
+                    <td>{{assetSheet.user[0].alias}}</td>
+                    <td>{{assetSheet.planningDeliveryTime}}</td>
+                    <td>{{assetSheet.planningDeliveryAddress}}</td>
+                    <td>{{assetSheet.dealRule}}</td>
+                    <td>{{assetSheet.payMethod}}</td>
+                    <td>{{assetSheet.needDataCleanup}}</td>
+                    <td>{{assetSheet.requireCertificate}}</td>
+                    <td>{{assetSheet.updatedAt}}</td>
+                    <td>{{assetSheet.status}}</td>
+                    <td>
+                        <button ng-show="{{assetSheet.statusCode}}==2" ng-click="AcceptAssetSheet(assetSheet._id)" class="btn btn-primary">通过</button>
+                        <button ng-show="{{assetSheet.statusCode}}==2" ng-click="RejectAssetSheet(assetSheet._id)" class="btn btn-primary">拒绝</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>
