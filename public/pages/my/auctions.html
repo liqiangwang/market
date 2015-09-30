@@ -1,21 +1,21 @@
-﻿<div ng-show="hasAssetSheet" ng-init="init()">
+﻿<div ng-show="hasAssetSheet" ng-init="init()" style="height:100%;">
     <h4>正在拍卖的资产清单</h4>
     <div ag-grid="gridOptions" class="ag-fresh" style="width: 100%; height: 30%;"></div>
 
     <br />
-    <div ng-show="assetSelected">
-        <div ng-show="hasAsset">
+    <div ng-show="assetSelected" style="width: 100%; height: 25%;">
+        <div ng-show="hasAsset" style="height:100%">
             <h4>资产明细</h4>
-            <div ag-grid="assertGridOptions" class="ag-fresh" style="width: 100%; height: 30%;"></div>
+            <div ag-grid="assertGridOptions" class="ag-fresh" style="width: 100%; height: 90%;"></div>
         </div>
         <div class="alert alert-info" role="alert" ng-show="!hasAsset">没有资产明细信息。</div>
     </div>
 
     <br />
-    <div ng-show="assetSelected">
-        <div ng-show="hasOffer">
+    <div ng-show="assetSelected" style="width: 100%; height: 25%;">
+        <div ng-show="hasOffer" style="height:100%">
             <h4>竞拍信息</h4>
-            <div ag-grid="offerGridOptions" class="ag-fresh" style="width: 100%; height: 30%;"></div>
+            <div ag-grid="offerGridOptions" class="ag-fresh" style="width: 100%; height: 90%;"></div>
             <br />
             <div>
                 <button class="btn btn-primary pull-right" ng-disabled="!offerSelected" ng-click="accept();">接受选中的报价</button>

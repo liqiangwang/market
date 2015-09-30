@@ -32,9 +32,21 @@ app.controller('AuctionsController', ['$scope', '$rootScope', 'AssetSheet', 'Off
             enableColResize: true,
             rowSelection: 'single',
             rowSelected: function rowSelectedFunc(row) {
-                $scope.hasAsset = row.node.data && row.node.data.assets && row.node.data.assets.length > 0;
-                $scope.assertGridOptions.api.setRows(row.node.data.assets);
-                showOffers(row.node.data._id);
+                var data = row.node.data;
+                if (data.assets) {
+                    for (var i = data.assets.length - 1; i >= 0; i--) {
+                        if (data.assets[i] == null) {
+                            data.assets.splice(i, 1);
+                        }
+                    }
+                }
+                $scope.hasAsset = data && data.assets && data.assets.length > 0;
+                if ($scope.hasAsset) {
+                    _dicts.translate(data.assets, 'category', 'assetCategory');
+                    $scope.assertGridOptions.api.setRows(data.assets);
+                    $scope.assertGridOptions.api.sizeColumnsToFit();
+                }
+                showOffers(data._id);
                 $scope.assetSelected = true;
             },
             //enableFilter: true,

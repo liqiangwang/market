@@ -104,7 +104,7 @@
         sheet.assets = [];
         $scope.sheet.assets.forEach(
             function (value, index) {
-                if (value) { sheet.assets.push(value); }
+                if (value && value.category) { sheet.assets.push(value); }
             })
 
         if ($scope.id) {
