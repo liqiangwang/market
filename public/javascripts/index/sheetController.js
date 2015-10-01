@@ -2,6 +2,8 @@
     $scope.id = $routeParams.id;
     $scope.isLogin = $rootScope.user != null;
 
+    $scope.hasDuplicate = false;
+
     function cellValueChanged(cell) {
         var row = $scope.gridOptions.rowData[cell.rowIndex];
         row.offerSubTotalprice = row.number * row.offerUnitPrice || 0;
@@ -9,6 +11,23 @@
         $scope.gridOptions.api.softRefreshView();
 
         total();
+
+        //check if there is a same offer for this assetSheet already
+        $scope.offers = Offer.query({ sheetId: $scope.sheet._id, createdById: $rootScope.user._id }, function (data) {
+            for (i = 0; i < data.length; ++i) {
+                $exist = true;
+                for (j = 0; j < data[i].assets.length; ++j) {
+                    if (data[i].assets[j].price != $scope.sheet.assets[j].offerUnitPrice) {
+                        $exist = false;
+                        break;
+                    }
+                }
+                if ($exist == true) {
+                    $scope.hasDuplicate = true;
+                    break;
+                }
+            }
+        });
     }
 
     function total() {
@@ -112,8 +131,8 @@
                 offer.assets.push({ _id: value._id, price: value.offerUnitPrice });
             }
         });
-
-        if ($scope.offer) {
+ 
+        if($scope.offer) {
             Offer.update(
                 { id: $scope.offer.id },
                 $scope.sheet,
