@@ -100,6 +100,12 @@ app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope
              );
     }
 
+    $scope.logout = function () {
+        $scope.isLogin = false;
+        $scope.user = null;
+        $cookieStore.remove('user');
+    }
+
     $scope.show = function (show) {
         $scope.show = show;
     }

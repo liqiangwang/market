@@ -30,11 +30,15 @@ app.config(function ($routeProvider) {
              templateUrl: 'pages/admin/offerManage.html',
              controller: 'offerItemDetailController'
          })
+        //.otherwise({
+        //    // when all else fails
+        //    templateUrl: 'pages/routeNotFound.html',
+        //    controller: 'notFoundController'
+    //});;
         .otherwise({
-            // when all else fails
-            templateUrl: 'pages/routeNotFound.html',
-            controller: 'notFoundController'
-        });;
+            templateUrl: 'pages/admin/userManage.html',
+            controller: 'userManageController'
+        })
 });
 
 app.controller('UserController', function ($scope, $cookieStore, $window, $rootScope) {

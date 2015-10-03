@@ -47,11 +47,15 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/my/profile.html',
             controller: 'ProfileController'
         })
-        .otherwise({
-            // when all else fails
-            templateUrl: 'pages/routeNotFound.html',
-            controller: 'NotFoundController'
-        });
+        //.otherwise({
+        //    // when all else fails
+        //    templateUrl: 'pages/routeNotFound.html',
+        //    controller: 'NotFoundController'
+    //});
+       .otherwise({
+           templateUrl: 'pages/my/profile.html',
+           controller: 'ProfileController'
+       });
 });
 
 // Set default values for all dialogs
@@ -113,5 +117,12 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
             $(this).parent().addClass('active');
         });
     }
+
+    $scope.logout = function () {
+        $scope.isLogin = false;
+        $scope.user = null;
+        $cookieStore.remove('user');
+    }
+
 })
 
