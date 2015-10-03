@@ -15,6 +15,7 @@ var AssetSheet = require('../models/AssetSheet.js');
 //});
 
 router.get('/', function (req, res, next) {
+    console.log(req.query);
     Offer.find(req.query, null, { sort: { price: -1 } }, function (err, offers) {
         if (err) return next(err);
         res.json(offers);

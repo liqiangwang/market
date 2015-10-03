@@ -56,42 +56,42 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
     }
 })
 
-     .factory('Users', ['$resource', function ($resource) {
-         return $resource('/api/users/:id', null, {
-             'update': { method: 'PUT' }
-         });
-     }])
+.factory('Users', ['$resource', function ($resource) {
+    return $resource('/api/users/:id', null, {
+        'update': { method: 'PUT' }
+    });
+}])
 
-    .controller('userManageController', ['$scope', 'Users', function ($scope, Users) {
+.controller('userManageController', ['$scope', 'Users', function ($scope, Users) {
+    $scope.users = Users.query(function (data) {
+        $scope.users.forEach(function (value, index) {
+            $scope.users[index].statusCode = $scope.users[index].status;
+            _dicts.translateOne($scope.users[index], 'status', 'userStatus');
+        });
+    });
+
+    $scope.EnableUser = function ($uid, $index) {
+        var user = new Users({ status: 1 });
+        Users.update({ id: $uid }, user);
         $scope.users = Users.query(function (data) {
             $scope.users.forEach(function (value, index) {
                 $scope.users[index].statusCode = $scope.users[index].status;
                 _dicts.translateOne($scope.users[index], 'status', 'userStatus');
             });
         });
+    };
 
-        $scope.EnableUser = function ($uid, $index) {
-            var user = new Users({ status: 1 });
-            Users.update({ id: $uid }, user);
-            $scope.users = Users.query(function (data) {
-                $scope.users.forEach(function (value, index) {
-                    $scope.users[index].statusCode = $scope.users[index].status;
-                    _dicts.translateOne($scope.users[index], 'status', 'userStatus');
-                });
+    $scope.LockUser = function ($uid, $index) {
+        var user = new Users({ status: 2 });
+        Users.update({ id: $uid }, user);
+        $scope.users = Users.query(function (data) {
+            $scope.users.forEach(function (value, index) {
+                $scope.users[index].statusCode = $scope.users[index].status;
+                _dicts.translateOne($scope.users[index], 'status', 'userStatus');
             });
-            };
-
-        $scope.LockUser = function ($uid, $index) {
-            var user = new Users({ status: 2 });
-            Users.update({ id: $uid }, user);
-            $scope.users = Users.query(function (data) {
-                $scope.users.forEach(function (value, index) {
-                    $scope.users[index].statusCode = $scope.users[index].status;
-                    _dicts.translateOne($scope.users[index], 'status', 'userStatus');
-                });
-            });
-            }
-    }])
+        });
+    }
+}])
 
 .factory('AssetSheets', ['$resource', function ($resource) {
     return $resource('/api/assetSheets/:id', null, {
@@ -190,28 +190,20 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
     $scope.offers = Offers.query({ _id: $routeParams.id });
 }])
 
- .factory('Tickets', ['$resource', function ($resource) {
-     return $resource('/api/tickets/:id', null, {
+ .factory('Offers', ['$resource', function ($resource) {
+     return $resource('/api/offers/:id', null, {
          'update': { method: 'PUT' }
      });
  }])
 
- .controller('ticketManageController', ['$scope', 'Tickets', function ($scope, Tickets) {
-     $scope.closeTickets = Tickets.query({ status: 2 });
-     $scope.pendingTickets = Tickets.query({ status: 1 });
-
-     $scope.DisableTicket = function ($tid) {
-         var ticket = new Tickets({ status: 2 });
-         Tickets.update({ id: $tid }, ticket);
-         $scope.closeTickets = Tickets.query({ status: 2 });
-         $scope.pendingTickets = Tickets.query({ status: 1 });
-     }
-
-     $scope.EnableTicket = function ($tid) {
-         var ticket = new Tickets({ status: 1 });
-         Tickets.update({ id: $tid }, ticket);
-         $scope.closeTickets = Tickets.query({ status: 2 });
-         $scope.pendingTickets = Tickets.query({ status: 1 });
-     }
-
- }])
+ .controller('ticketManageController', ['$scope', 'Users', 'AssetSheets', 'Offers', function ($scope, Users, AssetSheets, Offers) {
+     $scope.tickets = Offers.query({status: 2}, function (data) {
+         for (i = 0; i < $scope.tickets.length; ++i) {
+             var sid = $scope.tickets[i].sheetId;
+             $scope.tickets[i].assetSheet = AssetSheets.query({ _id: sid });
+             var uid = $scope.tickets[i].createdById;
+             $scope.tickets[i].user = Users.query({ _id: uid });
+             _dicts.translateOne($scope.tickets[i], 'status', 'offerStatus');
+         }
+     });
+ }]);
