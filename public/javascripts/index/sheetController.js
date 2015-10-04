@@ -60,7 +60,8 @@
             { headerName: "单价", field: "unitPrice", hide: true },
             { headerName: "小计", field: "subTotalprice", hide: true },
             { headerName: "报价", field: "offerUnitPrice", editable: true, cellStyle: { "background-color": "yellow" }, cellValueChanged: cellValueChanged, hide: !$scope.isLogin },
-            { headerName: "小计", field: "offerSubTotalprice", volatile: true, hide: !$scope.isLogin }
+            { headerName: "小计", field: "offerSubTotalprice", volatile: true, hide: !$scope.isLogin },
+            { headerName: "备注", field: "description", editable: true}
         ];
 
         function cellValueChangedFunction() {
@@ -85,7 +86,7 @@
                 { id: $scope.id },
                 function (data) {
                     _dicts.translate(data.assets, 'category', 'assetCategory');
-                    _dicts.translate(data, ['payMethod', 'dealRule', 'status'], ['payMethod', 'dealRule', 'sheetStatus']);
+                    _dicts.translate(data, ['payMethod', 'cleanUpMethod', 'dealRule', 'status'], ['payMethod', 'cleanUpMethod', 'dealRule', 'sheetStatus']);
 
                     for (var i = data.assets.length - 1; i >= 0; i--) {
                         if (data.assets[i] == null) {
@@ -105,6 +106,7 @@
                                     for (var i = 0; i < $scope.sheet.assets.length && i < offer.assets.length; i++) {
                                         if ($scope.sheet.assets[i] && offer.assets[i]) {
                                             $scope.sheet.assets[i].offerUnitPrice = offer.assets[i].price;
+                                            $scope.sheet.assets[i].description = offer.assets[i].description;
                                             $scope.sheet.assets[i].offerSubTotalprice = $scope.sheet.assets[i].number * $scope.sheet.assets[i].offerUnitPrice || 0;
                                         }
                                     }
@@ -130,7 +132,7 @@
         var offer = new Offer({ sheetId: $scope.sheet._id, price: $scope.sheet.offerTotalPrice, assets: [], createdById: $rootScope.user._id });
         $scope.sheet.assets.forEach(function (value, index) {
             if (value) {
-                offer.assets.push({ _id: value._id, price: value.offerUnitPrice });
+                offer.assets.push({ _id: value._id, price: value.offerUnitPrice, description: value.description });
             }
         });
  

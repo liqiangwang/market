@@ -1,6 +1,7 @@
 ﻿app.controller('SheetController', ['$scope', '$rootScope', '$location', '$routeParams', 'AssetSheet', function ($scope, $rootScope, $location, $routeParams, AssetSheet) {
     $scope.id = $routeParams.id;
     $scope.payMethods = _dicts.payMethod;
+    $scope.cleanUpMethods = _dicts.cleanUpMethod;
     $scope.dealRules = _dicts.dealRule;
     $scope.assetCategory = _dicts.assetCategory
     $scope.sheet = { assets: [] };

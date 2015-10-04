@@ -1,4 +1,4 @@
-﻿app.controller('OffersController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer) {
+﻿app.controller('OffersController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', 'User', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer, User) {
     $scope.init = function () {
         $scope.query();
     }
@@ -27,6 +27,49 @@
             });
     }
 
+    function createOfferDetailTable() {
+        var columnDefs = [
+            { headerName: "类别", field: "categoryText" },
+            { headerName: "品牌", field: "brand" },
+            { headerName: "型号", field: "serial" },
+            { headerName: "CPU", field: "cpu" },
+            { headerName: "内存", field: "memory" },
+            { headerName: "硬盘", field: "harddisk" },
+            { headerName: "其他配件", field: "other" },
+            { headerName: "状态", field: "working" },
+            { headerName: "数量", field: "number" },
+            { headerName: "报价", field: "price", cellStyle: { "color": "red" } },
+            { headerName: "备注", field: "description" }
+        ];
+
+        $scope.offerGridOptions = {
+            columnDefs: columnDefs,
+            rowData: null,
+            dontUseScrolls: false,
+            enableColResize: true,
+            angularCompileRows: true,
+            ready: function (event) {
+                event.api.sizeColumnsToFit();
+            }
+        };
+    }
+
+    function showOffers(sheetId, assets) {
+        AssetSheet.query({ _id: sheetId }, function (data) {
+            _dicts.translate(data[0].assets, 'category', 'assetCategory');
+            for (var i = 0; i < data[0].assets.length; i++) {
+                data[0].assets[i].price = assets[i].price;
+                data[0].assets[i].description = assets[i].description;
+            }
+            $scope.offerGridOptions.api.setRows(data[0].assets);
+            $scope.offerGridOptions.api.sizeColumnsToFit();
+     },
+     function (response) { // error case
+         _helper.showHttpError(response);
+     });
+
+    }
+
     $scope.query = function () {
         var columnDefs = [
             { headerName: "名称", template: "{{data.sheet.name}}" },
@@ -46,6 +89,25 @@
             rowData: null,
             dontUseScrolls: false,
             enableColResize: true,
+            rowSelection: 'single',
+            rowSelected: function rowSelectedFunc(row) {
+                var data = row.node.data;
+                if (data.assets) {
+                    for (var i = data.assets.length - 1; i >= 0; i--) {
+                        if (data.assets[i] == null) {
+                            data.assets.splice(i, 1);
+                        }
+                    }
+                }
+                $scope.hasAsset = data && data.assets && data.assets.length > 0;
+                if ($scope.hasAsset) {
+                    _dicts.translate(data.assets, 'category', 'assetCategory');
+                    $scope.offerGridOptions.api.setRows(data.assets);
+                    $scope.offerGridOptions.api.sizeColumnsToFit();
+                }
+                showOffers(data.sheetId, data.assets);
+                $scope.offerSelected = true;
+            },
             //enableFilter: true,
             ready: function (event) {
                 event.api.sizeColumnsToFit();
@@ -72,6 +134,6 @@
                 _helper.showHttpError(response);
             });
 
-
+        createOfferDetailTable();
     }
 }]);

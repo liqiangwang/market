@@ -57,6 +57,12 @@
                 <input type="checkbox" id="needDataCleanup" ng-model="sheet.needDataCleanup" />
                 说明：数据销毁服务由平台提供，收费标准说明
             </div>
+            <div class="col-sm-10" ng-show="sheet.needDataCleanup == true">
+                <p ng-repeat="(key, value) in cleanUpMethods">
+                    <input type="radio" name="cleanUpMethod" ng-model="sheet.cleanUpMethod" value="{{key}}">
+                    {{value}}
+                </p>
+             </div>
         </div>
         <!--<div class="form-group" style="vertical-align:middle;">
             <label for="calculatedTotalPrice" class="col-sm-2 control-label">总价格(基于明细汇总)</label>

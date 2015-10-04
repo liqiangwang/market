@@ -11,6 +11,7 @@ var AssetSheetSchema = new mongoose.Schema({
     dealRule: Number, // dict
     requireCertificate: Boolean,
     needDataCleanup: Boolean,
+    cleanUpMethod: Number,
     totalPrice: Number,
     assets: Array,  // TODO: use [Asset] to enforce validation
     updatedAt: { type: Date, default: Date.now },

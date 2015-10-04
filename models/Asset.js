@@ -13,6 +13,7 @@ var AssetSchema = new mongoose.Schema({
     accessory: String,
     working: Boolean,
     price: Number,
+    description: String,
     //photoPath: String,
     updatedAt: { type: Date, default: Date.now },
     followUps: Number,
