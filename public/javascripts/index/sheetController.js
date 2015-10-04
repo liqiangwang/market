@@ -3,8 +3,10 @@
     $scope.isLogin = $rootScope.user != null;
 
     $scope.hasDuplicate = false;
+    $scope.fillData = false;
 
     function cellValueChanged(cell) {
+        $scope.fillData = true;
         var row = $scope.gridOptions.rowData[cell.rowIndex];
         row.offerSubTotalprice = row.number * row.offerUnitPrice || 0;
 

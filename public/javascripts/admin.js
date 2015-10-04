@@ -41,7 +41,7 @@ app.config(function ($routeProvider) {
         })
 });
 
-app.controller('UserController', function ($scope, $cookieStore, $window, $rootScope) {
+app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope', '$route', '$window', function ($scope, Users, $cookieStore, $rootScope, $route, $window) {
     $scope.init = function () {
         var user = $cookieStore.get("user");
         if (user) {
@@ -54,15 +54,61 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
             //$window.location.href = "index.html";
         }
     }
-})
 
-.factory('Users', ['$resource', function ($resource) {
+    $scope.register = function () {
+        if (!$scope.alias || !$scope.password) return;
+        var user = new Users({ alias: $scope.alias, password: $scope.password });
+
+        user.$save(function () {
+            $scope.user = user;
+            $rootScope.user = user;
+            $cookieStore.put("user", user);
+            $window.location.reload();
+        },
+        function (error) {
+            alert(error.statusText + '(' + error.status + ')\r\n\r\n' + error.data);
+        });
+    }
+
+    $scope.login = function () {
+        Users.query({ alias: $scope.alias, password: $scope.password }
+             , function (users) {
+                 if (users.length == 0) {
+                     $scope.loginFailed = true;
+                 }
+                 else {
+                     $scope.loginFailed = false;
+                     $cookieStore.put("user", users[0]);
+                     $scope.user = users[0];
+                     //$rootScope.user = $scope.user;
+                     //$route.reload(); //load content in ng-view page
+                     $window.location.reload();
+                 }
+             }
+             , function (error) {
+                 alert(error.statusText + '(' + error.status + ')\r\n\r\n' + error.data);
+             }
+             );
+    }
+
+    $scope.logout = function () {
+        $scope.isLogin = false;
+        $scope.user = null;
+        $cookieStore.remove('user');
+    }
+
+    $scope.show = function (show) {
+        $scope.show = show;
+    }
+}]);
+
+app.factory('Users', ['$resource', function ($resource) {
     return $resource('/api/users/:id', null, {
         'update': { method: 'PUT' }
     });
 }])
 
-.controller('userManageController', ['$scope', 'Users', function ($scope, Users) {
+app.controller('userManageController', ['$scope', 'Users', function ($scope, Users) {
     $scope.users = Users.query(function (data) {
         $scope.users.forEach(function (value, index) {
             $scope.users[index].statusCode = $scope.users[index].status;
@@ -93,13 +139,13 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
     }
 }])
 
-.factory('AssetSheets', ['$resource', function ($resource) {
+app.factory('AssetSheets', ['$resource', function ($resource) {
     return $resource('/api/assetSheets/:id', null, {
         'update': { method: 'PUT' }
     });
 }])
 
- .controller('assetSheetManageController', ['$scope', 'Users', 'AssetSheets', function ($scope, Users, AssetSheets) {
+app.controller('assetSheetManageController', ['$scope', 'Users', 'AssetSheets', function ($scope, Users, AssetSheets) {
      $scope.assetSheets = AssetSheets.query(null, function (data) {
          for (i = 0; i < $scope.assetSheets.length; ++i) {
              var uid = $scope.assetSheets[i].createdById;
@@ -136,7 +182,7 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
      }
  }])
 
- .controller('assetSheetDetailController', ['$scope', '$routeParams', 'AssetSheets', '$location', function ($scope, $routeParams, AssetSheets, $location) {
+app.controller('assetSheetDetailController', ['$scope', '$routeParams', 'AssetSheets', '$location', function ($scope, $routeParams, AssetSheets, $location) {
      $scope.assetSheet = AssetSheets.get({ id: $routeParams.id }, function (data) {
          $scope.assetSheet.assets.forEach(function (value, index) {
              _dicts.translateOne($scope.assetSheet.assets[index], 'category', 'assetCategory');
@@ -144,13 +190,13 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
      });
  }])
 
-  .factory('Offers', ['$resource', function ($resource) {
+app.factory('Offers', ['$resource', function ($resource) {
       return $resource('/api/offers/:id', null, {
           'update': { method: 'PUT' }
       });
   }])
 
- .controller('offerManageController', ['$scope', 'Users', 'AssetSheets', 'Offers', function ($scope, Users, AssetSheets, Offers) {
+app.controller('offerManageController', ['$scope', 'Users', 'AssetSheets', 'Offers', function ($scope, Users, AssetSheets, Offers) {
      $scope.offers = Offers.query(null, function (data) {
          for (i = 0; i < $scope.offers.length; ++i) {
              var sid = $scope.offers[i].sheetId;
@@ -175,7 +221,7 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
 
  }])
 
-.controller('offerDetailController', ['$scope', 'AssetSheets', '$routeParams', 'Offers', '$location', function ($scope, AssetSheets, $routeParams, Offers, $location) {
+app.controller('offerDetailController', ['$scope', 'AssetSheets', '$routeParams', 'Offers', '$location', function ($scope, AssetSheets, $routeParams, Offers, $location) {
     $scope.offer = Offers.query({ _id: $routeParams.id }, function (data) {
         var sid = data[0].sheetId;
         $scope.offer.assetss = AssetSheets.query({ _id: sid }, function (data) {
@@ -186,17 +232,17 @@ app.controller('UserController', function ($scope, $cookieStore, $window, $rootS
     });
 }])
 
-.controller('offerItemDetailController', ['$scope', '$routeParams', 'Offers', '$location', function ($scope, $routeParams, Offers, $location) {
+app.controller('offerItemDetailController', ['$scope', '$routeParams', 'Offers', '$location', function ($scope, $routeParams, Offers, $location) {
     $scope.offers = Offers.query({ _id: $routeParams.id });
 }])
 
- .factory('Offers', ['$resource', function ($resource) {
+app.factory('Offers', ['$resource', function ($resource) {
      return $resource('/api/offers/:id', null, {
          'update': { method: 'PUT' }
      });
  }])
 
- .controller('ticketManageController', ['$scope', 'Users', 'AssetSheets', 'Offers', function ($scope, Users, AssetSheets, Offers) {
+app.controller('ticketManageController', ['$scope', 'Users', 'AssetSheets', 'Offers', function ($scope, Users, AssetSheets, Offers) {
      $scope.tickets = Offers.query({status: 2}, function (data) {
          for (i = 0; i < $scope.tickets.length; ++i) {
              var sid = $scope.tickets[i].sheetId;

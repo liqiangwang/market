@@ -19,9 +19,9 @@
 </head>
 <body ng-controller="UserController" ng-init="init()">
     <div ng-show="!isLogin">
-        请先登录，然后进入个人空间。<a href="index.html">登录</a>
+        请先登录，然后进行相关操作。</a>
     </div>
-    <div ng-show="isLogin">
+    <div>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
@@ -40,13 +40,71 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="index.html">交易场</a></li>
                         <li><a href="#">{{user.alias}}</a></li>
+                        <li ng-show="isLogin"><a href="#" ng-click="logout();">退出</a></li>
+                        <li ng-show="!isLogin" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">登录</a>
+                            <ul class="dropdown-menu" ng-show="show">
+                                <div class="container" style="display: block;max-width:500px;">
+                                    <!--<span class="caret x-large up"></span>-->
+                                    <form name="loginForm" novalidate>
+                                        <div class="form-group">
+                                            <span class="h3">登录</span>
+                                        </div>
+                                        <div class="error-container">
+                                            <small class="error"
+                                                   ng-show="loginFailed">
+                                                用户名或密码不对。
+                                            </small>
+                                        </div>
+                                        <div class="form-group">
+                                            <input name="mail" class="form-control input-lg" id="edit-mail" type="text" size="60" maxlength="128" placeholder="手机号码、邮箱或用户名" value="" ng-model="alias" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input name="pass" class="form-control input-lg" id="edit-pass" type="password" size="60" maxlength="128" placeholder="密码" ng-model="password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input name="op" class="btn btn-default" type="submit" value="登录" ng-click="login();">
+                                            <!--<input name="op" class="btn btn-default" type="button" value="取消" ng-click="show(false)">-->
+                                            <span class="pull-right"><a href="#">忘记密码?</a></span>
+                                        </div>
+                                    </form>
+                                </div>
+                            </ul>
+
+                        </li>
+                        <li ng-show="!isLogin" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">注册</a>
+                            <ul class="dropdown-menu" ng-show="show">
+                                <div class="container" style="display: block;max-width:500px;" id="divRegister">
+                                    <!--<span class="caret x-large up"></span>-->
+                                    <form novalidate>
+                                        <div class="form-group">
+                                            <span class="h3">注册</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <input name="mail" class="form-control input-lg" id="edit-mail" type="text" size="60" maxlength="128" placeholder="手机号码、邮箱或用户名" value="" ng-model="alias" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input name="pass" class="form-control input-lg" id="edit-pass" type="password" size="60" maxlength="128" placeholder="密码" ng-model="password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input name="pass" class="form-control input-lg" id="edit-pass" type="password" size="60" maxlength="128" placeholder="确认密码" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input name="op" class="btn btn-default" type="submit" value="注册" ng-click="register();">
+                                        </div>
+                                    </form>
+                                </div>
+                            </ul>
+                        </li>
                     </ul>
+
 
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
         <!-- http://getbootstrap.com/css/ Stacked-to-horizontal-->
-        <div class="container-fluid">
+        <div class="container-fluid" ng-show="isLogin">
             <div class="row">
                 <div class="col-xs-2 col-md-2">
                     <ul class="nav nav-stacks">

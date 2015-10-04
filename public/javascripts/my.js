@@ -86,6 +86,11 @@ app.factory('Offer', ['$resource', function ($resource) {
     });
 }]);
 
+app.factory('User', ['$resource', function ($resource) {
+    return $resource('/api/users/:id', null, {
+        'update': { method: 'PUT' }
+    });
+}])
 
 
 app.controller('SavedController', function ($scope) {
