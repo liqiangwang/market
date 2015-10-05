@@ -29,7 +29,7 @@
             { headerName: "总价格", template: "{{data.totalPrice|currency:'￥'}}", cellStyle: { "text-align": "right" }, hide: true },
             //{ headerName: "状态", field: "statusText" },
             { headerName: "", template: "<a href='#/{{data._id}}'>详细信息</a>", cellStyle: { "text-align": "center" }, width: 90, suppressSizeToFit: true },
-            { headerName: "", template: "<a href='#/{{data._id}}'>竞价</a>", cellStyle: { "text-align": "center" }, width: 50, suppressSizeToFit: true, hide: !$scope.isLogin }
+            { headerName: "", field: "desc", cellStyle: { "text-align": "center" }, width: 90, suppressSizeToFit: true, hide: !$scope.isLogin }
         ];
 
         $scope.gridOptions = {
@@ -56,6 +56,14 @@
                 $scope.hasAssetSheet = data.length > 0;
                 if ($scope.hasAssetSheet) {
                     _dicts.translate(data, ['payMethod', 'dealRule'], ['payMethod', 'dealRule']);
+                    data.forEach(function (value, index) {
+                        if (value.createdById == $rootScope.user._id) {
+                            value.desc = '我的发布';
+                        }
+                        else {
+                            value.desc = "<a href='#/{{data._id}}'>竞价</a>";
+                        }
+                    });
                     $scope.gridOptions.rowData = data;
                     $scope.gridOptions.api.onNewRows();
                 }

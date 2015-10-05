@@ -18,7 +18,7 @@
                     <!--<td>{{offer}}</td>-->
                     <td><a href="#/assetSheets/{{offer.sheetId}}">{{offer.assetSheet[0].name}}</a></td>
                     <td>{{offer.price}}</td>
-                    <td>{{offer.user[0].alias}}</td>
+                    <td><a href="#/users/{{offer.user[0]._id}}">{{offer.user[0].alias}}</a></td>
                     <td>{{offer.updatedAt}}</td>
                     <td>{{offer.status}}</td>
                     <td><a href="#/offers/{{offer._id}}">详情</a></td>

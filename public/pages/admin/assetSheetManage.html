@@ -20,13 +20,13 @@
             <tbody>
                 <tr ng-repeat="assetSheet in assetSheets">
                     <td><a href="#/assetSheets/{{assetSheet._id}}">{{assetSheet.name}}</a></td>
-                    <td>{{assetSheet.user[0].alias}}</td>
+                    <td><a href="#/users/{{assetSheet.user[0]._id}}">{{assetSheet.user[0].alias}}</a></td>
                     <td>{{assetSheet.planningDeliveryTime}}</td>
                     <td>{{assetSheet.planningDeliveryAddress}}</td>
                     <td>{{assetSheet.dealRule}}</td>
                     <td>{{assetSheet.payMethod}}</td>
-                    <td>{{assetSheet.needDataCleanup}}</td>
-                    <td>{{assetSheet.requireCertificate}}</td>
+                    <td><span ng-show="{{assetSheet.needDataCleanup}} == true" class="glyphicon glyphicon-ok"></span><span ng-show="{{assetSheet.needDataCleanup}} == false" class="glyphicon glyphicon-remove"></span></td>
+                    <td><span ng-show="{{assetSheet.requireCertificate}} == true" class="glyphicon glyphicon-ok"></span><span ng-show="{{assetSheet.requireCertificate}} == false" class="glyphicon glyphicon-remove"></span></td>
                     <td>{{assetSheet.updatedAt}}</td>
                     <td>{{assetSheet.status}}</td>
                     <td>

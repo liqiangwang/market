@@ -1,5 +1,4 @@
 ﻿<fieldset>
-    <div class="alert alert-info" role="alert">用户列表</div>
     <div>
         <table class="table  table-hover table-striped">
             <thead style="font-weight:bold;">
@@ -14,14 +13,14 @@
             </thead>
             <tbody>
                 <tr ng-repeat="user in users">
-                    <td><a href="#/users/{{user._id}}">{{user.alias}}</a></td>
+                    <td>{{user.alias}}</td>
                     <td>{{user.email}}</td>
                     <td>{{user.phone}}</td>
                     <td>{{user.updatedAt}}</td>
                     <td>{{user.status}}</td>
                     <td>
                         <button ng-show="{{user.statusCode}}==1" ng-click="LockUser(user._id, $index)" class="btn btn-primary">锁定</button>
-                        <button ng-show="{{user.statusCode}}==2"  ng-click="EnableUser(user._id, $index)" class="btn btn-primary">解锁</button>
+                        <button ng-show="{{user.statusCode}}==2" ng-click="EnableUser(user._id, $index)" class="btn btn-primary">解锁</button>
                     </td>
                 </tr>
             </tbody>

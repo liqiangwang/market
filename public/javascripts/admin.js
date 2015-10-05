@@ -30,6 +30,10 @@ app.config(function ($routeProvider) {
              templateUrl: 'pages/admin/offerManage.html',
              controller: 'offerItemDetailController'
          })
+         .when('/users/:id', {
+              templateUrl: 'pages/admin/userInfo.html',
+              controller: 'userManageController'
+          })
         //.otherwise({
         //    // when all else fails
         //    templateUrl: 'pages/routeNotFound.html',
@@ -108,8 +112,12 @@ app.factory('Users', ['$resource', function ($resource) {
     });
 }])
 
-app.controller('userManageController', ['$scope', 'Users', function ($scope, Users) {
-    $scope.users = Users.query(function (data) {
+app.controller('userManageController', ['$scope', '$routeParams', 'Users', function ($scope, $routeParams, Users) {
+    var condition = null;
+    if ($routeParams.id) {
+        condition = { _id: $routeParams.id };
+    }
+    $scope.users = Users.query(condition, function (data) {
         $scope.users.forEach(function (value, index) {
             $scope.users[index].statusCode = $scope.users[index].status;
             _dicts.translateOne($scope.users[index], 'status', 'userStatus');
@@ -119,7 +127,11 @@ app.controller('userManageController', ['$scope', 'Users', function ($scope, Use
     $scope.EnableUser = function ($uid, $index) {
         var user = new Users({ status: 1 });
         Users.update({ id: $uid }, user);
-        $scope.users = Users.query(function (data) {
+        var condition = null;
+        if ($routeParams.id) {
+            condition = { _id: $routeParams.id };
+        }
+        $scope.users = Users.query(condition, function (data) {
             $scope.users.forEach(function (value, index) {
                 $scope.users[index].statusCode = $scope.users[index].status;
                 _dicts.translateOne($scope.users[index], 'status', 'userStatus');
@@ -130,7 +142,11 @@ app.controller('userManageController', ['$scope', 'Users', function ($scope, Use
     $scope.LockUser = function ($uid, $index) {
         var user = new Users({ status: 2 });
         Users.update({ id: $uid }, user);
-        $scope.users = Users.query(function (data) {
+        var condition = null;
+        if ($routeParams.id) {
+            condition = { _id: $routeParams.id };
+        }
+        $scope.users = Users.query(condition, function (data) {
             $scope.users.forEach(function (value, index) {
                 $scope.users[index].statusCode = $scope.users[index].status;
                 _dicts.translateOne($scope.users[index], 'status', 'userStatus');
@@ -146,80 +162,80 @@ app.factory('AssetSheets', ['$resource', function ($resource) {
 }])
 
 app.controller('assetSheetManageController', ['$scope', 'Users', 'AssetSheets', function ($scope, Users, AssetSheets) {
-     $scope.assetSheets = AssetSheets.query(null, function (data) {
-         for (i = 0; i < $scope.assetSheets.length; ++i) {
-             var uid = $scope.assetSheets[i].createdById;
-             $scope.assetSheets[i].user = Users.query({ _id: uid });
-             $scope.assetSheets[i].statusCode = $scope.assetSheets[i].status;
-             _dicts.translateOne($scope.assetSheets[i], 'status', 'sheetStatus');
-         }
-     });
+    $scope.assetSheets = AssetSheets.query(null, function (data) {
+        for (i = 0; i < $scope.assetSheets.length; ++i) {
+            var uid = $scope.assetSheets[i].createdById;
+            $scope.assetSheets[i].user = Users.query({ _id: uid });
+            $scope.assetSheets[i].statusCode = $scope.assetSheets[i].status;
+            _dicts.translateOne($scope.assetSheets[i], 'status', 'sheetStatus');
+        }
+    });
 
-     $scope.RejectAssetSheet = function ($aid) {
-         var assetSheet = new AssetSheets({ status: 4 });
-         AssetSheets.update({ id: $aid }, assetSheet);
-         $scope.assetSheets = AssetSheets.query(null, function (data) {
-             for (i = 0; i < $scope.assetSheets.length; ++i) {
-                 var uid = $scope.assetSheets[i].createdById;
-                 $scope.assetSheets[i].user = Users.query({ _id: uid });
-                 $scope.assetSheets[i].statusCode = $scope.assetSheets[i].status;
-                 _dicts.translateOne($scope.assetSheets[i], 'status', 'sheetStatus');
-             }
-         });
-     }
+    $scope.RejectAssetSheet = function ($aid) {
+        var assetSheet = new AssetSheets({ status: 4 });
+        AssetSheets.update({ id: $aid }, assetSheet);
+        $scope.assetSheets = AssetSheets.query(null, function (data) {
+            for (i = 0; i < $scope.assetSheets.length; ++i) {
+                var uid = $scope.assetSheets[i].createdById;
+                $scope.assetSheets[i].user = Users.query({ _id: uid });
+                $scope.assetSheets[i].statusCode = $scope.assetSheets[i].status;
+                _dicts.translateOne($scope.assetSheets[i], 'status', 'sheetStatus');
+            }
+        });
+    }
 
-     $scope.AcceptAssetSheet = function ($aid) {
-         var assetSheet = new AssetSheets({ status: 3 });
-         AssetSheets.update({ id: $aid }, assetSheet);
-         $scope.assetSheets = AssetSheets.query(null, function (data) {
-             for (i = 0; i < $scope.assetSheets.length; ++i) {
-                 var uid = $scope.assetSheets[i].createdById;
-                 $scope.assetSheets[i].user = Users.query({ _id: uid });
-                 $scope.assetSheets[i].statusCode = $scope.assetSheets[i].status;
-                 _dicts.translateOne($scope.assetSheets[i], 'status', 'sheetStatus');
-             }
-         });
-     }
- }])
+    $scope.AcceptAssetSheet = function ($aid) {
+        var assetSheet = new AssetSheets({ status: 3 });
+        AssetSheets.update({ id: $aid }, assetSheet);
+        $scope.assetSheets = AssetSheets.query(null, function (data) {
+            for (i = 0; i < $scope.assetSheets.length; ++i) {
+                var uid = $scope.assetSheets[i].createdById;
+                $scope.assetSheets[i].user = Users.query({ _id: uid });
+                $scope.assetSheets[i].statusCode = $scope.assetSheets[i].status;
+                _dicts.translateOne($scope.assetSheets[i], 'status', 'sheetStatus');
+            }
+        });
+    }
+}])
 
 app.controller('assetSheetDetailController', ['$scope', '$routeParams', 'AssetSheets', '$location', function ($scope, $routeParams, AssetSheets, $location) {
-     $scope.assetSheet = AssetSheets.get({ id: $routeParams.id }, function (data) {
-         $scope.assetSheet.assets.forEach(function (value, index) {
-             _dicts.translateOne($scope.assetSheet.assets[index], 'category', 'assetCategory');
-         });
-     });
- }])
+    $scope.assetSheet = AssetSheets.get({ id: $routeParams.id }, function (data) {
+        $scope.assetSheet.assets.forEach(function (value, index) {
+            _dicts.translateOne($scope.assetSheet.assets[index], 'category', 'assetCategory');
+        });
+    });
+}])
 
 app.factory('Offers', ['$resource', function ($resource) {
-      return $resource('/api/offers/:id', null, {
-          'update': { method: 'PUT' }
-      });
-  }])
+    return $resource('/api/offers/:id', null, {
+        'update': { method: 'PUT' }
+    });
+}])
 
 app.controller('offerManageController', ['$scope', 'Users', 'AssetSheets', 'Offers', function ($scope, Users, AssetSheets, Offers) {
-     $scope.offers = Offers.query(null, function (data) {
-         for (i = 0; i < $scope.offers.length; ++i) {
-             var sid = $scope.offers[i].sheetId;
-             $scope.offers[i].assetSheet = AssetSheets.query({ _id: sid });
-             var uid = $scope.offers[i].createdById;
-             $scope.offers[i].user = Users.query({ _id: uid });
-             _dicts.translateOne($scope.offers[i], 'status', 'offerStatus');
-         }
-     });
+    $scope.offers = Offers.query(null, function (data) {
+        for (i = 0; i < $scope.offers.length; ++i) {
+            var sid = $scope.offers[i].sheetId;
+            $scope.offers[i].assetSheet = AssetSheets.query({ _id: sid });
+            var uid = $scope.offers[i].createdById;
+            $scope.offers[i].user = Users.query({ _id: uid });
+            _dicts.translateOne($scope.offers[i], 'status', 'offerStatus');
+        }
+    });
 
-     $scope.DisableBid = function ($offer) {
-         var offer = new Offers({ status: 0 });
-         Offers.update({ id: $offer }, offer);
-         $scope.offers = Offers.query();
-     }
+    $scope.DisableBid = function ($offer) {
+        var offer = new Offers({ status: 0 });
+        Offers.update({ id: $offer }, offer);
+        $scope.offers = Offers.query();
+    }
 
-     $scope.EnableBid = function ($offer) {
-         var offer = new Offers({ status: 1 });
-         Offers.update({ id: $offer }, offer);
-         $scope.offers = Offers.query();
-     }
+    $scope.EnableBid = function ($offer) {
+        var offer = new Offers({ status: 1 });
+        Offers.update({ id: $offer }, offer);
+        $scope.offers = Offers.query();
+    }
 
- }])
+}])
 
 app.controller('offerDetailController', ['$scope', 'AssetSheets', '$routeParams', 'Offers', '$location', function ($scope, AssetSheets, $routeParams, Offers, $location) {
     $scope.offer = Offers.query({ _id: $routeParams.id }, function (data) {
@@ -237,19 +253,23 @@ app.controller('offerItemDetailController', ['$scope', '$routeParams', 'Offers',
 }])
 
 app.factory('Offers', ['$resource', function ($resource) {
-     return $resource('/api/offers/:id', null, {
-         'update': { method: 'PUT' }
-     });
- }])
+    return $resource('/api/offers/:id', null, {
+        'update': { method: 'PUT' }
+    });
+}])
 
 app.controller('ticketManageController', ['$scope', 'Users', 'AssetSheets', 'Offers', function ($scope, Users, AssetSheets, Offers) {
-     $scope.tickets = Offers.query({status: 2}, function (data) {
-         for (i = 0; i < $scope.tickets.length; ++i) {
-             var sid = $scope.tickets[i].sheetId;
-             $scope.tickets[i].assetSheet = AssetSheets.query({ _id: sid });
-             var uid = $scope.tickets[i].createdById;
-             $scope.tickets[i].user = Users.query({ _id: uid });
-             _dicts.translateOne($scope.tickets[i], 'status', 'offerStatus');
-         }
-     });
- }]);
+    $scope.tickets = Offers.query({ status: 2 }, function (data) {
+        for (i = 0; i < $scope.tickets.length; ++i) {
+            var sid = $scope.tickets[i].sheetId;
+            $scope.tickets[i].assetSheet = AssetSheets.query({ _id: sid }, function (assets) {
+                assets.forEach(function (value, index) {
+                    value.user = Users.query({ _id: value.createdById });
+                })
+            });
+            var uid = $scope.tickets[i].createdById;
+            $scope.tickets[i].buyer = Users.query({ _id: uid });
+            _dicts.translateOne($scope.tickets[i], 'status', 'offerStatus');
+        }
+    });
+}]);
