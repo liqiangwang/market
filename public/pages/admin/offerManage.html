@@ -6,6 +6,7 @@
                 <tr>
                     <!--<td>ID</td>-->
                     <td>竞价资产</td>
+                    <td>发布人</td>
                     <td>报价总价</td>
                     <td>报价人</td>
                     <td>报价时间</td>
@@ -17,6 +18,7 @@
                 <tr ng-repeat="offer in offers">
                     <!--<td>{{offer}}</td>-->
                     <td><a href="#/assetSheets/{{offer.sheetId}}">{{offer.assetSheet[0].name}}</a></td>
+                    <td><a href="#/users/{{offer.assetSheet[0].user[0]._id}}">{{offer.assetSheet[0].user[0].alias}}</a></td>
                     <td>{{offer.price}}</td>
                     <td><a href="#/users/{{offer.user[0]._id}}">{{offer.user[0].alias}}</a></td>
                     <td>{{offer.updatedAt}}</td>

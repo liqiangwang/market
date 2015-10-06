@@ -127,7 +127,7 @@ app.controller('AuctionsController', ['$scope', '$rootScope', 'AssetSheet', 'Off
 
     function createOfferTable() {
         var columnDefs = [
-            { headerName: "报价编号", template: "{{data.user[0].alias}}" },
+            { headerName: "报价人", template: "{{data.user[0].alias}}" },
             { headerName: "总价格", template: "{{data.price|currency:'￥'}}", cellStyle: { "text-align": "right" } },
             { headerName: "报价时间", field: "updatedAt" },
             { headerName: "状态", field: "statusText" }

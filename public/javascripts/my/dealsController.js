@@ -1,4 +1,4 @@
-﻿app.controller('DealsController', ['$scope', '$rootScope', 'AssetSheet', 'Offer', 'ngDialog', '$location', function ($scope, $rootScope, AssetSheet, Offer, ngDialog, $location) {
+﻿app.controller('DealsController', ['$scope', '$rootScope', 'AssetSheet', 'Offer', 'User', 'ngDialog', '$location', function ($scope, $rootScope, AssetSheet, Offer, User, ngDialog, $location) {
     $scope.init = function () {
         $scope.query();
     }
@@ -101,7 +101,7 @@
 
     function createOfferTable() {
         var columnDefs = [
-            { headerName: "报价编号", field: "_id" },
+            { headerName: "报价人", template: "{{data.user[0].alias}}" },
             { headerName: "总价格", template: "{{data.price|currency:'￥'}}", cellStyle: { "text-align": "right" } },
             { headerName: "报价时间", field: "updatedAt" },
             { headerName: "状态", field: "statusText" }
@@ -129,6 +129,12 @@
                 $scope.hasOffer = data.length > 0;
                 if ($scope.hasOffer) {
                     _dicts.translate(data, ['status'], ['offerStatus']);
+
+                    for (i = 0; i < data.length; ++i) {
+                        var uid = data[i].createdById;
+                        data[i].user = User.query({ _id: uid });
+                    }
+
                     $scope.offerGridOptions.rowData = data;
                     $scope.offerGridOptions.api.onNewRows();
                 }

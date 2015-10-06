@@ -216,7 +216,11 @@ app.controller('offerManageController', ['$scope', 'Users', 'AssetSheets', 'Offe
     $scope.offers = Offers.query(null, function (data) {
         for (i = 0; i < $scope.offers.length; ++i) {
             var sid = $scope.offers[i].sheetId;
-            $scope.offers[i].assetSheet = AssetSheets.query({ _id: sid });
+            $scope.offers[i].assetSheet = AssetSheets.query({ _id: sid }, function (assets) {
+                assets.forEach(function (value, index) {
+                    value.user = Users.query({ _id: value.createdById });
+                })
+            });
             var uid = $scope.offers[i].createdById;
             $scope.offers[i].user = Users.query({ _id: uid });
             _dicts.translateOne($scope.offers[i], 'status', 'offerStatus');
