@@ -1,9 +1,11 @@
-﻿app.controller('SheetController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer) {
+﻿app.controller('SheetController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', 'Message', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer, Message) {
     $scope.id = $routeParams.id;
     $scope.isLogin = $rootScope.user != null;
 
     $scope.hasDuplicate = false;
     $scope.fillData = false;
+    $scope.sendEmail = false;
+    $scope.sendEmailSuccessfull = false;
 
     function cellValueChanged(cell) {
         $scope.fillData = true;
@@ -156,5 +158,19 @@
                       _helper.showHttpError(response);
                   });
         }
+    };
+
+    $scope.email = function () {
+        $scope.sendEmail = true;
+    };
+
+    $scope.send = function (toId) {
+        var message = new Message({ senderId: $rootScope.user._id, receiverId: toId, topic: $scope.topic, content: $scope.content, status: 1 });
+        message.$save(function () {
+            $scope.sendEmailSuccessfull = true;
+        },
+        function (response) { // error case
+            _helper.showHttpError(response);
+        });
     };
 }]);

@@ -47,6 +47,10 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/my/profile.html',
             controller: 'ProfileController'
         })
+        .when('/messages', {
+            templateUrl: 'pages/my/messages.html',
+            controller: 'MessageController'
+        })
         //.otherwise({
         //    // when all else fails
         //    templateUrl: 'pages/routeNotFound.html',
@@ -91,6 +95,12 @@ app.factory('User', ['$resource', function ($resource) {
         'update': { method: 'PUT' }
     });
 }])
+
+app.factory('Message', ['$resource', function ($resource) {
+    return $resource('/api/messages/:id', null, {
+        'update': { method: 'PUT' }
+    });
+}]);
 
 
 app.controller('SavedController', function ($scope) {

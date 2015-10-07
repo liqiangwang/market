@@ -15,6 +15,10 @@ app.config(function ($routeProvider) {
             templateUrl: 'pages/index/sheet.html',
             controller: 'SheetController'
         })
+        .when('/email', {
+            templateUrl: 'pages/index/email.html',
+            controller: 'MessageController'
+        })
         .otherwise({
             // when all else fails
             templateUrl: 'pages/routeNotFound.html',
@@ -47,6 +51,12 @@ app.factory('AssetSheet', ['$resource', function ($resource) {
 
 app.factory('Offer', ['$resource', function ($resource) {
     return $resource('/api/offers/:id', null, {
+        'update': { method: 'PUT' }
+    });
+}]);
+
+app.factory('Message', ['$resource', function ($resource) {
+    return $resource('/api/messages/:id', null, {
         'update': { method: 'PUT' }
     });
 }]);
@@ -114,6 +124,10 @@ app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope
 
 
 app.controller('SavedController', function ($scope) {
+
+});
+
+app.controller('MessageController', function ($scope) {
 
 });
 

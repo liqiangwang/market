@@ -1,0 +1,65 @@
+﻿<fieldset>
+    <div class="alert alert-info" role="alert" style="font-weight:bold;">收件箱</div>
+    <div>
+        <table class="table   table-hover table-striped">
+            <thead style="font-weight:bold;">
+                <tr>
+                    <td>发信人</td>
+                    <td>邮件主题</td>
+                    <td>邮件内容</td>
+                    <td>发信时间</td>
+                    <td>状态</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="messageIn in messageIns">
+                    <td>{{messageIn.user[0].alias}}</td>
+                    <td>{{messageIn.topic}}</td>
+                    <td>{{messageIn.content}}</td>
+                    <td>{{messageIn.updatedAt}}</td>
+                    <td>{{messageIn.statusText}}</td>
+                    <td>
+                        <button ng-show="{{messageIn.statusCode}}==1" ng-click="MarkAsRead(messageIn._id)" class="btn btn-primary">标记为已读</button>
+                        <button ng-click="Reply(messageIn._id, messageIn.senderId)" class="btn btn-primary">回复</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-left:auto; margin-right:auto;width:60%;">
+        <div class="alert alert-danger" role="alert" ng-show="sendEmailSuccessfull">回复邮件成功！</div>
+        <div class="form-group" ng-show="sendEmail && !sendEmailSuccessfull">
+            <div>主题：<input style="width:80%" ng-model="topic" /></div>
+            <div>
+                内容：<textarea rows="6" style="width:80%; margin-top:20px;" ng-model="content"></textarea>
+            </div>
+            <div style="margin-top:20px;"><button class="btn btn-primary" ng-click="send(toId)">发送</button></div>
+        </div>
+    </div>
+</fieldset>
+
+<fieldset>
+    <div class="alert alert-warning" role="alert" style="font-weight:bold;">发件箱</div>
+    <div>
+        <table class="table   table-hover table-striped">
+            <thead style="font-weight:bold;">
+                <tr>
+                    <td>收件人</td>
+                    <td>邮件主题</td>
+                    <td>邮件内容</td>
+                    <td>发信时间</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="messageOut in messageOuts">
+                    <td>{{messageOut.user[0].alias}}</td>
+                    <td>{{messageOut.topic}}</td>
+                    <td>{{messageOut.content}}</td>
+                    <td>{{messageOut.updatedAt}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</fieldset>

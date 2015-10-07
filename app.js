@@ -13,6 +13,7 @@ var todos = require('./routes/todos');
 var files = require('./routes/files');
 var assetSheets = require('./routes/assetSheets');
 var offers = require('./routes/offers');
+var messages = require('./routes/messages');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://127.0.0.1/market', function (err) {
@@ -58,6 +59,7 @@ app.use('/api/todos', todos);
 app.use('/api/files', files);
 app.use('/api/offers', offers);
 app.use('/api/assetSheets', assetSheets);
+app.use('/api/messages', messages);
 
 
 

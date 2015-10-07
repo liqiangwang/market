@@ -6,6 +6,7 @@ var _dicts = {
     'offerStatus': { 1: '等待', 2: '成交', 3: '失败' },
     'bool': { 0: '否', 1: '是', 'false': '否', 'true': '是' },
     'userStatus': { 1: '活动', 2: '锁定', 3: '删除' },
+    'emailStatus': { 1: ' 未读', 2: '已读', 3: '删除' },
     'cleanUpMethod': { 1: '选择物理擦除，39元/个', 2: '选择物理破坏，19元/个', 3: '选择软件擦除，99元/个' },
 
     'translateOne': function (record, field, key) {

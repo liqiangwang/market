@@ -33,6 +33,7 @@
     <script src="javascripts/my/dealsController.js"></script>
     <script src="javascripts/my/offersController.js"></script>
     <script src="javascripts/my/profileController.js"></script>
+    <script src="javascripts/my/messageController.js"></script>
 
 </head>
 <body ng-controller="UserController" ng-init="init($event.target)">
@@ -63,6 +64,7 @@
                         <li role="presentation"><a href="#offers">我的报价</a></li>
                         <li role="separator" class="divider"></li>
                         <li role="presentation"><a href="#profile">个人信息 ({{user.alias}})</a></li>
+                        <li role="presentation"><a href="#messages">站内信</a></li>
                         <li><a href="#" ng-click="logout();">退出</a></li>
                     </ul>
 
