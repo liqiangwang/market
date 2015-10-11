@@ -13,6 +13,7 @@
                     <td>其他配件</td>
                     <td>成色</td>
                     <td>报价</td>
+                    <td>备注</td>
                     <!--<td>状态</td>-->
                 </tr>
             </thead>
@@ -27,6 +28,7 @@
                     <td>{{offer.assetss[0].assets[$index].other}}</td>
                     <td>{{offer.assetss[0].assets[$index].working}}</td>
                     <td style="color:red; background-color:gray;font-weight:bold; font-size:large;">{{asset.price}}</td>
+                    <td>{{asset.description}}</td>
                     <!--<td>{{offer[0].status}}</td>-->
                 </tr>
             </tbody>

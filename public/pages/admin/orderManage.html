@@ -5,6 +5,8 @@
             <thead style="font-weight:bold;">
                 <tr>
                     <td>竞价资产</td>
+                    <td>交易时间</td>
+                    <td>交易地点</td>
                     <td>发布人</td>
                     <td>报价总价</td>
                     <td>报价人</td>
@@ -15,11 +17,13 @@
             <tbody>
                 <tr ng-repeat="ticket in tickets">
                     <td><a href="#/assetSheets/{{ticket.sheetId}}">{{ticket.assetSheet[0].name}}</a></td>
+                    <td>{{ticket.assetSheet[0].planningDeliveryTime}}</td>
+                    <td>{{ticket.assetSheet[0].planningDeliveryAddress}}</td>
                     <td><a href="#/users/{{ticket.assetSheet[0].user[0]._id}}">{{ticket.assetSheet[0].user[0].alias}}</a></td>
                     <td>{{ticket.price}}</td>
                     <td><a href="#/users/{{ticket.buyer[0]._id}}">{{ticket.buyer[0].alias}}</a></td>
                     <td>{{ticket.updatedAt}}</td>
-                    <td><a href="#/offers/{{ticket._id}}">详情</a></td>
+                    <td><a href="#/orders/{{ticket._id}}">详情</a></td>
                 </tr>
             </tbody>
         </table>

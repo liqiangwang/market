@@ -1,0 +1,77 @@
+﻿<fieldset>
+    <div class="alert alert-info" role="alert">资产竞价详情</div>
+    <div>
+        <table class="table">
+            <thead style="font-weight:bold;">
+                <tr>
+                    <td>类别</td>
+                    <td>品牌</td>
+                    <td>型号</td>
+                    <td>CPU</td>
+                    <td>内存</td>
+                    <td>硬盘</td>
+                    <td>其他配件</td>
+                    <td>成色</td>
+                    <td>报价</td>
+                    <td>备注</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="asset in offers[0].assets">
+                    <td>{{offers[0].assetSheet[0].assets[$index].category}}</td>
+                    <td>{{offers[0].assetSheet[0].assets[$index].brand}}</td>
+                    <td>{{offers[0].assetSheet[0].assets[$index].serial}}</td>
+                    <td>{{offers[0].assetSheet[0].assets[$index].cpu}}</td>
+                    <td>{{offers[0].assetSheet[0].assets[$index].memory}}</td>
+                    <td>{{offers[0].assetSheet[0].assets[$index].harddisk}}</td>
+                    <td>{{offers[0].assetSheet[0].assets[$index].other}}</td>
+                    <td>{{offers[0].assetSheet[0].assets[$index].working}}</td>
+                    <td style="color:red; background-color:gray;font-weight:bold; font-size:large;">{{asset.price}}</td>
+                    <td>{{asset.description}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>
+
+
+<fieldset>
+    <div class="alert alert-warning" role="alert">成交订单详情</div>
+    <div>
+        <table class="table  table-hover table-striped">
+            <thead style="font-weight:bold;">
+                <tr>
+                    <td>竞价资产</td>
+                    <td>交易时间</td>
+                    <td>交易地点</td>
+                    <td>成交规则</td>
+                    <td>付款方式</td>
+                    <td>是否清理数据</td>
+                    <td>数据清理方式</td>
+                    <td>是否需要营业执照</td>
+                    <td>发布人</td>
+                    <td>报价总价</td>
+                    <td>报价人</td>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#/assetSheets/{{ticket.sheetId}}">{{offers[0].assetSheet[0].name}}</a></td>
+                    <td>{{offers[0].assetSheet[0].planningDeliveryTime}}</td>
+                    <td>{{offers[0].assetSheet[0].planningDeliveryAddress}}</td>
+                    <td>{{offers[0].assetSheet[0].dealRule}}</td>
+                    <td>{{offers[0].assetSheet[0].payMethod}}</td>
+                    <td>{{offers[0].assetSheet[0].needDataCleanup}}</td>
+                    <td>{{offers[0].assetSheet[0].cleanUpMethod}}</td>
+                    <td>{{offers[0].assetSheet[0].requireCertificate}}</td>
+                    <td><a href="#/users/{{offers[0].assetSheet[0].user[0]._id}}">{{offers[0].assetSheet[0].user[0].alias}}</a></td>
+                    <td>{{offers[0].price}}</td>
+                    <td><a href="#/users/{{offers[0].buyer[0]._id}}">{{offers[0].buyer[0].alias}}</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>

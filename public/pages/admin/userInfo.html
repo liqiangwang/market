@@ -28,3 +28,80 @@
 
     </div>
 </fieldset>
+
+
+<fieldset>
+    <div class="alert alert-info" role="alert">他的资产列表</div>
+    <div>
+        <table class="table table-hover table-striped">
+            <thead style="font-weight:bold;">
+                <tr>
+                    <td>资产名称</td>
+                    <td>交易时间</td>
+                    <td>交易地点</td>
+                    <td>交易规则</td>
+                    <td>付款方式</td>
+                    <td>是否清理数据</td>
+                    <td>是否需要营业执照</td>
+                    <td>发布时间</td>
+                    <td>状态</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="assetSheet in assetSheets">
+                    <td><a href="#/assetSheets/{{assetSheet._id}}">{{assetSheet.name}}</a></td>
+                    <td>{{assetSheet.planningDeliveryTime}}</td>
+                    <td>{{assetSheet.planningDeliveryAddress}}</td>
+                    <td>{{assetSheet.dealRule}}</td>
+                    <td>{{assetSheet.payMethod}}</td>
+                    <td><span ng-show="{{assetSheet.needDataCleanup}} == true" class="glyphicon glyphicon-ok"></span><span ng-show="{{assetSheet.needDataCleanup}} == false" class="glyphicon glyphicon-remove"></span></td>
+                    <td><span ng-show="{{assetSheet.requireCertificate}} == true" class="glyphicon glyphicon-ok"></span><span ng-show="{{assetSheet.requireCertificate}} == false" class="glyphicon glyphicon-remove"></span></td>
+                    <td>{{assetSheet.updatedAt}}</td>
+                    <td>{{assetSheet.status}}</td>
+                    <td>
+                        <button ng-show="{{assetSheet.statusCode}}==2" ng-click="AcceptAssetSheet(assetSheet._id)" class="btn btn-primary">通过</button>
+                        <button ng-show="{{assetSheet.statusCode}}==2" ng-click="RejectAssetSheet(assetSheet._id)" class="btn btn-primary">拒绝</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>
+
+<fieldset>
+    <div class="alert alert-warning" role="alert">他的竞价列表</div>
+    <div>
+        <table class="table  table-hover table-striped">
+            <thead style="font-weight:bold;">
+                <tr>
+                    <!--<td>ID</td>-->
+                    <td>竞价资产</td>
+                    <td>发布人</td>
+                    <td>报价总价</td>
+                    <td>报价时间</td>
+                    <td>状态</td>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="offer in offers">
+                    <!--<td>{{offer}}</td>-->
+                    <td><a href="#/assetSheets/{{offer.sheetId}}">{{offer.assetSheet[0].name}}</a></td>
+                    <td><a href="#/users/{{offer.assetSheet[0].user[0]._id}}">{{offer.assetSheet[0].user[0].alias}}</a></td>
+                    <td>{{offer.price}}</td>
+                    <!--<td><a href="#/users/{{offer.user[0]._id}}">{{offer.user[0].alias}}</a></td>-->
+                    <td>{{offer.updatedAt}}</td>
+                    <td>{{offer.status}}</td>
+                    <td><a href="#/offers/{{offer._id}}">详情</a></td>
+                    <!--<td>
+                        <button ng-show="{{offer.status}}==0" ng-click="EnableOffer(offer._id)" class="btn btn-primary">通过</button>
+                        <button ng-show="{{offer.status}}!=0" ng-click="DisableOffer(offer._id)" class="btn btn-primary">拒绝</button>
+                    </td>-->
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>

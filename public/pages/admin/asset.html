@@ -1,4 +1,39 @@
 ﻿<fieldset>
+    <div>
+        <table class="table  table-hover table-striped">
+            <thead style="font-weight:bold;">
+                <tr>
+                    <td>资产名称</td>
+                    <td>交易时间</td>
+                    <td>交易地点</td>
+                    <td>成交规则</td>
+                    <td>付款方式</td>
+                    <td>是否清理数据</td>
+                    <td>数据清理方式</td>
+                    <td>是否需要营业执照</td>
+                    <td>发布人</td>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{assetSheet.name}}</td>
+                    <td>{{assetSheet.planningDeliveryTime}}</td>
+                    <td>{{assetSheet.planningDeliveryAddress}}</td>
+                    <td>{{assetSheet.dealRule}}</td>
+                    <td>{{assetSheet.payMethod}}</td>
+                    <td>{{assetSheet.needDataCleanup}}</td>
+                    <td>{{assetSheet.cleanUpMethod}}</td>
+                    <td>{{assetSheet.requireCertificate}}</td>
+                    <td><a href="#/users/{{assetSheet.user[0]._id}}">{{assetSheet.user[0].alias}}</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+</fieldset>
+
+<fieldset>
     <div class="alert alert-info" role="alert">资产详情</div>
     <div>
         <table class="table   table-hover table-striped">
@@ -13,8 +48,6 @@
                     <td>其他配件</td>
                     <td>状态</td>
                     <td>数量</td>
-                    <td>价格</td>
-                    <td>总价</td>
                 </tr>
             </thead>
             <tbody>
@@ -28,10 +61,9 @@
                     <td>{{item.other}}</td>
                     <td>{{item.working}}</td>
                     <td>{{item.number}}</td>
-                    <td>{{item.unitPrice}}</td>
-                    <td>{{item.subTotalprice}}</td>
                 </tr>
             </tbody>
         </table>
     </div>
 </fieldset>
+
