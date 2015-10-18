@@ -56,14 +56,16 @@
                 $scope.hasAssetSheet = data.length > 0;
                 if ($scope.hasAssetSheet) {
                     _dicts.translate(data, ['payMethod', 'dealRule'], ['payMethod', 'dealRule']);
-                    data.forEach(function (value, index) {
-                        if (value.createdById == $rootScope.user._id) {
-                            value.desc = '我的发布';
-                        }
-                        else {
-                            value.desc = "<a href='#/{{data._id}}'>竞价</a>";
-                        }
-                    });
+                    if ($rootScope.user) {
+                        data.forEach(function (value, index) {
+                            if (value.createdById == $rootScope.user._id) {
+                                value.desc = '我的发布';
+                            }
+                            else {
+                                value.desc = "<a href='#/{{data._id}}'>竞价</a>";
+                            }
+                        });
+                    }
                     $scope.gridOptions.rowData = data;
                     $scope.gridOptions.api.onNewRows();
                 }

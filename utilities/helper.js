@@ -1,7 +1,9 @@
 ﻿var crypto = require("crypto");
 
-function helper()
-{
+var mongoose = require('mongoose');
+var Log = require('../models/Log.js');
+
+function helper() {
     this.sha256 = function (text) {
         // TODO: consider to store bytes in DB
         return crypto.createHash('sha256').update(text, 'utf8').digest('hex');
@@ -33,6 +35,42 @@ function helper()
             }
         }
     };
+
+    this.log = function (level, source, eventId, general, detail, callback) {
+
+        Log.create(new Log({
+            level: level,
+            source: source,
+            eventId: eventId,
+            general: general,
+            detail: detail,
+            createdAt: new Date()
+        }), function (err) {
+            console.log('save log()');
+            if (err) // ...
+                console.log('helper.log error: ' + err);
+            else
+                console.log("log written");
+            callback(err);
+        });
+
+        console.log('enter log()');
+        //new Log({
+        //    level: level,
+        //    source: source,
+        //    eventId: eventId,
+        //    general: general,
+        //    detail: detail,
+        //    createdAt: new Date()
+        //}).save(function (err) {
+        //    console.log('save log()');
+        //    if (err) // ...
+        //        console.log('helper.log error: ' + err);
+        //    else
+        //        console.log("log written");
+        //    callback(err);
+        //});
+    }
 }
 
 module.exports = new helper();

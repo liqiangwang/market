@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var async = require('async');
 
 var helper = require('./utilities/helper.js');
 
@@ -23,6 +24,7 @@ mongoose.connect('mongodb://127.0.0.1/market', function (err) {
         console.log('connection successful');
     }
 });
+var Log = require('./models/Log.js');
 
 var app = express();
 
@@ -40,18 +42,29 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 //app.use('/', routes);
 // http://stackoverflow.com/questions/11038830/how-to-intercept-node-js-express-request
 app.use(function (req, res, next) {
     if (req.url.match(/^\/api\/.+/)) {
-        helper.convertNestedStringToObject(req.query);
+        async.series(
+            [
+                function (cb) {
+                    helper.log(2, "API", 0, req.url, { url: req.url, query: req.query, headers: req.headers }, function (err) { cb(false); });
+                },
+                function (cb) {
+                    helper.convertNestedStringToObject(req.query);
 
-        res.setHeader('Pragma', 'No-cache');
-        res.setHeader('Cache-Control', 'no-cache'); //HTTP 1.0 
-        res.setHeader('expires', '-1');
+                    res.setHeader('Pragma', 'No-cache');
+                    res.setHeader('Cache-Control', 'no-cache'); //HTTP 1.0 
+                    res.setHeader('expires', '-1');
+
+                    next();
+                }
+            ])
     }
-    next();
+    else {
+        next();
+    }
 });
 
 app.use('/api/users', users);
