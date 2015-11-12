@@ -306,6 +306,8 @@ app.factory('Offers', ['$resource', function ($resource) {
 
 app.controller('orderManageController', ['$scope', 'Users', 'AssetSheets', 'Offers', function ($scope, Users, AssetSheets, Offers) {
     $scope.tickets = Offers.query({ status: 2 }, function (data) {
+        $scope.sendEmail = false;
+        $scope.sendEmailSuccessfull = false;
         for (i = 0; i < $scope.tickets.length; ++i) {
             var sid = $scope.tickets[i].sheetId;
             $scope.tickets[i].assetSheet = AssetSheets.query({ _id: sid }, function (assets) {

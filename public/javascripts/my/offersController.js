@@ -38,7 +38,7 @@
             { headerName: "其他配件", field: "other", cellStyle: { "text-align": "center"} },
             { headerName: "状态", field: "working", cellStyle: { "text-align": "center"} },
             { headerName: "数量", field: "number", cellStyle: { "text-align": "center"} },
-            { headerName: "报价", field: "price", cellStyle: { "color": "red" ; "text-align": "center" } },
+            { headerName: "报价", field: "price", cellStyle: { "color": "red" , "text-align": "center" } },
             { headerName: "备注", field: "description", cellStyle: { "text-align": "center"} }
         ];
 

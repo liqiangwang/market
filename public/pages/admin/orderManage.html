@@ -24,9 +24,17 @@
                     <td><a href="#/users/{{ticket.buyer[0]._id}}">{{ticket.buyer[0].alias}}</a></td>
                     <td>{{ticket.updatedAt | date: 'yyyy-MM-dd HH:mm'}}</td>
                     <td><a href="#/orders/{{ticket._id}}">详情</a></td>
+                    <td><button class="btn btn-primary" >通知</button></td>
                 </tr>
             </tbody>
         </table>
-
+<div class="alert alert-danger" role="alert" ng-show="sendEmailSuccessfull">发送通知成功！</div>
+<div class="form-group" ng-show="sendEmail && !sendEmailSuccessfull">
+            <div>主题：<input style="width:80%" ng-model="topic" /></div>
+            <div>
+                内容：<textarea rows="6" style="width:80%; margin-top:20px;" ng-model="content"></textarea>
+            </div>
+            <div style="margin-top:20px;"><button class="btn btn-primary" ng-click="send(toId)">发送</button></div>
+        </div>
     </div>
 </fieldset>
