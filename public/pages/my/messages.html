@@ -17,7 +17,7 @@
                     <td>{{messageIn.user[0].alias}}</td>
                     <td>{{messageIn.topic}}</td>
                     <td>{{messageIn.content}}</td>
-                    <td>{{messageIn.updatedAt}}</td>
+                    <td>{{messageIn.updatedAt | date: 'yyyy-MM-dd HH:mm'}}</td>
                     <td>{{messageIn.statusText}}</td>
                     <td>
                         <button ng-show="{{messageIn.statusCode}}==1" ng-click="MarkAsRead(messageIn._id)" class="btn btn-primary">标记为已读</button>
@@ -57,7 +57,7 @@
                     <td>{{messageOut.user[0].alias}}</td>
                     <td>{{messageOut.topic}}</td>
                     <td>{{messageOut.content}}</td>
-                    <td>{{messageOut.updatedAt}}</td>
+                    <td>{{messageOut.updatedAt | date: 'yyyy-MM-dd HH:mm'}}</td>
                 </tr>
             </tbody>
         </table>
