@@ -17,12 +17,12 @@
             <tbody>
                 <tr ng-repeat="ticket in tickets">
                     <td><a href="#/assetSheets/{{ticket.sheetId}}">{{ticket.assetSheet[0].name}}</a></td>
-                    <td>{{ticket.assetSheet[0].planningDeliveryTime}}</td>
+                    <td>{{ticket.assetSheet[0].planningDeliveryTime | date: 'yyyy-MM-dd'}}</td>
                     <td>{{ticket.assetSheet[0].planningDeliveryAddress}}</td>
                     <td><a href="#/users/{{ticket.assetSheet[0].user[0]._id}}">{{ticket.assetSheet[0].user[0].alias}}</a></td>
                     <td>{{ticket.price}}</td>
                     <td><a href="#/users/{{ticket.buyer[0]._id}}">{{ticket.buyer[0].alias}}</a></td>
-                    <td>{{ticket.updatedAt}}</td>
+                    <td>{{ticket.updatedAt | date: 'yyyy-MM-dd HH:mm'}}</td>
                     <td><a href="#/orders/{{ticket._id}}">详情</a></td>
                 </tr>
             </tbody>

@@ -3,6 +3,7 @@
     $scope.sendEmail = false;
     $scope.sendEmailSuccessfull = false;
 
+    $scope.users = User.query();
     $scope.messageIns = Message.query({ receiverId: $rootScope.user._id }, function (data) {
         data.forEach(function (value, index) {
             value.user = User.query({ _id: value.senderId });
@@ -33,6 +34,7 @@
 
     $scope.Reply = function (mid, toId) {
         $scope.sendEmail = true;
+        $scope.sendMyEmail = false;
         $scope.toId = toId;
         $scope.MarkAsRead(mid);
 
@@ -55,4 +57,20 @@
         });
     };
 
+    $scope.sendMail = function(){
+        $scope.sendEmail = true;
+        $scope.sendMyEmail = true;
+        if($scope.users)
+        {
+            for(var i = $scope.users.length - 1; i >= 0; i--)
+            {
+                if($scope.users[i].isAdmin == 1)
+                {
+                    $scope.admin = $scope.users[i]; 
+                }
+            }
+        }
+        $scope.toId = $scope.admin._id;
+        //$scope.toId = "5631847a1a6227380bcca3b7";
+    }
 }]);

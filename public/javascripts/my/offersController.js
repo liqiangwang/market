@@ -29,17 +29,17 @@
 
     function createOfferDetailTable() {
         var columnDefs = [
-            { headerName: "类别", field: "categoryText" },
-            { headerName: "品牌", field: "brand" },
-            { headerName: "型号", field: "serial" },
-            { headerName: "CPU", field: "cpu" },
-            { headerName: "内存", field: "memory" },
-            { headerName: "硬盘", field: "harddisk" },
-            { headerName: "其他配件", field: "other" },
-            { headerName: "状态", field: "working" },
-            { headerName: "数量", field: "number" },
-            { headerName: "报价", field: "price", cellStyle: { "color": "red" } },
-            { headerName: "备注", field: "description" }
+            { headerName: "类别", field: "categoryText", cellStyle: { "text-align": "center"} },
+            { headerName: "品牌", field: "brand", cellStyle: { "text-align": "center"} },
+            { headerName: "型号", field: "serial", cellStyle: { "text-align": "center"} },
+            { headerName: "CPU", field: "cpu", cellStyle: { "text-align": "center"} },
+            { headerName: "内存", field: "memory", cellStyle: { "text-align": "center"} },
+            { headerName: "硬盘", field: "harddisk", cellStyle: { "text-align": "center"} },
+            { headerName: "其他配件", field: "other", cellStyle: { "text-align": "center"} },
+            { headerName: "状态", field: "working", cellStyle: { "text-align": "center"} },
+            { headerName: "数量", field: "number", cellStyle: { "text-align": "center"} },
+            { headerName: "报价", field: "price", cellStyle: { "color": "red" ; "text-align": "center" } },
+            { headerName: "备注", field: "description", cellStyle: { "text-align": "center"} }
         ];
 
         $scope.offerGridOptions = {
@@ -72,15 +72,15 @@
 
     $scope.query = function () {
         var columnDefs = [
-            { headerName: "名称", template: "{{data.sheet.name}}" },
-            { headerName: "计划交割时间", template: "{{data.sheet.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
-            { headerName: "计划交割地点", template: "{{data.sheet.planningDeliveryAddress}}" },
-            { headerName: "付款方式", template: "{{data.sheet.payMethodText}}" },
-            { headerName: "成交规则", template: "{{sheet.dealRuleText}}" },
+            { headerName: "名称", template: "{{data.sheet.name}}", cellStyle: { "text-align": "center"} },
+            { headerName: "计划交割时间", template: "{{data.sheet.planningDeliveryTime | date: 'yyyy-MM-dd'}}", cellStyle: { "text-align": "center"} },
+            { headerName: "计划交割地点", template: "{{data.sheet.planningDeliveryAddress}}", cellStyle: { "text-align": "center"} },
+            { headerName: "付款方式", template: "{{data.sheet.payMethodText}}", cellStyle: { "text-align": "center"} },
+            { headerName: "成交规则", template: "{{sheet.dealRuleText}}", cellStyle: { "text-align": "center"} },
             { headerName: "要求从业资格证书", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: { "text-align": "center" } },
-            { headerName: "总价格", template: "{{data.price|currency:'￥'}}", cellStyle: { "text-align": "right" } },
-            { headerName: "报价时间", field: "updatedAt" },
-            { headerName: "状态", template: "{{data.statusText}}" },
+            { headerName: "总价格", template: "{{data.price|currency:'￥'}}", cellStyle: { "text-align": "center" } },
+            { headerName: "报价时间", template: "{{data.updatedAt | date: 'yyyy-MM-dd HH:mm'}}", cellStyle: { "text-align": "center"}},
+            { headerName: "状态", template: "{{data.statusText}}", cellStyle: { "text-align": "center"} },
         ];
 
         $scope.gridOptions = {

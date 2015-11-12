@@ -5,16 +5,16 @@
 
     $scope.query = function () {
         var columnDefs = [
-            { headerName: "名称", field: "name" },
-            { headerName: "计划交割时间", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
-            { headerName: "计划交割地点", field: "planningDeliveryAddress" },
-            { headerName: "付款方式", field: "payMethodText" },
-            { headerName: "成交规则", field: "dealRuleText" },
+            { headerName: "名称", field: "name", cellStyle: { "text-align": "center" } },
+            { headerName: "计划交割时间", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}", cellStyle: { "text-align": "center" }  },
+            { headerName: "计划交割地点", field: "planningDeliveryAddress", cellStyle: { "text-align": "center" }  },
+            { headerName: "付款方式", field: "payMethodText", cellStyle: { "text-align": "center" }  },
+            { headerName: "成交规则", field: "dealRuleText", cellStyle: { "text-align": "center" }  },
             { headerName: "要求从业资格证书", field: "requireCertificate", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: { "text-align": "center" } },
             //{ headerName: "总价格", field: "totalPrice", template: "{{data.totalPrice|currency:'￥'}}", cellStyle: { "text-align": "right" } },
             { headerName: "需要数据销毁服务", field: "needDataCleanup", template: '<span ng-show="data.needDataCleanup" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: { "text-align": "center" } },
-            { headerName: "状态", field: "statusText" },
-            { headerName: "提交时间", template: "{{data.updatedAt | date: 'yyyy-MM-dd'}}" },
+            { headerName: "状态", field: "statusText", cellStyle: { "text-align": "center" }  },
+            { headerName: "提交时间", template: "{{data.updatedAt | date: 'yyyy-MM-dd HH:mm'}}" , cellStyle: { "text-align": "center" } },
             { headerName: "", template: "<a href='#/sheetView/{{data._id}}'>详细信息</a>", cellStyle: { "text-align": "center" }, width: 90, suppressSizeToFit: true }
         ];
 

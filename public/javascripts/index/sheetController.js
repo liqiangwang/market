@@ -2,6 +2,8 @@
     $scope.id = $routeParams.id;
     $scope.isLogin = $rootScope.user != null;
 
+    
+    //$scope.isSelf = $rootScope.user._id == AssetSheet.createdById;
     $scope.hasDuplicate = false;
     $scope.fillData = false;
     $scope.sendEmail = false;
@@ -50,20 +52,20 @@
 
     $scope.init = function () {
         var columnDefs = [
-            { headerName: "类别", field: "categoryText" },
-            { headerName: "品牌", field: "brand" },
-            { headerName: "型号", field: "serial" },
-            { headerName: "CPU", field: "cpu" },
-            { headerName: "内存", field: "memory" },
-            { headerName: "硬盘", field: "harddisk" },
-            { headerName: "其他配件", field: "other" },
-            { headerName: "状态", field: "working" },
-            { headerName: "数量", field: "number" },
-            { headerName: "单价", field: "unitPrice", hide: true },
-            { headerName: "小计", field: "subTotalprice", hide: true },
-            { headerName: "报价", field: "offerUnitPrice", editable: true, cellStyle: { "background-color": "yellow" }, cellValueChanged: cellValueChanged, hide: !$scope.isLogin },
-            { headerName: "小计", field: "offerSubTotalprice", volatile: true, hide: !$scope.isLogin },
-            { headerName: "备注", field: "description", editable: true}
+            { headerName: "类别", field: "categoryText", cellStyle: { "text-align": "center" } },
+            { headerName: "品牌", field: "brand", cellStyle: { "text-align": "center" } },
+            { headerName: "型号", field: "serial", cellStyle: { "text-align": "center" } },
+            { headerName: "CPU", field: "cpu", cellStyle: { "text-align": "center" } },
+            { headerName: "内存", field: "memory", cellStyle: { "text-align": "center" } },
+            { headerName: "硬盘", field: "harddisk", cellStyle: { "text-align": "center" } },
+            { headerName: "其他配件", field: "other", cellStyle: { "text-align": "center" } },
+            { headerName: "状态", field: "working", cellStyle: { "text-align": "center" } },
+            { headerName: "数量", field: "number", cellStyle: { "text-align": "center" } },
+            { headerName: "单价", field: "unitPrice", hide: true, cellStyle: { "text-align": "center" } },
+            { headerName: "小计", field: "subTotalprice", hide: true, cellStyle: { "text-align": "center" } },
+            { headerName: "报价", field: "offerUnitPrice", editable: true, cellStyle: { "background-color": "yellow" }, cellValueChanged: cellValueChanged, hide: !$scope.isLogin, cellStyle: { "text-align": "center" }},
+            { headerName: "小计", field: "offerSubTotalprice", volatile: true, hide: !$scope.isLogin, cellStyle: { "text-align": "center" } },
+            { headerName: "备注", field: "description", editable: true, cellStyle: { "text-align": "center" }}
         ];
 
         function cellValueChangedFunction() {
@@ -87,6 +89,9 @@
             AssetSheet.get(
                 { id: $scope.id },
                 function (data) {
+                    if ($rootScope.user._id == data.createdById) {
+                        $scope.isSelf = true;
+                    }
                     _dicts.translate(data.assets, 'category', 'assetCategory');
                     _dicts.translate(data, ['payMethod', 'cleanUpMethod', 'dealRule', 'status'], ['payMethod', 'cleanUpMethod', 'dealRule', 'sheetStatus']);
 
@@ -128,6 +133,7 @@
                     _helper.showHttpError(response);
                 });
         }
+
     };
 
     $scope.save = function () {

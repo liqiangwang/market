@@ -12,7 +12,7 @@ var AssetSchema = new mongoose.Schema({
     harddisk: String,
     accessory: String,
     working: Boolean,
-    price: Number,
+    price: Number, // unit price
     description: String,
     //photoPath: String,
     updatedAt: { type: Date, default: Date.now },

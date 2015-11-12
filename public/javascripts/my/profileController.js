@@ -29,15 +29,15 @@
 
     $scope.query = function () {
         var columnDefs = [
-            { headerName: "名称", template: "{{data.sheet.name}}" },
-            { headerName: "计划交割时间", template: "{{data.sheet.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
-            { headerName: "计划交割地点", template: "{{data.sheet.planningDeliveryAddress}}" },
-            { headerName: "付款方式", template: "{{data.sheet.payMethodText}}" },
-            { headerName: "成交规则", template: "{{sheet.dealRuleText}}" },
+            { headerName: "名称", template: "{{data.sheet.name}}", cellStyle: { "text-align": "center"} },
+            { headerName: "计划交割时间", template: "{{data.sheet.planningDeliveryTime | date: 'yyyy-MM-dd'}}", cellStyle: { "text-align": "center"} },
+            { headerName: "计划交割地点", template: "{{data.sheet.planningDeliveryAddress}}", cellStyle: { "text-align": "center"} },
+            { headerName: "付款方式", template: "{{data.sheet.payMethodText}}", cellStyle: { "text-align": "center"} },
+            { headerName: "成交规则", template: "{{sheet.dealRuleText}}", cellStyle: { "text-align": "center"} },
             { headerName: "要求从业资格证书", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: { "text-align": "center" } },
-            { headerName: "总价格", template: "{{data.price|currency:'￥'}}", cellStyle: { "text-align": "right" } },
-            { headerName: "状态", template: "{{data.sheet.statusText}}" },
-            { headerName: "报价时间", field: "updatedAt" }
+            { headerName: "总价格", template: "{{data.price|currency:'￥'}}", cellStyle: { "text-align": "center" } },
+            { headerName: "状态", template: "{{data.sheet.statusText}}", cellStyle: { "text-align": "center"} },
+            { headerName: "报价时间", template: "{{data.updatedAt | date: 'yyyy-MM-dd HH:mm'}}", cellStyle: { "text-align": "center"} }
         ];
 
         $scope.gridOptions = {

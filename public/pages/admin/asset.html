@@ -24,7 +24,8 @@
                     <td>{{assetSheet.payMethod}}</td>
                     <td>{{assetSheet.needDataCleanup}}</td>
                     <td>{{assetSheet.cleanUpMethod}}</td>
-                    <td>{{assetSheet.requireCertificate}}</td>
+                    <!--<td>{{assetSheet.requireCertificate}}</td>-->
+                    <td><span ng-show="{{assetSheet.requireCertificate}} == true" class="glyphicon glyphicon-ok"></span><span ng-show="{{assetSheet.requireCertificate}} == false" class="glyphicon glyphicon-remove"></span></td>
                     <td><a href="#/users/{{assetSheet.user[0]._id}}">{{assetSheet.user[0].alias}}</a></td>
                 </tr>
             </tbody>

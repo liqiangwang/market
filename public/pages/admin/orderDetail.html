@@ -13,6 +13,10 @@
                     <td>其他配件</td>
                     <td>成色</td>
                     <td>报价</td>
+                    <!--<td>数量</td>
+                    <td>计划交割时间</td>
+                    <td>计划交割地点</td>
+                    <td>成交规则</td>-->
                     <td>备注</td>
                 </tr>
             </thead>
@@ -27,6 +31,11 @@
                     <td>{{offers[0].assetSheet[0].assets[$index].other}}</td>
                     <td>{{offers[0].assetSheet[0].assets[$index].working}}</td>
                     <td style="color:red; background-color:gray;font-weight:bold; font-size:large;">{{asset.price}}</td>
+                    <!--<td>{{asset.number}}</td>
+                    <td>{{offers[0].assetSheet[0].planningDeliveryTime}}</td>
+                    <td>{{offers[0].assetSheet[0].planningDeliveryAddress | date: 'yyyy-MM-dd'}}</td>
+                    <td>{{_dicts.translateOne(offers[0].assetSheet[0].dealRule,'dealRule','dealRule')}}</td>
+                    <td>{{_dicts.translateOne(offers[0].assetSheet[0].cleanUpMethod,'cleanUpMethod','cleanUpMethod')}}</td>-->
                     <td>{{asset.description}}</td>
                 </tr>
             </tbody>

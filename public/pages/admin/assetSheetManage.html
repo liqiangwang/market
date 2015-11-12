@@ -21,13 +21,13 @@
                 <tr ng-repeat="assetSheet in assetSheets">
                     <td><a href="#/assetSheets/{{assetSheet._id}}">{{assetSheet.name}}</a></td>
                     <td><a href="#/users/{{assetSheet.user[0]._id}}">{{assetSheet.user[0].alias}}</a></td>
-                    <td>{{assetSheet.planningDeliveryTime}}</td>
+                    <td>{{assetSheet.planningDeliveryTime | date: 'yyyy-MM-dd HH:mm'}}</td>
                     <td>{{assetSheet.planningDeliveryAddress}}</td>
                     <td>{{assetSheet.dealRule}}</td>
                     <td>{{assetSheet.payMethod}}</td>
                     <td><span ng-show="{{assetSheet.needDataCleanup}} == true" class="glyphicon glyphicon-ok"></span><span ng-show="{{assetSheet.needDataCleanup}} == false" class="glyphicon glyphicon-remove"></span></td>
                     <td><span ng-show="{{assetSheet.requireCertificate}} == true" class="glyphicon glyphicon-ok"></span><span ng-show="{{assetSheet.requireCertificate}} == false" class="glyphicon glyphicon-remove"></span></td>
-                    <td>{{assetSheet.updatedAt}}</td>
+                    <td>{{assetSheet.updatedAt | date: 'yyyy-MM-dd HH:mm'}}</td>
                     <td>{{assetSheet.status}}</td>
                     <td>
                         <button ng-show="{{assetSheet.statusCode}}==2" ng-click="AcceptAssetSheet(assetSheet._id)" class="btn btn-primary">通过</button>

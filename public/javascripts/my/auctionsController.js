@@ -12,15 +12,15 @@ app.controller('AuctionsController', ['$scope', '$rootScope', 'AssetSheet', 'Off
 
     function showAssetSheets() {
         var columnDefs = [
-            { headerName: "名称", field: "name" },
-            { headerName: "计划交割时间", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}" },
-            { headerName: "计划交割地点", field: "planningDeliveryAddress" },
-            { headerName: "付款方式", field: "payMethodText" },
-            { headerName: "成交规则", field: "dealRuleText" },
+            { headerName: "名称", field: "name", cellStyle: { "text-align": "center"} },
+            { headerName: "计划交割时间", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}", cellStyle: { "text-align": "center"}},
+            { headerName: "计划交割地点", field: "planningDeliveryAddress", cellStyle: { "text-align": "center"} },
+            { headerName: "付款方式", field: "payMethodText", cellStyle: { "text-align": "center"}},
+            { headerName: "成交规则", field: "dealRuleText", cellStyle: { "text-align": "center"} },
             { headerName: "要求从业资格证书", field: "requireCertificate", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: { "text-align": "center" } },
             //{ headerName: "总价格", field: "totalPrice", template: "{{data.totalPrice|currency:'￥'}}", cellStyle: { "text-align": "right" } },
             { headerName: "需要数据销毁服务", field: "needDataCleanup", template: '<span ng-show="data.needDataCleanup" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: { "text-align": "center" } },
-            { headerName: "状态", field: "statusText" }
+            { headerName: "状态", field: "statusText", cellStyle: { "text-align": "center"} }
             //{ headerName: "", template: "<a href='#/sheet/{{data._id}}' ng-show='!data.status || (data.status == 1) || (data.status == 4)'>修改</a>", cellStyle: { "text-align": "center" }, width: 50, suppressSizeToFit: true }
         ];
 
@@ -76,15 +76,16 @@ app.controller('AuctionsController', ['$scope', '$rootScope', 'AssetSheet', 'Off
 
     function createAssetTable() {
         var columnDefs = [
-            { headerName: "类别", field: "categoryText" },
-            { headerName: "品牌", field: "brand" },
-            { headerName: "型号", field: "serial" },
-            { headerName: "CPU", field: "cpu" },
-            { headerName: "内存", field: "memory" },
-            { headerName: "硬盘", field: "harddisk" },
-            { headerName: "其他配件", field: "other" },
-            { headerName: "状态", field: "working" },
-            { headerName: "数量", field: "number" }
+            { headerName: "类别", field: "categoryText", cellStyle: { "text-align": "center"} },
+            { headerName: "品牌", field: "brand", cellStyle: { "text-align": "center"} },
+            { headerName: "型号", field: "serial", cellStyle: { "text-align": "center"} },
+            { headerName: "CPU", field: "cpu", cellStyle: { "text-align": "center"} },
+            { headerName: "内存", field: "memory", cellStyle: { "text-align": "center"} },
+            { headerName: "硬盘", field: "harddisk", cellStyle: { "text-align": "center"} },
+            { headerName: "其他配件", field: "other", cellStyle: { "text-align": "center"} },
+            { headerName: "状态", field: "working", cellStyle: { "text-align": "center"} },
+            { headerName: "数量", field: "number", cellStyle: { "text-align": "center"} },
+            //{ headerName: "单价", field: "number" }
         ];
 
         $scope.assertGridOptions = {
@@ -127,10 +128,11 @@ app.controller('AuctionsController', ['$scope', '$rootScope', 'AssetSheet', 'Off
 
     function createOfferTable() {
         var columnDefs = [
-            { headerName: "报价人", template: "{{data.user[0].alias}}" },
-            { headerName: "总价格", template: "{{data.price|currency:'￥'}}", cellStyle: { "text-align": "right" } },
-            { headerName: "报价时间", field: "updatedAt" },
-            { headerName: "状态", field: "statusText" }
+            { headerName: "报价人", template: "{{data.user[0].alias}}", cellStyle: { "text-align": "center"}},
+            //{ headerName: "单价", template: "{{data.offerUnitPrice|currency:'￥'}}" },
+            { headerName: "总价格", template: "{{data.price|currency:'￥'}}", cellStyle: { "text-align": "center" } },
+            { headerName: "报价时间", template: "{{data.updatedAt | date: 'yyyy-MM-dd HH:mm'}}", cellStyle: { "text-align": "center" }},
+            { headerName: "状态", field: "statusText", cellStyle: { "text-align": "center" } }
             //{ headerName: "", template: "<a data=\"{{data._id}}\" ng-click=\"var id='{{data._id}}';accept(id);\" >接受报价</a>", cellStyle: { "text-align": "center" }, width: 100, suppressSizeToFit: true }
         ];
 

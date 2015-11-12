@@ -90,10 +90,16 @@ app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope
     }
 
     $scope.login = function () {
-        Users.query({ alias: $scope.alias, password: $scope.password }
+        Users.query({ alias: $scope.alias, password: $scope.password}
+            //Users.query({ alias: $scope.alias, password: $scope.password, status: $scope.status}
              , function (users) {
                  if (users.length == 0) {
+                     //if (users.length == 0 || users[0].status !=1) {
                      $scope.loginFailed = true;
+                 }
+                 else if (users[0].status != 1)
+                 {
+                     $scope.userLocked = true;
                  }
                  else {
                      $scope.loginFailed = false;

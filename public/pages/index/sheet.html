@@ -45,8 +45,10 @@
     <div class="alert alert-info" role="alert" ng-show="isLogin">报价发布后，不能修改。发布报价后，可以再发布新报价。发布新报价，必须和之前的不同。</div>
 
     <div class="form-group pull-right">
+        <!--<button type="button" onclick="alert('xdfsf')" ng-click="">显示当前用户</button>-->
+        <!--<button type="button" onclick="alert('Welcome!')">点击这里</button>-->
         <button class="btn btn-primary" ng-click="email()" ng-show="isLogin && !sendEmail">发信给发布人</button>
-        <button class="btn btn-primary" ng-disabled="sheetDetailForm.$invalid || hasDuplicate || !fillData" ng-click="save()" ng-show="isLogin">发布报价</button>
+        <button class="btn btn-primary" ng-disabled="sheetDetailForm.$invalid || hasDuplicate || !fillData" ng-click="save()" ng-show="isLogin && !isSelf">发布报价</button>
         <a href="#/" class="btn btn-primary">查看清单</a>
     </div>
 

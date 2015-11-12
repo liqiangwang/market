@@ -38,15 +38,15 @@
 
     $scope.init = function () {
         var columnDefs = [
-            { headerName: "类别", field: "category", width: 100, template: '<select ng-options="key as value for (key, value) in assetCategory" ng-model="data.category" style="width:100%;"></select>' },
-            { headerName: "品牌", field: "brand", width: 100, editable: true },
-            { headerName: "型号", field: "serial", width: 100, editable: true },
-            { headerName: "CPU", field: "cpu", width: 80, editable: true },
-            { headerName: "内存", field: "memory", width: 80, editable: true },
-            { headerName: "硬盘", field: "harddisk", width: 80, editable: true },
-            { headerName: "其他配件", field: "other", width: 100, editable: true },
-            { headerName: "状态", field: "working", width: 100, editable: true },
-            { headerName: "数量", field: "number", width: 100, editable: true }  // , cellValueChanged: cellValueChanged
+            { headerName: "类别", field: "category", width: 100, template: '<select ng-options="key as value for (key, value) in assetCategory" ng-model="data.category" style="width:100%;"></select>', cellStyle: { "text-align": "center" } },
+            { headerName: "品牌", field: "brand", width: 100, editable: true, cellStyle: { "text-align": "center" } },
+            { headerName: "型号", field: "serial", width: 100, editable: true, cellStyle: { "text-align": "center" } },
+            { headerName: "CPU", field: "cpu", width: 80, editable: true, cellStyle: { "text-align": "center" }},
+            { headerName: "内存", field: "memory", width: 80, editable: true, cellStyle: { "text-align": "center" } },
+            { headerName: "硬盘", field: "harddisk", width: 80, editable: true, cellStyle: { "text-align": "center" } },
+            { headerName: "其他配件", field: "other", width: 100, editable: true, cellStyle: { "text-align": "center" } },
+            { headerName: "状态", field: "working", width: 100, editable: true, cellStyle: { "text-align": "center" } },
+            { headerName: "数量", field: "number", width: 100, editable: true, cellStyle: { "text-align": "center" } }  // , cellValueChanged: cellValueChanged
             //{ headerName: "单价", field: "unitPrice", width: 100, editable: true, cellValueChanged: cellValueChanged },
             //{ headerName: "小计", field: "subTotalprice", width: 100, volatile: true }
         ];

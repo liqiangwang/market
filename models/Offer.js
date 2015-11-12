@@ -4,6 +4,7 @@
 // All assets of the system.
 var OfferSchema = new mongoose.Schema({
     sheetId: mongoose.Schema.Types.ObjectId,
+    //unitPrice: Number,
     price: Number,  // redudant value to speed up query.
     assets: Array,  // [{assetId:, price:}]
     status: { type: Number, default: 1 },  // 1 wait for accept, 2 accepted, 3 failed.

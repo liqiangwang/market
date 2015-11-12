@@ -52,7 +52,7 @@ app.config(function ($routeProvider) {
 app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope', '$route', '$window', function ($scope, Users, $cookieStore, $rootScope, $route, $window) {
     $scope.init = function () {
         var user = $cookieStore.get("user");
-        if (user) {
+        if (user.isAdmin == 1) {
             $scope.user = user;
             $rootScope.user = user;
             $scope.isLogin = true;

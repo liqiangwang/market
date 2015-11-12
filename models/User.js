@@ -14,6 +14,7 @@ var UserSchema = new mongoose.Schema({
     note: String,
     status: { type: Number, default: 1 }, // 1:active, 2 locked, 3 marked as deleted
     updatedAt: { type: Date, default: Date.now },
+    isAdmin: { type: Number, default: 0 }, // 0: not admin, 1: admin
 });
 
 // TODO: define when to create the index
