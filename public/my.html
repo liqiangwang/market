@@ -2,6 +2,36 @@
 <html ng-app="app">
 <head>
     <title>个人空间</title>
+    <style type="text/css">
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        #container {
+            min-height: 100%;
+            position: relative;
+        }
+
+        #header {
+            background: #ff0;
+            padding: 10px;
+        }
+
+        #body {
+            padding: 10px;
+            padding-bottom: 60px; /* Height of the footer */
+        }
+
+        #footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 60px; /* Height of the footer */
+            /*background:#6cf;*/
+        }
+    </style>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="libs/bootstrap-3.3.5/css/bootstrap.css">
     <link href="libs/bootstrap-3.3.5/css/bootstrap-theme.css" rel="stylesheet" />
@@ -74,6 +104,17 @@
             </div><!-- /.container-fluid -->
         </nav>
         <div style="height:90%;width:100%;" ng-view></div>
+    </div>
+    <div id="container">
+        <!--<div id="header"></div>
+        <div id="body"></div>-->
+        <div id="footer">
+            <div class="clear5"></div>
+            <div class="fline">&nbsp;</div>
+            <div class="fcon">
+                <p style="clear:both;text-align:center"><a href="http://www.mul-e.com/">淼一科技(北京)有限责任公司 Mul-E Tech Corp. </a>版权所有&copy; 2009-2015 保留所有权利 京ICP备09062518号</p>
+            </div>
+        </div>
     </div>
 </body>
 </html>
