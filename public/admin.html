@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <link rel="stylesheet" href="libs/bootstrap-3.3.5/css/bootstrap.min.css">
     <link href="stylesheets/style.css" rel="stylesheet" />
-    <link rel="shortcut icon" href="../images/arrow_sync io.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />
     <script type="text/javascript" src="libs/jquery-1.11.3.js"></script>
     <script type="text/javascript" src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular.js"></script>
@@ -20,20 +20,23 @@
 </head>
 <body ng-controller="UserController" ng-init="init()">
     <div ng-show="!isLogin">
-        您没有权限浏览该网页。</a>
+        您没有权限浏览该网页。
     </div>
     <div>
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <!-- Brand and toggle get grouped for better mobile display -->
-                <div class="navbar-header">
+                <div class="navbar-header">                   
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Brand</a>
+                    </button> 
+                    <div> 
+                    <img src="arrow64.png" width="50" height="50"/>                 
+                    <a class="navbar-brand" href="#" style="font-weight:bold;color:MediumTurquoise">易处理</a> 
+                    </div>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
