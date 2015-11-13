@@ -47,7 +47,7 @@
     <div class="form-group pull-right">
         <!--<button type="button" onclick="alert('xdfsf')" ng-click="">显示当前用户</button>-->
         <!--<button type="button" onclick="alert('Welcome!')">点击这里</button>-->
-        <button class="btn btn-primary" ng-click="email()" ng-show="isLogin && !sendEmail">发信给发布人</button>
+        <button class="btn btn-primary" ng-click="email()" ng-show="isLogin && !sendEmail">发信给平台</button>
         <button class="btn btn-primary" ng-disabled="sheetDetailForm.$invalid || hasDuplicate || !fillData" ng-click="save()" ng-show="isLogin && !isSelf">发布报价</button>
         <a href="#/" class="btn btn-primary">查看清单</a>
     </div>
@@ -58,7 +58,7 @@
         <div>
             内容：<textarea rows="6" style="width:80%; margin-top:20px;" ng-model="content"></textarea>
         </div>
-        <div style="margin-top:20px;"><button class="btn btn-primary" ng-click="send(sheet.createdById)">发送</button></div>
+        <div style="margin-top:20px;"><button class="btn btn-primary" ng-click="send(toId)">发送</button></div>
     </div>
 
 </div>

@@ -84,7 +84,8 @@
             { headerName: "硬盘", field: "harddisk", cellStyle: { "text-align": "center"} },
             { headerName: "其他配件", field: "other", cellStyle: { "text-align": "center"} },
             { headerName: "状态", field: "working", cellStyle: { "text-align": "center"} },
-            { headerName: "数量", field: "number", cellStyle: { "text-align": "center"} }
+            { headerName: "数量", field: "number", cellStyle: { "text-align": "center"} },
+            //{ headerName: "单价", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}", cellStyle: { "text-align": "center"} }
         ];
 
         $scope.assertGridOptions = {
@@ -115,6 +116,25 @@
             rowData: null,
             dontUseScrolls: false,
             enableColResize: true,
+            //rowSelection: 'single',
+            //rowSelected: function rowSelectedFunc(row) {
+            //    var data = row.node.data;
+            //    if (data.assets) {
+            //        for (var i = data.assets.length - 1; i >= 0; i--) {
+            //            if (data.assets[i] == null) {
+            //                data.assets.splice(i, 1);
+            //            }
+            //        }
+            //    }
+            //    $scope.hasAsset = data && data.assets && data.assets.length > 0;
+            //    if ($scope.hasAsset) {
+            //        _dicts.translate(data.assets, 'category', 'assetCategory');
+            //        $scope.assertGridOptions.api.setRows(data.assets);
+            //        $scope.assertGridOptions.api.sizeColumnsToFit();
+            //    }
+            //    showOffers(data._id);
+            //    $scope.assetSelected = true;
+            //},
             //enableFilter: true,
             ready: function (event) {
                 event.api.sizeColumnsToFit();

@@ -1,6 +1,7 @@
-﻿app.controller('SheetController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', 'Message', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer, Message) {
+﻿app.controller('SheetController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', 'Users', 'Message', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer, Users, Message) {
     $scope.id = $routeParams.id;
     $scope.isLogin = $rootScope.user != null;
+    $scope.users = Users.query();
 
     
     //$scope.isSelf = $rootScope.user._id == AssetSheet.createdById;
@@ -167,7 +168,19 @@
     };
 
     $scope.email = function () {
+
         $scope.sendEmail = true;
+        if($scope.users)
+        {
+            for(var i = $scope.users.length - 1; i >= 0; i--)
+            {
+                if($scope.users[i].isAdmin == 1)
+                {
+                    $scope.admin = $scope.users[i]; 
+                }
+            }
+        }
+        $scope.toId = $scope.admin._id;
     };
 
     $scope.send = function (toId) {

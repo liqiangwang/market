@@ -57,6 +57,7 @@
             dontUseScrolls: false,
             enableColResize: true,
             angularCompileRows: true,
+            //singleClickEdit: true,
             cellFocused: function (params) {
                 //console.log('Callback cellFocused: ' + params.rowIndex + " - " + params.colIndex);
                 if (params.rowIndex == $scope.gridOptions.rowData.length - 1) {

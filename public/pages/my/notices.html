@@ -1,0 +1,11 @@
+<div class="ngdialog-message">
+    <h3>通知</h3>
+    <div>主题：<input style="width:80%" ng-model="topic" /></div>
+    <div>
+        内容：<textarea rows="6" style="width:80%; margin-top:20px;" ng-model="content"></textarea>
+    </div>
+</div>
+<div class="ngdialog-buttons">
+    <button type="button" class="ngdialog-button ngdialog-button-primary" ng-click="send(toId)">发送</button>
+    <button type="button" class="ngdialog-button ngdialog-button-secondary" ng-click="closeThisDialog()">取消</button>
+</div>

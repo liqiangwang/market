@@ -28,7 +28,7 @@
             { headerName: "要求从业资格证书", field: "requireCertificate", template: '<span ng-show="data.requireCertificate" class="glyphicon glyphicon-ok" aria-hidden="true"></span>', cellStyle: { "text-align": "center" } },
             { headerName: "总价格", template: "{{data.totalPrice|currency:'￥'}}", cellStyle: { "text-align": "right" }, hide: true },
             //{ headerName: "状态", field: "statusText" },
-            { headerName: "", template: "<a href='#/{{data._id}}'>详细信息</a>", cellStyle: { "text-align": "center" }, width: 90, suppressSizeToFit: true },
+            { headerName: "", hide: !$scope.isLogin, template: "<a href='#/{{data._id}}'>详细信息</a>", cellStyle: { "text-align": "center" }, width: 90, suppressSizeToFit: true },
             { headerName: "", field: "desc", cellStyle: { "text-align": "center" }, width: 90, suppressSizeToFit: true, hide: !$scope.isLogin }
         ];
 
