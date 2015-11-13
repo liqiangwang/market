@@ -1,4 +1,4 @@
-﻿var app = angular.module('app', ['ngRoute', 'ngResource', 'ngCookies']);
+﻿var app = angular.module('app', ['ngRoute', 'ngResource', 'ngCookies', 'ngDialog']);
 
 app.config(function ($routeProvider) {
     $routeProvider
@@ -48,6 +48,12 @@ app.config(function ($routeProvider) {
             controller: 'userManageController'
         })
 });
+
+app.factory('Message', ['$resource', function ($resource) {
+    return $resource('/api/messages/:id', null, {
+        'update': { method: 'PUT' }
+    });
+}]);
 
 app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope', '$route', '$window', function ($scope, Users, $cookieStore, $rootScope, $route, $window) {
     $scope.init = function () {
@@ -304,7 +310,7 @@ app.factory('Offers', ['$resource', function ($resource) {
     });
 }])
 
-app.controller('orderManageController', ['$scope', 'Users', 'AssetSheets', 'Offers', function ($scope, Users, AssetSheets, Offers) {
+app.controller('orderManageController', ['$scope', '$rootScope', 'Users', 'AssetSheets', 'Offers', 'Message', 'ngDialog', function ($scope, $rootScope, Users, AssetSheets, Offers, Message, ngDialog) {
     $scope.tickets = Offers.query({ status: 2 }, function (data) {
         $scope.sendEmail = false;
         $scope.sendEmailSuccessfull = false;
@@ -323,6 +329,30 @@ app.controller('orderManageController', ['$scope', 'Users', 'AssetSheets', 'Offe
             _dicts.translateOne($scope.tickets[i], 'status', 'offerStatus');
         }
     });
+
+    $scope.notify = function(){
+        $scope.toId = this.ticket.buyer[0]._id;
+        ngDialog.openConfirm({
+            template: 'pages/my/notices.html',
+            className: 'ngdialog-theme-default',
+            scope: $scope
+        }).then(function (value) {//确认
+            
+        }, function (reason) {// 取消
+
+        });
+    };
+
+    $scope.send = function(toId){
+        var message = new Message({ senderId: $rootScope.user._id, receiverId: toId, topic: this.topic, content: this.content, status: 1 });
+        message.$save(function () {
+            $scope.sendEmailSuccessfull = true;
+        },
+        function (response) { // error case
+            _helper.showHttpError(response);
+        });
+        ngDialog.closeAll(toId);
+    };
 }]);
 
 app.controller('orderDetailController', ['$scope', '$routeParams', 'Users', 'AssetSheets', 'Offers', function ($scope, $routeParams, Users, AssetSheets, Offers) {

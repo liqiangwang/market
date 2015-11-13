@@ -31,13 +31,22 @@
             height: 60px; /* Height of the footer */
             /*background:#6cf;*/
         }
+        img.navbar-brand
+        {
+            height: 50px;
+            width: 50px;
+            float: left;
+            padding: 5px 5px;
+            /*font-size: 18px;
+            line-height: 20px;*/
+        }
     </style>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="libs/bootstrap-3.3.5/css/bootstrap.min.css">
     <link href="stylesheets/style.css" rel="stylesheet" />
-    <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="logo.ico" type="image/x-icon" />   
     <script type="text/javascript" src="libs/jquery-1.11.3.js"></script>
-    <script type="text/javascript" src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>   
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular.js"></script>
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular-route.js"></script>
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular-resource.js"></script>
@@ -45,6 +54,11 @@
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular-route.min.js"></script>
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular-resource.min.js"></script>-->
     <script type="text/javascript" src="libs/angularjs/1.4.3/angular-cookies.js"></script>
+    <link href="libs/ngDialog/css/ngDialog.css" rel="stylesheet" />
+    <link href="libs/ngDialog/css/ngDialog-theme-default.css" rel="stylesheet" />
+    <link href="libs/ngDialog/css/ngDialog-theme-plain.css" rel="stylesheet" />
+    <link href="libs/ngDialog/css/ngDialog-custom-width.css" rel="stylesheet" />
+    <script type="text/javascript" src="libs/ngDialog/js/ngDialog.js"></script>
     <script src="javascripts/admin.js"></script>
     <script src="javascripts/common.js"></script>
 </head>
@@ -64,7 +78,7 @@
                         <span class="icon-bar"></span>
                     </button> 
                     <div> 
-                    <img src="arrow64.png" width="50" height="50"/>                 
+                    <img class="navbar-brand" src="arrow64.png"/>                 
                     <a class="navbar-brand" href="#" style="font-weight:bold;color:DarkBlue">易处理</a> 
                     </div>
                 </div>
