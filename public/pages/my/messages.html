@@ -1,4 +1,15 @@
-﻿<fieldset>
+﻿<div style="padding-bottom: 20px;">
+<button class="btn btn-primary" ng-click="sendMail()">写信咨询</button>
+<div class="alert alert-danger" role="alert" ng-show="sendEmailSuccessfull && sendMyEmail">发送邮件成功！</div>
+<div class="form-group" ng-show="sendEmail && !sendEmailSuccessfull && sendMyEmail"  style="padding-top: 20px;">
+            <div>主题：<input style="width:80%" ng-model="topic" /></div>
+            <div>
+                内容：<textarea rows="6" style="width:80%; margin-top:20px;" ng-model="content"></textarea>
+            </div>
+            <div style="margin-top:20px;"><button class="btn btn-primary" ng-click="send(toId)">发送</button><button class="btn btn-primary" ng-click="cancelMail()" style="margin-left: 20px;">取消</button></div>
+        </div>
+    </div>
+<fieldset>
     <div class="alert alert-info" role="alert" style="font-weight:bold;">收件箱</div>
     <div>
         <table class="table   table-hover table-striped">
@@ -63,12 +74,3 @@
         </table>
     </div>
 </fieldset>
-<button class="btn btn-primary" ng-click="sendMail()">写信咨询</button>
-<div class="alert alert-danger" role="alert" ng-show="sendEmailSuccessfull && sendMyEmail">发送邮件成功！</div>
-<div class="form-group" ng-show="sendEmail && !sendEmailSuccessfull && sendMyEmail">
-            <div>主题：<input style="width:80%" ng-model="topic" /></div>
-            <div>
-                内容：<textarea rows="6" style="width:80%; margin-top:20px;" ng-model="content"></textarea>
-            </div>
-            <div style="margin-top:20px;"><button class="btn btn-primary" ng-click="send(toId)">发送</button></div>
-        </div>

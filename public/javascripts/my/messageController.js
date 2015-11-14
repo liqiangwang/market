@@ -73,4 +73,10 @@
         $scope.toId = $scope.admin._id;
         //$scope.toId = "5631847a1a6227380bcca3b7";
     }
+
+    $scope.cancelMail = function(){
+        $scope.sendEmail = false;
+        $scope.sendMyEmail = false;
+        $scope.sendEmailSuccessfull = false;
+    }
 }]);

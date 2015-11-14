@@ -75,8 +75,8 @@ app.controller('UserController', ['$scope', 'Users', '$cookieStore', '$rootScope
     }
 
     $scope.register = function () {
-        if (!$scope.alias || !$scope.password) return;
-        var user = new Users({ alias: $scope.alias, password: $scope.password });
+        if (!$scope.alias || !$scope.password || !$scope.phone || !$scope.email) return;
+        var user = new Users({ alias: $scope.alias, password: $scope.password, phone: $scope.phone, email: $scope.email });
 
         user.$save(function () {
             $scope.user = user;
