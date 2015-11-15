@@ -1,5 +1,6 @@
 ﻿app.controller('ProfileController', ['$scope', '$rootScope', '$routeParams', '$location', 'AssetSheet', 'Offer', function ($scope, $rootScope, $routeParams, $location, AssetSheet, Offer) {
     $scope.init = function () {
+        $scope.getUser();
         $scope.query();
     }
 
@@ -27,6 +28,12 @@
             });
     }
 
+    $scope.getUser = function (){
+        $scope.alias = $rootScope.user.alias;
+        $scope.pass = $rootScope.user.password;
+        $scope.phone = $rootScope.user.phone;
+        $scope.mail = $rootScope.user.email;
+    }
     $scope.query = function () {
         var columnDefs = [
             { headerName: "名称", template: "{{data.sheet.name}}", cellStyle: { "text-align": "center"} },

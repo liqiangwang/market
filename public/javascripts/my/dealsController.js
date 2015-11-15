@@ -85,6 +85,7 @@
             { headerName: "其他配件", field: "other", cellStyle: { "text-align": "center"} },
             { headerName: "状态", field: "working", cellStyle: { "text-align": "center"} },
             { headerName: "数量", field: "number", cellStyle: { "text-align": "center"} },
+            { headerName: "单价", field: "price", cellStyle: { "text-align": "center"} }
             //{ headerName: "单价", template: "{{data.planningDeliveryTime | date: 'yyyy-MM-dd'}}", cellStyle: { "text-align": "center"} }
         ];
 
@@ -116,8 +117,20 @@
             rowData: null,
             dontUseScrolls: false,
             enableColResize: true,
-            //rowSelection: 'single',
-            //rowSelected: function rowSelectedFunc(row) {
+            rowSelection: 'single',
+            rowSelected: function rowSelectedFunc(row) {
+                $scope.assets = row.node.data.assets;
+
+                $scope.hasAssetsPrice = $scope.assets && $scope.assets.length ==  $scope.assertGridOptions.rowData.length
+                if($scope.hasAssetsPrice)
+                {
+                    for(var i=0;i<$scope.assets.length;i++)
+                    {
+                        $scope.assertGridOptions.rowData[i].price = $scope.assets[i].price;
+                    }
+                    $scope.assertGridOptions.api.refreshView();
+                } 
+            },
             //    var data = row.node.data;
             //    if (data.assets) {
             //        for (var i = data.assets.length - 1; i >= 0; i--) {

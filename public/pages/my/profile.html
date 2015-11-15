@@ -1,8 +1,35 @@
-﻿<form novalidate>
-    <div class="form-group">
-        <input name="mail" class="form-control input-lg" id="edit-mail" type="text" size="60" maxlength="128" placeholder="手机号码、邮箱或用户名" value="" ng-model="alias" required>
+﻿<form  ng-init="init()" novalidate>
+	<div class="form-group">
+		<table>
+			<tr>
+			<td style=""><h4>手机号码：</h4></td>
+			<td>
+        <input name="phone" class="form-control input-lg" id="edit-phone" type="text" size="60" maxlength="128" placeholder="手机号码" value="" ng-model="phone" required>
+        	</td>
+        	</tr>
+    	</table>
     </div>
     <div class="form-group">
+    	<table>
+			<tr>
+			<td style=""><h4>邮箱地址：</h4></td>
+			<td>
+        <input name="mail" class="form-control input-lg" id="edit-mail" type="text" size="60" maxlength="128" placeholder="邮箱" value="" ng-model="mail" required>
+    		</td>
+        	</tr>
+    	</table>
+    </div>
+    <div class="form-group">
+    	<table>
+			<tr>
+			<td style=""><h4>用户名称：</h4></td>
+			<td>
+        <input name="alias" class="form-control input-lg" id="edit-alias" type="text" size="60" maxlength="128" placeholder="用户名" value="" ng-model="alias" required>
+        	</td>
+        	</tr>
+    	</table>
+    </div>
+    <div class="form-group" ng-show="false">
         <input name="pass" class="form-control input-lg" id="edit-pass" type="password" size="60" maxlength="128" placeholder="密码" ng-model="password" required>
     </div>
 </form>
