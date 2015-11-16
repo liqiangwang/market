@@ -13,13 +13,13 @@ var helper = require('../utilities/helper.js');
 router.get('/*', function (req, res) {
     if (!req.query || !req.query.alias) {
         if (!req.query._id) {
-            User.find(null, function (err, users) {
+            User.find(null, null, { sort: { updatedAt: -1 } }, function (err, users) {
                 if (err) return next(err);
                 res.json(users);
             });
         }
         else {
-            User.find({ _id: req.query._id }, function (err, post) {
+            User.find({ _id: req.query._id }, null, { sort: { updatedAt: -1 } }, function (err, post) {
                 if (err) return next(err);
                 res.json(post);
             });
@@ -28,7 +28,7 @@ router.get('/*', function (req, res) {
     else {
         var alias = req.query.alias;
         var password = helper.sha256(req.query.password);
-        User.find({ alias: alias, password: password }, function (err, users) {
+        User.find({ alias: alias, password: password }, null, { sort: { updatedAt: -1 } }, function (err, users) {
             if (err) return next(err);
             res.json(users);
         });

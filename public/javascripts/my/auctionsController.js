@@ -85,7 +85,7 @@ app.controller('AuctionsController', ['$scope', '$rootScope', 'AssetSheet', 'Off
             { headerName: "其他配件", field: "other", cellStyle: { "text-align": "center"} },
             { headerName: "状态", field: "working", cellStyle: { "text-align": "center"} },
             { headerName: "数量", field: "number", cellStyle: { "text-align": "center"} },
-            //{ headerName: "单价", field: "price", cellStyle: { "text-align": "center"}  }
+            { headerName: "单价", field: "price", cellStyle: { "text-align": "center"}  }
         ];
 
         $scope.assertGridOptions = {
@@ -145,7 +145,19 @@ app.controller('AuctionsController', ['$scope', '$rootScope', 'AssetSheet', 'Off
             rowSelection: 'single',
             rowSelected: function rowSelectedFunc(row) {
                 $scope.offerId = row.node.data._id
-                $scope.offerSelected = true;                
+                $scope.offerSelected = true; 
+
+                $scope.assets = row.node.data.assets;
+
+                $scope.hasAssetsPrice = $scope.assets && $scope.assets.length ==  $scope.assertGridOptions.rowData.length
+                if($scope.hasAssetsPrice)
+                {
+                    for(var i=0;i<$scope.assets.length;i++)
+                    {
+                        $scope.assertGridOptions.rowData[i].price = $scope.assets[i].price;
+                    }
+                    $scope.assertGridOptions.api.refreshView();
+                }                
             },
             //enableFilter: true,
             ready: function (event) {
